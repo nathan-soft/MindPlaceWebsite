@@ -1,0 +1,48 @@
+﻿@page
+@model MindPlaceClient.Pages.Public.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+    <div class="vertical-align-wrap">
+        <div class="vertical-align-middle">
+            <div class="auth-box h-auto">
+                <div class="left">
+                    <div class="content">
+                        <div class="header">
+                            <div class="logo text-center">
+                                <img src="~/assets/img/logo-dark.png" style="width: 200px" alt="mindsplace Logo">
+                            </div>
+                            <p class="lead">Login to your account</p>
+                            <p runat="server" id="lblmessage" style="text-align: center" visible="false"></p>
+                        </div>
+                        <div class="form-auth-small">
+                            <div class="form-group">
+                                <label for="signin-email" class="control-label sr-only">Email</label>
+                                <input type="email" class="form-control" runat="server" id="email" value="" placeholder="Email" />
+                            </div>
+                            <div class="form-group">
+                                <label for="signin-password" class="control-label sr-only">Password</label>
+                                <input type="password" class="form-control" runat="server" id="password" placeholder="Password" />
+                            </div>
+                            <div class="form-group clearfix">
+                                <label class="fancy-checkbox element-left">
+                                    <input type="checkbox" />
+                                    <span>Remember me</span>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-lg btn-block text-white">LOGIN</button>
+                            <div class="bottom">
+                                <span class="helper-text">
+                                    <i class="fa fa-lock"></i><a href="#" style="color: #f35f09"> Forgot password?</a>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+

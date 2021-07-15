@@ -1,0 +1,34 @@
+﻿/*************************** NAVIGATION ******************************/
+
+
+
+@media (max-width: 576px) {
+    .logo {
+        float:none;
+        width: 80px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .user-account {
+        border: none;
+    }
+}
+
+
+/*************************** MESSAGES PAGE ******************************/
+.message-send-area form > ul {
+    float: left;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.message-send-area form > ul li {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.message-send-area form > ul li a {
+    color: #b2b2b2;
+    font-size: 18px;
+}

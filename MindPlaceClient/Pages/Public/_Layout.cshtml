@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MindsPlace</title>
+    <!-- VENDOR CSS -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/assets/vendor/linearicons/style.css" />
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="~/assets/css/main.css" />
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet" />
+    <!-- ICONS -->
+    <link rel="apple-touch-icon" sizes="76x76" href="~/assets/img/apple-icon.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="~/assets/img/favicon.png" />
+</head>
+<body>
+    <div class="wrapper">
+        @RenderBody()
+    </div>
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/popper.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

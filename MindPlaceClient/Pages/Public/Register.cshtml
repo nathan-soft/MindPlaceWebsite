@@ -1,0 +1,117 @@
+﻿@page
+@model MindPlaceClient.Pages.Public.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="vertical-align-wrap">
+    <div class="vertical-align-middle">
+        <div class="auth-box my-4" style="height: auto">
+            <div class="left">
+                <div class="content">
+                    <div class="header">
+                        <div class="logo text-center">
+                            <img src="~/assets/img/logo-dark.png" style="width: 200px" alt="mindsplace Logo">
+                        </div>
+                        <p class="lead">Create a new account</p>
+                    </div>
+                    <div class="form-auth-small">
+                        <div class="form-group">
+                            <label for="signin-email" class="control-label sr-only">Email</label>
+                            <input type="email" class="form-control" runat="server" id="input_email" value="" placeholder="Email" />
+                        </div>
+                        <div class="form-group">
+                            <label for="signin-password" class="control-label sr-only">Password</label>
+                            <input type="password" class="form-control" runat="server" id="input_password" placeholder="Password" />
+                        </div>
+                        <div class="form-group">
+                            <label for="signin-password" class="control-label sr-only">Password</label>
+                            <input type="password" class="form-control" runat="server" id="input_confirm_password" placeholder="Confirm password" />
+                        </div>
+                        <div class="form-group">
+                            <label for="signin-password" class="control-label sr-only">First Name</label>
+                            <input type="text" class="form-control" runat="server" id="input_first_name" placeholder="Firstname" />
+                        </div>
+                        <div class="form-group">
+                            <label for="signin-password" class="control-label sr-only">Last Name</label>
+                            <input type="text" class="form-control" runat="server" id="input_last_name" placeholder="Last name" />
+                        </div>
+                        <div class="form-row form-group" >
+                            <section class="col-sm-6 mb-3 pr-sm-0 mb-sm-0">
+                                <label for="signin-password" class="control-label sr-only">Nick Name</label>
+                                <input type="text" class="form-control" runat="server" id="input_nick_name" placeholder="Nick Name" />
+                            </section>
+                            <section class="col-sm-6 pl-sm-0">
+                                <label for="signin-password" class="control-label sr-only">Contact No</label>
+                                <input type="tel" class="form-control" runat="server" id="input_tel" placeholder="Contact No"/>
+                            </section>
+                        </div>
+                        <div class="form-row form-group">
+                            <section class="col-sm-6 mb-3 pr-sm-0 mb-sm-0">
+                                <label for="signin-password" class="control-label sr-only">Qualification</label>
+                                <input type="text" class="form-control" runat="server" id="input_qualification" placeholder="Qualification" />
+                            </section>
+                            <section class="col-sm-6 pl-sm-0">
+                                <label for="signin-password" class="control-label sr-only">Employment</label>
+                                <input type="text" class="form-control" runat="server" id="input_employment" placeholder="Employment"/>
+                            </section>
+                        </div>
+                        <div class="form-row form-group">
+                            <section class="col-sm-6 mb-3 pr-sm-0 mb-sm-0">
+                                <label for="signin-password" class="control-label sr-only">D.O.B</label>
+                                <input type="date" class="form-control" runat="server" id="input_dob" />
+                            </section>
+                            <section class="col-sm-6 pl-sm-0">
+                                <label for="signin-password" class="control-label sr-only">Age</label>
+                                <input type="number" class="form-control" placeholder="Age" runat="server" id="input_age" />
+                            </section>
+                        </div>
+                        <div class="form-group col-md-12" style="padding: 0px">
+                            <label for="signin-password" class="control-label sr-only">Country</label>
+                            <input type="text" class="form-control" placeholder="Country" id="input_country" />
+                        </div>
+                        <div class="form-group col-md-12" style="padding: 0px">
+                            <label for="signin-password" class="control-label sr-only">State</label>
+                            <input type="text" class="form-control" placeholder="State" id="input_state" />
+                        </div>
+
+                        <button id="btn_save" class="btn btn-warning btn-lg btn-block text-white">REGISTER</button>
+                        <div class="bottom">
+                            <span class="helper-text">
+                                <i class="fa fa-lock mr-1"></i> Already have an account? <a asp-page="Register" style="color: #f35f09">Login</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+
+<div id="div_email" style="display: none;">
+
+    <div class="col-md-12">
+        <div class="col-md-12" style="background-color: #f0eee7; padding: 50px 50px;">
+            <div style="margin: auto; width: 100px; height: 100px">
+                <img id="imgemail" runat="server" src="https://pbs.twimg.com/profile_images/1105583743392198658/qdMa06Oc_400x400.jpg" style="width: 100%; height: 100%;" />
+            </div>
+            <div class="col-md-12" style="background-color: white; text-align: center; margin-top: 5px; padding: 25px 0px;">
+
+
+                <p>Verify Email Account</p>
+                <p>Hello <span id="spnname" runat="server"></span></p>
+                <p>To proceed with your registration on Mindsplace, Please verify your email account by clicking on the button below</p>
+                <div style="margin: auto;">
+                    <a runat="server" href="" id="anchoremail" class="btn-warning btn" style="border-color: #e08e0b; background-color: #f39c12; border: 1px solid transparent; border-radius: 3px; padding: 10px; color: white; text-decoration: none;">Verify Email</a>
+                </div>
+                <p>If you didnt request this registration, you can ignore this email</p>
+                <p><span runat="server" id="spn_company_name"></span>Support</p>
+                <p>This link becomes invalid on<span runat="server" id="Spanendtime" style="color: red"></span></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
