@@ -34,22 +34,24 @@
                     <nav>
                         <ul>
                             <li>
-                                <a asp-page="/DashBoard" title="dashboard">
+                                <a asp-page="/DashBoard" asp-route-username="@User.GetLoggedOnUsername()" title="dashboard">
                                     <span>
                                         <img src="~/images/icon1.png" alt="">
                                     </span>
                                     Home
                                 </a>
                             </li>
-
-                            <li>
-                                <a asp-page="/Professionals" title="Professionals">
-                                    <span>
-                                        <img src="~/images/icon4.png" alt="">
-                                    </span>
-                                    Professionals
-                                </a>
-                            </li>
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("Patient"))
+                            {
+                                <li>
+                                    <a asp-page="/Professionals" title="Professionals">
+                                        <span>
+                                            <img src="~/images/icon4.png" alt="">
+                                        </span>
+                                        Professionals
+                                    </a>
+                                </li>
+                            }
                             <li>
                                 <a asp-page="/Forum" title="Forum">
                                     <span>
@@ -157,7 +159,7 @@
                                             </div>
                                         </div>
                                         <div class="view-all-nots">
-                                            <a href="#">View All Notification</a>
+                                            <a asp-page="/Settings">View All Notification</a>
                                         </div>
                                     </div>
                                 </div>
@@ -170,7 +172,7 @@
                     <div class="user-account">
                         <div class="user-info">
                             <img src="~/images/resources/user.png" alt="">
-                            <a href="#" title="">John</a>
+                            <a href="#" title="">@User.GetFullName().GetInitials()</a>
                             <i class="la la-sort-down"></i>
                         </div>
                         <div class="user-account-settingss" id="users">
@@ -188,7 +190,7 @@
             </div>
         </header>
         @*<main role="main" class="pb-3">*@
-            @RenderBody()
+        @RenderBody()
         @*</main>*@
         @RenderSection("Footer", required: false)
     </div>
@@ -200,6 +202,7 @@
     <script src="~/lib/slick/slick.min.js"></script>
     <script src="~/js/scrollbar.js"></script>
     <script src="~/js/script.js"></script>
+    <script src="~/js/site.js"></script>
     @*<script src="~/js/site.js" asp-append-version="true"></script>*@
 
     @RenderSection("Scripts", required: false)

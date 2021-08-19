@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{handler?}"
 @model MindPlaceClient.Pages.SettingsModel
 @{
     ViewData["Title"] = "Settings";
@@ -12,16 +12,13 @@
                 <div class="col-lg-3">
                     <div class="acc-leftbar">
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-notification-tab" data-toggle="tab" href="#nav-notification" role="tab" aria-controls="nav-notification" aria-selected="false"
-                            >
+                            <a class="nav-item nav-link active" id="nav-notification-tab" data-toggle="tab" href="#nav-notification" role="tab" aria-controls="nav-notification" aria-selected="false">
                                 <i class="fa fa-flash"></i>Notifications
                             </a>
-                            <a class="nav-item nav-link" id="nav-password-tab" data-toggle="tab" href="#nav-password" role="tab" aria-controls="nav-password" aria-selected="false"
-                            >
+                            <a class="nav-item nav-link" id="nav-password-tab" data-toggle="tab" href="#nav-password" role="tab" aria-controls="nav-password" aria-selected="false">
                                 <i class="fa fa-lock"></i>Change Password
                             </a>
-                            <a class="nav-item nav-link" id="nav-privcy-tab" data-toggle="tab" href="#privcy" role="tab" aria-controls="privacy" aria-selected="false"
-                            >
+                            <a class="nav-item nav-link" id="nav-privcy-tab" data-toggle="tab" href="#privcy" role="tab" aria-controls="privacy" aria-selected="false">
                                 <i class="fa fa-group"></i>Requests
                             </a>
                         </div>
@@ -33,109 +30,63 @@
                             <div class="acc-setting">
                                 <h3>Notifications</h3>
                                 <div class="notifications-list">
-                                    <div class="notfication-details">
-                                        <div class="noty-user-img">
-                                            <img src="~/images/resources/ny-img1.png" alt="">
-                                        </div>
-                                        <div class="notification-info">
-                                            <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                                            <span>2 min ago</span>
-                                        </div>
-                                    </div>
-                                    <div class="notfication-details">
-                                        <div class="noty-user-img">
-                                            <img src="~/images/resources/ny-img2.png" alt="">
-                                        </div>
-                                        <div class="notification-info">
-                                            <h3><a href="#" title="">Poonam Verma</a> Bid on your Latest project.</h3>
-                                            <span>2 min ago</span>
-                                        </div>
-                                    </div>
-                                    <div class="notfication-details">
-                                        <div class="noty-user-img">
-                                            <img src="images/resources/ny-img3.png" alt="">
-                                        </div>
-                                        <div class="notification-info">
-                                            <h3><a href="#" title="">Tonney Dhman</a> Comment on your project.</h3>
-                                            <span>2 min ago</span>
-                                        </div>
-                                    </div>
-                                    <div class="notfication-details">
-                                        <div class="noty-user-img">
-                                            <img src="images/resources/ny-img1.png" alt="">
-                                        </div>
-                                        <div class="notification-info">
-                                            <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                                            <span>2 min ago</span>
-                                        </div>
-                                    </div>
-                                    <div class="notfication-details">
-                                        <div class="noty-user-img">
-                                            <img src="images/resources/ny-img1.png" alt="">
-                                        </div>
-                                        <div class="notification-info">
-                                            <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                                            <span>2 min ago</span>
-                                        </div>
-                                    </div>
-                                    <div class="notfication-details">
-                                        <div class="noty-user-img">
-                                            <img src="images/resources/ny-img2.png" alt="">
-                                        </div>
-                                        <div class="notification-info">
-                                            <h3><a href="#" title="">Poonam Verma </a> Bid on your Latest project.</h3>
-                                            <span>2 min ago</span>
-                                        </div>
-                                    </div>
-                                    <div class="notfication-details">
-                                        <div class="noty-user-img">
-                                            <img src="images/resources/ny-img3.png" alt="">
-                                        </div>
-                                        <div class="notification-info">
-                                            <h3><a href="#" title="">Tonney Dhman</a> Comment on your project</h3>
-                                            <span>2 min ago</span>
-                                        </div>
-                                    </div>
-                                    <div class="notfication-details">
-                                        <div class="noty-user-img">
-                                            <img src="images/resources/ny-img1.png" alt="">
-                                        </div>
-                                        <div class="notification-info">
-                                            <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                                            <span>2 min ago</span>
-                                        </div>
-                                    </div>
+                                    @if (Model.UserNotifications != null && Model.UserNotifications.Any())
+                                    {
+                                        foreach (var notification in Model.UserNotifications)
+                                        {
+                                            var rand = new Random();
+                                            var randomNumber = rand.Next(1, 4);
+                                            var profileUrl = $"~/images/resources/ny-img{randomNumber}.png";
+                                            <div class="notfication-details">
+                                                <div class="noty-user-img">
+                                                    <img src="@profileUrl" alt="">
+                                                </div>
+                                                <div class="notification-info">
+                                                    <h3><a href="#" title="">@notification.Creator.FullName</a> @notification.Message</h3>
+                                                    <span>2 min ago</span>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <h3 class="h3 text-black-50 text-center py-4">No Notification Found.</h3>
+                                    }
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="nav-password" role="tabpanel" aria-labelledby="nav-password-tab">
                             <div class="acc-setting">
                                 <h3>Account Setting</h3>
-                                <form>
-                                    <div class="cp-field">
+                                <form id="changePasswordForm" method="post" asp-page-handler="ChangePassword">
+                                    <div id="validationSummary" class="text-danger text-left pl-4 py-2"></div>
+                                    <div class="cp-field mt-3">
                                         <h5>Old Password</h5>
                                         <div class="cpp-fiel">
-                                            <input type="text" class="col-sm-8 col-md-6" name="old-password" />
+                                            <input type="password" asp-for="PasswordDetails.OldPassword" class="col-sm-8 col-md-6" />
                                             <i class="fa fa-lock"></i>
+                                            <span asp-validation-for="PasswordDetails.OldPassword" class="text-danger d-block"></span>
                                         </div>
                                     </div>
                                     <div class="cp-field">
                                         <h5>New Password</h5>
                                         <div class="cpp-fiel">
-                                            <input type="text" class="col-sm-8 col-md-6" name="new-password" />
+                                            <input type="password" asp-for="PasswordDetails.NewPassword" class="col-sm-8 col-md-6" />
                                             <i class="fa fa-lock"></i>
+                                            <span asp-validation-for="PasswordDetails.NewPassword" class="text-danger d-block"></span>
                                         </div>
                                     </div>
                                     <div class="cp-field">
                                         <h5>Repeat Password</h5>
                                         <div class="cpp-fiel">
-                                            <input type="text" class="col-sm-8 col-md-6" name="repeat-password" />
+                                            <input asp-for="PasswordDetails.ConfirmPassword" class="col-sm-8 col-md-6" />
                                             <i class="fa fa-lock"></i>
+                                            <span asp-validation-for="PasswordDetails.ConfirmPassword" class="text-danger d-block"></span>
                                         </div>
                                     </div>
                                     <div class="save-stngs pd2">
                                         <ul>
-                                            <li><button type="submit">Save</button></li>
+                                            <li><button type="submit">Save Changes</button></li>
                                         </ul>
                                     </div>
                                 </form>
@@ -244,3 +195,16 @@
         </div>
     </div>
 </section>
+
+@section Scripts{
+    @if(ModelState.Keys.Contains("") && ModelState[""].Errors.Count > 0)
+    {
+        var message = ModelState[""].Errors.Select(e => e.ErrorMessage).First();
+
+        <script>
+            $(document).ready(function () {
+                alert("@message");
+            });
+        </script>
+    }
+}
