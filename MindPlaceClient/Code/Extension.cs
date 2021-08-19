@@ -1,6 +1,7 @@
 ﻿using MindPlaceClient.MindPlaceApiService;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -70,5 +71,11 @@ namespace MindPlaceClient.Code
 
             return userRole;
         }
+    }
+
+    public class NewComment : CommentDto
+    {
+        [Required]
+        public int questionId { get; set; }
     }
 }
