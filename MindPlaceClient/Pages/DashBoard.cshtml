@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{username}/{handler?}"
 @model MindPlaceClient.Pages.DashBoardModel
 @{
     Layout = "_Layout";
@@ -20,25 +20,37 @@
                                         </div>
                                     </div>
                                     <div class="user-specs">
-                                        <h3>John Doe</h3>
-                                        <span>Graphic Designer at Self Employed</span>
+                                        <h3>@($"{Model.UserDetails.FirstName} {Model.UserDetails.LastName}")</h3>
+                                        <span>@Model.UserDetails.UserName</span>
                                     </div>
                                 </div>
                                 <ul class="user-fw-status">
                                     <li>
-                                        <h4>Number Of Questions </h4>
-                                        <span>34</span>
+                                        @if (Model.UserDetails.Roles.Contains("Patient"))
+                                        {
+                                            <h4>Number Of Questions Asked</h4>
+                                        }
+                                        else if (Model.UserDetails.Roles.Contains("Professional"))
+                                        {
+                                            <h4>Number Of Questions Answered </h4>
+                                        }
+
+                                        <span>@Model.UserDetails.Questions.Count</span>
                                     </li>
+                                    @if (Model.UserDetails.Roles.Contains("Patient"))
+                                    {
+                                        <li>
+                                            <h4>Referal ID </h4>
+                                            <span><a>@Model.UserDetails.ReferralCode.Substring(42)</a></span>
+                                        </li>
+                                        <li>
+                                            <h4>Number Of Referals </h4>
+                                            <span>@Model.UserDetails.NoOfReferrals.</span>
+                                        </li>
+                                    }
+
                                     <li>
-                                        <h4>Referal ID </h4>
-                                        <span><a>mindsplace.com/username/date</a></span>
-                                    </li>
-                                    <li>
-                                        <h4>Number Of Referals </h4>
-                                        <span>14</span>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.gambolthemes.net/workwise-new/my-profile.html" title="">View Profile</a>
+                                        <a href="#" title="">View Profile</a>
                                     </li>
                                 </ul>
                             </div>
@@ -57,7 +69,7 @@
                                 <div class="cp-sec">
                                     <img src="~/images/logo2.png" alt="">
                                     <p>
-                                        <img src="images/cp.png" alt="">Copyright 2019
+                                        <img src="~/images/cp.png" alt="">Copyright 2019
                                     </p>
                                 </div>
                             </div>
@@ -65,9 +77,10 @@
                     </div>
                     <div class="col-lg-6 col-md-8 no-pd">
                         <div class="main-ws-sec">
+                            <!--ASK A QUESTION BOX-->
                             <div class="post-topbar">
                                 <div class="user-picy">
-                                    <img src="images/resources/user-pic.png" alt="">
+                                    <img src="~/images/resources/user-pic.png" alt="">
                                 </div>
                                 <div class="post-st">
                                     <ul>
@@ -76,226 +89,333 @@
                                     </ul>
                                 </div>
                             </div>
+                            <!--  ASK A QUESTION END -->
+
                             <div class="posts-section">
-                                <div class="post-bar">
-                                    <div class="post_topbar">
-                                        <div class="usy-dt">
-                                            <img src="images/resources/us-pic.png" alt="">
-                                            <div class="usy-name">
-                                                <h3>John Doe</h3>
-                                                <span>
-                                                    <img src="images/clock.png" alt="">3 min ago
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="ed-opts">
-                                            <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-                                            <ul class="ed-options">
-                                                <li><a href="#" title="">Edit Post</a></li>
-                                                <li><a href="#" title="">Unsaved</a></li>
-                                                <li><a href="#" title="">Unbid</a></li>
-                                                <li><a href="#" title="">Close</a></li>
-                                                <li><a href="#" title="">Hide</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="epi-sec">
-                                    </div>
-                                    <div class="job_descp">
-                                        <h3>Senior Wordpress Developer</h3>
+                                @if (Model.UserDetails.Questions.Any())
+                                {
 
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
+                                    var i = 1;
 
-                                    </div>
-                                    <div class="job-status-bar">
-                                        <ul class="like-com">
-
-                                            <li><a class="" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" class="com"><i class="fas fa-comment-alt"></i>Comment 15</a></li>
-
-
-                                            <div class="collapse" id="collapseExample">
-                                                <div class="card card-body" style="padding: 10px">
-
-                                                    <!-- Main Body -->
-                                                    <section>
-                                                        <div class="col-sm-12 col-md-12" style="padding: 0px">
-                                                            <div class="row">
-                                                                <div class="col-sm-12 col-md-12 col-12 pb-4" style="padding: 0px">
-
-                                                                    <div class="comments mt-4 text-justify float-left">
-                                                                        <img src="https://i.imgur.com/yTFUilP.jpg" alt="" class="rounded-circle" width="40" height="40">
-                                                                        <h4>Jhon Doe</h4>
-                                                                        <span style="color: black">- 20 October, 2018</span>
-                                                                        <br>
-                                                                        <br />
-                                                                        <p style="color: black">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Accusamus numquam assumenda hic aliquam vero sequi velit molestias doloremque molestiae dicta?</p>
-                                                                    </div>
-
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </section>
+                                    foreach (var question in Model.UserDetails.Questions)
+                                    {
+                                        <div class="post-bar" id="question_@question.Id">
+                                            <div class="post_topbar">
+                                                <div class="usy-dt">
+                                                    <img src="~/images/resources/us-pic.png" alt="">
+                                                    <div class="usy-name">
+                                                        <h3>@question.User.FullName</h3>
+                                                        <span>
+                                                            <img src="~/images/clock.png" alt="">3 min ago
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="ed-opts">
+                                                    <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+                                                    <ul class="ed-options">
+                                                        <li><a href="#" title="">Edit</a></li>
+                                                        <li><a href="#" title="">Delete</a></li>
+                                                        <li><a href="#" title="">Hide</a></li>
+                                                    </ul>
                                                 </div>
                                             </div>
-                                        </ul>
-                                        <a href="#"><i class="fas fa-eye"></i>Views 50</a>
-                                    </div>
-                                </div>
-                                <div class="top-profiles">
-                                    <div class="pf-hd">
-                                        <h3>PRPFESSIONALS</h3>
-                                        <i class="la la-ellipsis-v"></i>
-                                    </div>
-                                    <div class="profiles-slider">
-                                        <div class="user-profy">
-                                            <img src="images/resources/user1.png" alt="">
-                                            <h3>John Doe</h3>
-                                            <span>Graphic Designer</span>
-                                            <ul>
-                                                <li><a href="#" title="" class="followw">Subscribe</a></li>
+                                            <div class="epi-sec">
+                                            </div>
+                                            <div class="job_descp mt-2">
+                                                <h3>@question.Title</h3>
 
-                                            </ul>
-                                            <a href="#" title="">View Profile</a>
-                                        </div>
-                                        <div class="user-profy">
-                                            <img src="images/resources/user2.png" alt="">
-                                            <h3>John Doe</h3>
-                                            <span>Graphic Designer</span>
-                                            <ul>
-                                                <li><a href="#" title="" class="followw">Subscribe</a></li>
+                                                <p>
+                                                    @question.Content
+                                                </p>
+                                            </div>
+                                            <div class="job-status-bar">
+                                                <ul class="like-com">
 
-                                            </ul>
-                                            <a href="#" title="">View Profile</a>
-                                        </div>
-                                        <div class="user-profy">
-                                            <img src="images/resources/user3.png" alt="">
-                                            <h3>John Doe</h3>
-                                            <span>Graphic Designer</span>
-                                            <ul>
-                                                <li><a href="#" title="" class="followw">Subscribe</a></li>
+                                                    <li>
+                                                        <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+                                                           aria-controls="collapseExample" class="com">
+                                                            <i class="fas fa-comment-alt"></i>Comment @question.Comments.Count
+                                                        </a>
+                                                    </li>
 
-                                            </ul>
-                                            <a href="#" title="">View Profile</a>
-                                        </div>
-                                        <div class="user-profy">
-                                            <img src="images/resources/user1.png" alt="">
-                                            <h3>John Doe</h3>
-                                            <span>Graphic Designer</span>
-                                            <ul>
-                                                <li><a href="#" title="" class="followw">Subscribe</a></li>
+                                                    <div class="collapse" id="collapseExample">
+                                                        <div class="card card-body" style="padding: 10px">
 
-                                            </ul>
-                                            <a href="#" title="">View Profile</a>
-                                        </div>
-                                        <div class="user-profy">
-                                            <img src="images/resources/user2.png" alt="">
-                                            <h3>John Doe</h3>
-                                            <span>Graphic Designer</span>
-                                            <ul>
-                                                <li><a href="#" title="" class="followw">Subscribe</a></li>
+                                                            <!-- Main Body -->
+                                                            <section>
+                                                                <div class="col-sm-12 col-md-12" style="padding: 0px">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12 col-md-12 col-12 pb-4" style="padding: 0px">
+                                                                            <div class="comments mt-4 text-justify float-left">
+                                                                                <img src="https://i.imgur.com/yTFUilP.jpg" alt=""
+                                                                                     class="rounded-circle" width="40" height="40">
+                                                                                <h4>Jhon Doe</h4>
+                                                                                <span style="color: black">- 20 October, 2018</span>
+                                                                                <br>
+                                                                                <br />
+                                                                                <p style="color: black">
+                                                                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.                                                 Accusamus numquam assumenda hic aliquam vero sequi velit
+                                                                                    molestias doloremque molestiae dicta?
+                                                                                </p>
+                                                                            </div>
+                                                                            <div class="post-bar">
+                                                                                <div class="post_topbar">
+                                                                                    <div class="usy-dt">
+                                                                                        <img src="~/images/resources/us-pic.png" alt="">
+                                                                                        <div class="usy-name">
+                                                                                            <h3>@question.User.FullName</h3>
+                                                                                            <span>
+                                                                                                <img src="~/images/clock.png" alt="">3 min ago
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="ed-opts">
+                                                                                        <a href="#" title="" class="ed-opts-open">
+                                                                                            <i class="la la-ellipsis-v"></i>
+                                                                                        </a>
+                                                                                        <ul class="ed-options">
+                                                                                            <li><a href="#" title="">Edit</a></li>
+                                                                                            <li><a href="#" title="">Delete</a></li>
+                                                                                            <li><a href="#" title="">Hide</a></li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="epi-sec">
+                                                                                </div>
+                                                                                <div class="job_descp mt-2">
+                                                                                    <h3>@question.Title</h3>
 
-                                            </ul>
-                                            <a href="#" title="">View Profile</a>
-                                        </div>
-                                        <div class="user-profy">
-                                            <img src="images/resources/user3.png" alt="">
-                                            <h3>John Doe</h3>
-                                            <span>Graphic Designer</span>
-                                            <ul>
-                                                <li><a href="#" title="" class="followw">Subscribe</a></li>
+                                                                                    <p>
+                                                                                        @question.Content
+                                                                                    </p>
 
-                                            </ul>
-                                            <a href="#" title="">View Profile</a>
+                                                                                </div>
+                                                                                <div class="job-status-bar">
+                                                                                    <ul class="like-com">
+                                                                                        <li>
+                                                                                            <a data-toggle="collapse" href="#collapseExample"
+                                                                                               role="button" aria-expanded="false" 
+                                                                                               aria-controls="collapseExample" class="com"
+                                                                                            >
+                                                                                                <i class="fas fa-comment-alt"></i>
+                                                                                                Comment @question.Comments.Count
+                                                                                            </a>
+                                                                                        </li>
+
+                                                                                        <div class="collapse" id="collapseExample">
+                                                                                            <div class="card card-body" style="padding: 10px">
+                                                                                                <!-- Main Body -->
+                                                                                                <section>
+                                                                                                    <div class="col-sm-12 col-md-12"
+                                                                                                         style="padding: 0px"
+                                                                                                    >
+                                                                                                        <div class="row">
+                                                                                                            <div class="col-sm-12 col-md-12
+                                                                                                                 col-12 pb-4" 
+                                                                                                                 style="padding: 0px"
+                                                                                                            >
+                                                                                                                <div class="comments mt-4
+                                                                                                                     text-justify float-left"
+                                                                                                                >
+                                                                                                    <img src="https://i.imgur.com/yTFUilP.jpg"
+                                                                                                                         class="rounded-                                                                                                    circle" 
+                                                                                                                         width="40" 
+                                                                                                                         height="40">
+                                                                                                                    <h4>Jhon Doe</h4>
+                                                                                                                    <span 
+                                                                                                                        style="color: black"
+                                                                                                                    >
+                                                                                                                        - 20 October, 2018
+                                                                                                                    </span>
+                                                                                                                    <br>
+                                                                                                                    <br />
+                                                                                                                    <p style="color: black">
+                                                                                                                        Lorem ipsum dolor sit,
+                                                                                                                        amet consectetur 
+                                                                                                                        adipisicing elit.
+                                                                                                                        Accusamus numquam
+                                                                                                                        assumenda hic aliquam
+                                                                                                                        vero sequi velit
+                                                                                                                        molestias doloremque
+                                                                                                                        molestiae dicta?
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </section>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>     
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </section>
+                                                        </div>
+                                                    </div>
+                                                </ul>
+                                            </div>
+
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="post-bar">
-                                    <div class="post_topbar">
-                                        <div class="usy-dt">
-                                            <img src="images/resources/us-pic.png" alt="">
-                                            <div class="usy-name">
-                                                <h3>John Doe</h3>
-                                                <span>
-                                                    <img src="images/clock.png" alt="">3 min ago
-                                                </span>
+
+                                        if (i == 1)
+                                        {
+                                            <div class="top-profiles">
+                                                <div class="pf-hd">
+                                                    <h3>PRPFESSIONALS</h3>
+                                                    <i class="la la-ellipsis-v"></i>
+                                                </div>
+                                                <div class="profiles-slider">
+                                                    <div class="user-profy">
+                                                        <img src="~/images/resources/user1.png" alt="">
+                                                        <h3>John Doe</h3>
+                                                        <span>Graphic Designer</span>
+                                                        <ul>
+                                                            <li><a href="#" title="" class="followw">Subscribe</a></li>
+
+                                                        </ul>
+                                                        <a href="#" title="">View Profile</a>
+                                                    </div>
+                                                    <div class="user-profy">
+                                                        <img src="~/images/resources/user2.png" alt="">
+                                                        <h3>John Doe</h3>
+                                                        <span>Graphic Designer</span>
+                                                        <ul>
+                                                            <li><a href="#" title="" class="followw">Subscribe</a></li>
+
+                                                        </ul>
+                                                        <a href="#" title="">View Profile</a>
+                                                    </div>
+                                                    <div class="user-profy">
+                                                        <img src="~/images/resources/user3.png" alt="">
+                                                        <h3>John Doe</h3>
+                                                        <span>Graphic Designer</span>
+                                                        <ul>
+                                                            <li><a href="#" title="" class="followw">Subscribe</a></li>
+
+                                                        </ul>
+                                                        <a href="#" title="">View Profile</a>
+                                                    </div>
+                                                    <div class="user-profy">
+                                                        <img src="~/images/resources/user1.png" alt="">
+                                                        <h3>John Doe</h3>
+                                                        <span>Graphic Designer</span>
+                                                        <ul>
+                                                            <li><a href="#" title="" class="followw">Subscribe</a></li>
+
+                                                        </ul>
+                                                        <a href="#" title="">View Profile</a>
+                                                    </div>
+                                                    <div class="user-profy">
+                                                        <img src="~/images/resources/user2.png" alt="">
+                                                        <h3>John Doe</h3>
+                                                        <span>Graphic Designer</span>
+                                                        <ul>
+                                                            <li><a href="#" title="" class="followw">Subscribe</a></li>
+
+                                                        </ul>
+                                                        <a href="#" title="">View Profile</a>
+                                                    </div>
+                                                    <div class="user-profy">
+                                                        <img src="~/images/resources/user3.png" alt="">
+                                                        <h3>John Doe</h3>
+                                                        <span>Graphic Designer</span>
+                                                        <ul>
+                                                            <li><a href="#" title="" class="followw">Subscribe</a></li>
+
+                                                        </ul>
+                                                        <a href="#" title="">View Profile</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        i++;
+                                    }
+
+                                }
+                                else
+                                {
+                                    if (User.IsInRole("Patient"))
+                                    {
+                                        <div class="top-profiles">
+                                            <div class="pf-hd">
+                                                <h3>PRPFESSIONALS</h3>
+                                                <i class="la la-ellipsis-v"></i>
+                                            </div>
+                                            <div class="profiles-slider">
+                                                <div class="user-profy">
+                                                    <img src="~/images/resources/user1.png" alt="">
+                                                    <h3>John Doe</h3>
+                                                    <span>Graphic Designer</span>
+                                                    <ul>
+                                                        <li><a href="#" title="" class="followw">Subscribe</a></li>
+
+                                                    </ul>
+                                                    <a href="#" title="">View Profile</a>
+                                                </div>
+                                                <div class="user-profy">
+                                                    <img src="~/images/resources/user2.png" alt="">
+                                                    <h3>John Doe</h3>
+                                                    <span>Graphic Designer</span>
+                                                    <ul>
+                                                        <li><a href="#" title="" class="followw">Subscribe</a></li>
+
+                                                    </ul>
+                                                    <a href="#" title="">View Profile</a>
+                                                </div>
+                                                <div class="user-profy">
+                                                    <img src="~/images/resources/user3.png" alt="">
+                                                    <h3>John Doe</h3>
+                                                    <span>Graphic Designer</span>
+                                                    <ul>
+                                                        <li><a href="#" title="" class="followw">Subscribe</a></li>
+
+                                                    </ul>
+                                                    <a href="#" title="">View Profile</a>
+                                                </div>
+                                                <div class="user-profy">
+                                                    <img src="~/images/resources/user1.png" alt="">
+                                                    <h3>John Doe</h3>
+                                                    <span>Graphic Designer</span>
+                                                    <ul>
+                                                        <li><a href="#" title="" class="followw">Subscribe</a></li>
+
+                                                    </ul>
+                                                    <a href="#" title="">View Profile</a>
+                                                </div>
+                                                <div class="user-profy">
+                                                    <img src="~/images/resources/user2.png" alt="">
+                                                    <h3>John Doe</h3>
+                                                    <span>Graphic Designer</span>
+                                                    <ul>
+                                                        <li><a href="#" title="" class="followw">Subscribe</a></li>
+
+                                                    </ul>
+                                                    <a href="#" title="">View Profile</a>
+                                                </div>
+                                                <div class="user-profy">
+                                                    <img src="~/images/resources/user3.png" alt="">
+                                                    <h3>John Doe</h3>
+                                                    <span>Graphic Designer</span>
+                                                    <ul>
+                                                        <li><a href="#" title="" class="followw">Subscribe</a></li>
+
+                                                    </ul>
+                                                    <a href="#" title="">View Profile</a>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="ed-opts">
-                                            <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-                                            <ul class="ed-options">
-                                                <li><a href="#" title="">Edit Post</a></li>
-                                                <li><a href="#" title="">Unsaved</a></li>
-                                                <li><a href="#" title="">Unbid</a></li>
-                                                <li><a href="#" title="">Close</a></li>
-                                                <li><a href="#" title="">Hide</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="epi-sec">
-                                    </div>
-                                    <div class="job_descp">
-                                        <h3>Senior Wordpress Developer</h3>
-
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
-
-                                    </div>
-                                    <div class="job-status-bar">
-                                        <ul class="like-com">
-
-                                            <li><a href="#" class="com"><i class="fas fa-comment-alt"></i>Comment 15</a></li>
-                                        </ul>
-                                        <a href="#"><i class="fas fa-eye"></i>Views 50</a>
-                                    </div>
-                                </div>
-                                <div class="post-bar">
-                                    <div class="post_topbar">
-                                        <div class="usy-dt">
-                                            <img src="images/resources/us-pic.png" alt="">
-                                            <div class="usy-name">
-                                                <h3>John Doe</h3>
-                                                <span>
-                                                    <img src="images/clock.png" alt="">3 min ago
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="ed-opts">
-                                            <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-                                            <ul class="ed-options">
-                                                <li><a href="#" title="">Edit Post</a></li>
-                                                <li><a href="#" title="">Unsaved</a></li>
-                                                <li><a href="#" title="">Unbid</a></li>
-                                                <li><a href="#" title="">Close</a></li>
-                                                <li><a href="#" title="">Hide</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="epi-sec">
-                                    </div>
-                                    <div class="job_descp">
-                                        <h3>Senior Wordpress Developer</h3>
-
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
-
-                                    </div>
-                                    <div class="job-status-bar">
-                                        <ul class="like-com">
-
-                                            <li><a href="#" class="com"><i class="fas fa-comment-alt"></i>Comment 15</a></li>
-                                        </ul>
-                                        <a href="#"><i class="fas fa-eye"></i>Views 50</a>
-                                    </div>
-                                </div>
-                                <div class="process-comm">
-                                    <div class="spinner">
-                                        <div class="bounce1"></div>
-                                        <div class="bounce2"></div>
-                                        <div class="bounce3"></div>
-                                    </div>
-                                </div>
+                                    }else{
+                                       <h3 class="col-12 text-black-50 text-center">Questions you comment on will show here..</h3>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
+
                     <div class="col-lg-3 pd-right-none no-pd">
                         <div class="right-sidebar">
 
@@ -355,6 +475,7 @@
 
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -366,24 +487,25 @@
         <h3>Ask a Question</h3>
         <div class="post-project-fields">
             <div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <input type="text" name="title" placeholder="Title">
+                <form id="questionForm" class="row" method="post" asp-page-handler="AskQuestion">
+                    <div class="col-lg-12 mb-3">
+                        <input asp-for="QuestionDetails.Title" placeholder="title" class="mb-0">
+                        <span class="text-danger" asp-validation-for="QuestionDetails.Title"></span>
                     </div>
 
-
-                    <div class="col-lg-12">
-                        <textarea name="description" placeholder="Description"></textarea>
+                    <div class="col-lg-12 mb-3">
+                        <textarea asp-for="QuestionDetails.Content" placeholder="Description" class="mb-0"></textarea>
+                        <span class="text-danger" asp-validation-for="QuestionDetails.Content"></span>
                     </div>
                     <div class="col-lg-12">
                         <ul>
                             <li>
-                                <button class="active" type="submit" value="post">Post</button>
+                                <button class="active" type="submit">Post</button>
                             </li>
-                            <li><a href="#" title="">Cancel</a></li>
+                            <li class="cancel"><a href="#" title="">Cancel</a></li>
                         </ul>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <a href="#" title=""><i class="la la-times-circle-o"></i></a>

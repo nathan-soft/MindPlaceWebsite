@@ -12,6 +12,8 @@ namespace MindPlaceClient.Pages
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public class ErrorModel : PageModel
     {
+        [BindProperty(SupportsGet = true)]
+        public string Message { get; set; }
         public string RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);

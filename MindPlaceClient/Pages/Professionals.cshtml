@@ -1,5 +1,5 @@
 ﻿@page
-@model MindPlaceClient.Pages.TherapistModel
+@model MindPlaceClient.Pages.ProfessionalsModel
 @{
     ViewData["Title"] = "Therapist";
 }
@@ -11,113 +11,35 @@
         </div>
         <div class="companies-list">
             <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="company_profile_info">
-                        <div class="company-up-info">
-                            <img src="~/assets/img/user1.png" alt="">
-                            <h3>Peter John.</h3>
 
-                            <ul>
-                                <li><a href="#" title="" class="follow">Subcribe</a></li>
-                            </ul>
-                        </div>
-                        <a href="company-profile.html" title="" class="view-more-pro">View Profile</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="company_profile_info">
-                        <div class="company-up-info">
-                            <img src="~/assets/img/user1.png" alt="">
-                            <h3>Peter John.</h3>
+                @if (Model.Professionals.Any())
+                {
+                    foreach (var professional in Model.Professionals)
+                    {
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="company_profile_info">
+                                <div class="company-up-info">
+                                    <img src="~/assets/img/user1.png" alt="">
+                                    <h3>@($"{professional.FirstName} {professional.LastName}")</h3>
 
-                            <ul>
-                                <li><a href="#" title="" class="follow">Subcribe</a></li>
-                            </ul>
+                                    <ul>
+                                        <li><a href="#" title="" class="follow">Subcribe</a></li>
+                                    </ul>
+                                </div>
+                                <a asp-page="Dashboard" asp-route-username="@professional.UserName" class="view-more-pro">
+                                    View Profile
+                                </a>
+                            </div>
                         </div>
-                        <a href="company-profile.html" title="" class="view-more-pro">View Profile</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="company_profile_info">
-                        <div class="company-up-info">
-                            <img src="~/assets/img/user1.png" alt="">
-                            <h3>Peter John.</h3>
-
-                            <ul>
-                                <li><a href="#" title="" class="follow">Subcribe</a></li>
-                            </ul>
-                        </div>
-                        <a href="company-profile.html" title="" class="view-more-pro">View Profile</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="company_profile_info">
-                        <div class="company-up-info">
-                            <img src="~/assets/img/user1.png" alt="">
-                            <h3>Peter John.</h3>
-
-                            <ul>
-                                <li><a href="#" title="" class="follow">Subcribe</a></li>
-                            </ul>
-                        </div>
-                        <a href="company-profile.html" title="" class="view-more-pro">View Profile</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="company_profile_info">
-                        <div class="company-up-info">
-                            <img src="~/assets/img/user1.png" alt="">
-                            <h3>Peter John.</h3>
-
-                            <ul>
-                                <li><a href="#" title="" class="follow">Subcribe</a></li>
-                            </ul>
-                        </div>
-                        <a href="company-profile.html" title="" class="view-more-pro">View Profile</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="company_profile_info">
-                        <div class="company-up-info">
-                            <img src="~/assets/img/user1.png" alt="">
-                            <h3>Peter John.</h3>
-
-                            <ul>
-                                <li><a href="#" title="" class="follow">Subcribe</a></li>
-                            </ul>
-                        </div>
-                        <a href="company-profile.html" title="" class="view-more-pro">View Profile</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="company_profile_info">
-                        <div class="company-up-info">
-                            <img src="~/assets/img/user1.png" alt="">
-                            <h3>Peter John.</h3>
-
-                            <ul>
-                                <li><a href="#" title="" class="follow">Subcribe</a></li>
-                            </ul>
-                        </div>
-                        <a href="company-profile.html" title="" class="view-more-pro">View Profile</a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="company_profile_info">
-                        <div class="company-up-info">
-                            <img src="~/assets/img/user1.png" alt="">
-                            <h3>Peter John.</h3>
-
-                            <ul>
-                                <li><a href="#" title="" class="follow">Subcribe</a></li>
-                            </ul>
-                        </div>
-                        <a href="company-profile.html" title="" class="view-more-pro">View Profile</a>
-                    </div>
-                </div>
+                    }
+                }
+                else
+                {
+                    <h3 class="align-middle text-black-50 text-center co-12">No Professional Found.</h3>
+                }
             </div>
         </div>
-        <div class="process-comm">
+        <div class="process-comm d-none">
             <div class="spinner">
                 <div class="bounce1"></div>
                 <div class="bounce2"></div>

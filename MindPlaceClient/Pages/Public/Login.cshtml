@@ -14,31 +14,49 @@
                                 <img src="~/assets/img/logo-dark.png" style="width: 200px" alt="mindsplace Logo">
                             </div>
                             <p class="lead">Login to your account</p>
-                            <p runat="server" id="lblmessage" style="text-align: center" visible="false"></p>
-                        </div>
-                        <div class="form-auth-small">
-                            <div class="form-group">
-                                <label for="signin-email" class="control-label sr-only">Email</label>
-                                <input type="email" class="form-control" runat="server" id="email" value="" placeholder="Email" />
-                            </div>
-                            <div class="form-group">
-                                <label for="signin-password" class="control-label sr-only">Password</label>
-                                <input type="password" class="form-control" runat="server" id="password" placeholder="Password" />
-                            </div>
-                            <div class="form-group clearfix">
-                                <label class="fancy-checkbox element-left">
-                                    <input type="checkbox" />
-                                    <span>Remember me</span>
-                                </label>
-                            </div>
-                            <button type="submit" class="btn btn-warning btn-lg btn-block text-white">LOGIN</button>
-                            <div class="bottom">
-                                <span class="helper-text">
-                                    <i class="fa fa-lock"></i><a href="#" style="color: #f35f09"> Forgot password?</a>
-                                </span>
-                            </div>
-                        </div>
+                            @if (HttpContext.Request.Query.ContainsKey("username")
+                            && HttpContext.Request.Query["action"] == "mailConfirmed")
+                            {
+                                <p class="text-center text-success font-weight-bold">Your mail have been confirmed! please login.</p>
+                            }
 
+                        </div>
+                        <form method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger text-left"></div>
+                            <div class="form-auth-small">
+                                <div class="form-group">
+                                    <label asp-for="Login.Username" class="control-label sr-only"></label>
+                                    @if (!string.IsNullOrWhiteSpace(HttpContext.Request.Query["username"]))
+                                    {
+                                        <input asp-for="Login.Username" class="form-control" 
+                                               value="@HttpContext.Request.Query["username"]" placeholder="Username" />
+                                    }
+                                    else
+                                    {
+                                        <input asp-for="Login.Username" class="form-control" placeholder="Username" />
+                                    }
+
+                                    <span asp-validation-for="Login.Username" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Login.Password" class="control-label sr-only">Password</label>
+                                    <input asp-for="Login.Password" class="form-control" placeholder="Password" />
+                                    <span asp-validation-for="Login.Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <label class="fancy-checkbox element-left">
+                                        <input type="checkbox" />
+                                        <span>Remember me</span>
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-warning btn-lg btn-block text-white">LOGIN</button>
+                                <div class="bottom">
+                                    <span class="helper-text">
+                                        <i class="fa fa-lock"></i><a href="#" style="color: #f35f09"> Forgot password?</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="clearfix"></div>
