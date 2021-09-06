@@ -41,7 +41,7 @@
                                     {
                                         <li>
                                             <h4>Referal ID </h4>
-                                            <span><a>@Model.UserDetails.ReferralCode.Substring(42)</a></span>
+                                            <span><a>@Model.UserDetails.ReferralCode</a></span>
                                         </li>
                                         <li>
                                             <h4>Number Of Referals </h4>
@@ -113,8 +113,11 @@
                                                 <div class="ed-opts">
                                                     <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
                                                     <ul class="ed-options">
-                                                        <li><a href="#" title="">Edit</a></li>
-                                                        <li><a href="#" title="">Delete</a></li>
+                                                        @if (question.User.Username == User.GetLoggedOnUsername())
+                                                        {
+                                                            <li><a href="#" title="">Edit</a></li>
+                                                            <li><a href="#" title="">Delete</a></li>
+                                                        }
                                                         <li><a href="#" title="">Hide</a></li>
                                                     </ul>
                                                 </div>
@@ -122,142 +125,72 @@
                                             <div class="epi-sec">
                                             </div>
                                             <div class="job_descp mt-2">
-                                                <h3>@question.Title</h3>
-
+                                                <h3 class="mb-1">@question.Title</h3>
                                                 <p>
                                                     @question.Content
                                                 </p>
                                             </div>
-                                            <div class="job-status-bar">
-                                                <ul class="like-com">
-
-                                                    <li>
+                                            <div class="job-status-bar border-bottom mb-2">
+                                                <ul class="like-com mt-3">
+                                                    <li class="mb-0">
                                                         <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
                                                            aria-controls="collapseExample" class="com">
-                                                            <i class="fas fa-comment-alt"></i>Comment @question.Comments.Count
+                                                            <i class="fas fa-comment-alt"></i>
+                                                            @if (question.CommentCount == 0)
+                                                            {
+                                                                @:Comment @question.CommentCount
+                                                            }
+                                                            else
+                                                            {
+                                                                @:Comments @question.CommentCount
+                                                            }
+
                                                         </a>
                                                     </li>
-
-                                                    <div class="collapse" id="collapseExample">
-                                                        <div class="card card-body" style="padding: 10px">
-
-                                                            <!-- Main Body -->
-                                                            <section>
-                                                                <div class="col-sm-12 col-md-12" style="padding: 0px">
-                                                                    <div class="row">
-                                                                        <div class="col-sm-12 col-md-12 col-12 pb-4" style="padding: 0px">
-                                                                            <div class="comments mt-4 text-justify float-left">
-                                                                                <img src="https://i.imgur.com/yTFUilP.jpg" alt=""
-                                                                                     class="rounded-circle" width="40" height="40">
-                                                                                <h4>Jhon Doe</h4>
-                                                                                <span style="color: black">- 20 October, 2018</span>
-                                                                                <br>
-                                                                                <br />
-                                                                                <p style="color: black">
-                                                                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.                                                 Accusamus numquam assumenda hic aliquam vero sequi velit
-                                                                                    molestias doloremque molestiae dicta?
-                                                                                </p>
-                                                                            </div>
-                                                                            <div class="post-bar">
-                                                                                <div class="post_topbar">
-                                                                                    <div class="usy-dt">
-                                                                                        <img src="~/images/resources/us-pic.png" alt="">
-                                                                                        <div class="usy-name">
-                                                                                            <h3>@question.User.FullName</h3>
-                                                                                            <span>
-                                                                                                <img src="~/images/clock.png" alt="">3 min ago
-                                                                                            </span>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="ed-opts">
-                                                                                        <a href="#" title="" class="ed-opts-open">
-                                                                                            <i class="la la-ellipsis-v"></i>
-                                                                                        </a>
-                                                                                        <ul class="ed-options">
-                                                                                            <li><a href="#" title="">Edit</a></li>
-                                                                                            <li><a href="#" title="">Delete</a></li>
-                                                                                            <li><a href="#" title="">Hide</a></li>
-                                                                                        </ul>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="epi-sec">
-                                                                                </div>
-                                                                                <div class="job_descp mt-2">
-                                                                                    <h3>@question.Title</h3>
-
-                                                                                    <p>
-                                                                                        @question.Content
-                                                                                    </p>
-
-                                                                                </div>
-                                                                                <div class="job-status-bar">
-                                                                                    <ul class="like-com">
-                                                                                        <li>
-                                                                                            <a data-toggle="collapse" href="#collapseExample"
-                                                                                               role="button" aria-expanded="false" 
-                                                                                               aria-controls="collapseExample" class="com"
-                                                                                            >
-                                                                                                <i class="fas fa-comment-alt"></i>
-                                                                                                Comment @question.Comments.Count
-                                                                                            </a>
-                                                                                        </li>
-
-                                                                                        <div class="collapse" id="collapseExample">
-                                                                                            <div class="card card-body" style="padding: 10px">
-                                                                                                <!-- Main Body -->
-                                                                                                <section>
-                                                                                                    <div class="col-sm-12 col-md-12"
-                                                                                                         style="padding: 0px"
-                                                                                                    >
-                                                                                                        <div class="row">
-                                                                                                            <div class="col-sm-12 col-md-12
-                                                                                                                 col-12 pb-4" 
-                                                                                                                 style="padding: 0px"
-                                                                                                            >
-                                                                                                                <div class="comments mt-4
-                                                                                                                     text-justify float-left"
-                                                                                                                >
-                                                                                                    <img src="https://i.imgur.com/yTFUilP.jpg"
-                                                                                                                         class="rounded-                                                                                                    circle" 
-                                                                                                                         width="40" 
-                                                                                                                         height="40">
-                                                                                                                    <h4>Jhon Doe</h4>
-                                                                                                                    <span 
-                                                                                                                        style="color: black"
-                                                                                                                    >
-                                                                                                                        - 20 October, 2018
-                                                                                                                    </span>
-                                                                                                                    <br>
-                                                                                                                    <br />
-                                                                                                                    <p style="color: black">
-                                                                                                                        Lorem ipsum dolor sit,
-                                                                                                                        amet consectetur 
-                                                                                                                        adipisicing elit.
-                                                                                                                        Accusamus numquam
-                                                                                                                        assumenda hic aliquam
-                                                                                                                        vero sequi velit
-                                                                                                                        molestias doloremque
-                                                                                                                        molestiae dicta?
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </section>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            </div>     
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </section>
-                                                        </div>
-                                                    </div>
                                                 </ul>
                                             </div>
-
+                                            <div class="collapse" id="collapseExample">
+                                                <div class="card card-body border-0 commentsContainer d-none">
+                                                    <!-- Main Body -->
+                                                    <section>
+                                                        <div class="col-sm-12 col-md-12" style="padding: 0px">
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-12 col-12 comments-wrapper" style="padding: 0px">
+                                                                    <div class="loader">Loading...</div>
+                                                                    @*<div class="comments mt-3 text-justify border-0">
+                                                                        <img src="https://i.imgur.com/yTFUilP.jpg" alt=""
+                                                                             class="rounded-circle" width="40" height="40" />
+                                                                        <h3>Jhon Doe</h3>
+                                                                        <span class="small">
+                                                                            44 mins ago
+                                                                        </span>
+                                                                        <p>
+                                                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                                                                            Accusamus numquam assumenda hic aliquam vero sequi velit molestias
+                                                                            doloremque molestiae dicta?
+                                                                        </p>
+                                                                    </div>
+                                                                    *@
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                                <div class="post-comment d-flex justify-content-between mt-2">
+                                                    <div class="cm_img">
+                                                        <img src="~/images/resources/us-pic.png" alt="">
+                                                    </div>
+                                                    <div class="comment_box">
+                                                        <form id="addComment_@question.Id" class="d-flex justify-content-between" method="post" 
+                                                              asp-page-handler="MakeComment"
+                                                        >
+                                                            <textarea class="commentInput" type="text" placeholder="Post a comment" name="content"
+                                                            ></textarea>
+                                                            <button class="btnPostComment" type="submit">Send</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
                                         if (i == 1)
@@ -267,8 +200,11 @@
                                                     <h3>PRPFESSIONALS</h3>
                                                     <i class="la la-ellipsis-v"></i>
                                                 </div>
-                                                <div class="profiles-slider">
-                                                    <div class="user-profy">
+                                                <div class="w-100 p-3 float-left">
+                                                    <div class="loader" style="font-size:30px"> loading...</div>
+                                                </div>
+                                                <div class="profiles-slider d-none">
+                                                    @*<div class="user-profy d-none">
                                                         <img src="~/images/resources/user1.png" alt="">
                                                         <h3>John Doe</h3>
                                                         <span>Graphic Designer</span>
@@ -327,7 +263,7 @@
 
                                                         </ul>
                                                         <a href="#" title="">View Profile</a>
-                                                    </div>
+                                                    </div>*@
                                                 </div>
                                             </div>
                                         }
@@ -508,7 +444,7 @@
                 </form>
             </div>
         </div>
-        <a href="#" title=""><i class="la la-times-circle-o"></i></a>
+        @*<a href="#" title=""><i class="la la-times-circle-o"></i></a>*@
     </div>
 </div>
 

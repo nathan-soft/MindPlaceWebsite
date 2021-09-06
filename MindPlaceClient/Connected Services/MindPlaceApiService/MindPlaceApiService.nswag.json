@@ -49,56 +49,12 @@
         }
       }
     },
-    "/api/Auth/register-patient": {
+    "/api/Auth/register-user": {
       "post": {
         "tags": [
           "Auth"
         ],
-        "operationId": "register-patient",
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePatientDto"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePatientDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePatientDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePatientDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Auth/register-professional": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "operationId": "register-professional",
+        "operationId": "register-user",
         "requestBody": {
           "content": {
             "application/json-patch+json": {
@@ -129,13 +85,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ResponseMessageDto"
                 }
               }
             }
           },
-          "500": {
-            "description": "Server Error",
+          "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
@@ -458,7 +414,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "commentsGET",
+        "operationId": "commentsAll",
         "parameters": [
           {
             "name": "questionId",
@@ -476,7 +432,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CommentResponseDto"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommentResponseDto"
+                  }
                 }
               }
             }
@@ -542,7 +501,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "commentsGET2",
+        "operationId": "commentsGET",
         "parameters": [
           {
             "name": "questionId",
@@ -1056,75 +1015,6 @@
           }
         }
       },
-      "CreatePatientDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "country",
-          "dob",
-          "email",
-          "employment",
-          "firstName",
-          "gender",
-          "lastName",
-          "password",
-          "phoneNumber",
-          "qualification",
-          "role",
-          "state",
-          "username"
-        ],
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "username": {
-            "type": "string"
-          },
-          "gender": {
-            "type": "string"
-          },
-          "dob": {
-            "type": "string",
-            "format": "date"
-          },
-          "state": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string",
-            "format": "password",
-            "maxLength": 100,
-            "minLength": 6
-          },
-          "phoneNumber": {
-            "type": "string"
-          },
-          "timeZone": {
-            "type": "string",
-            "nullable": true
-          },
-          "role": {
-            "type": "string"
-          },
-          "qualification": {
-            "type": "string"
-          },
-          "employment": {
-            "type": "string"
-          }
-        }
-      },
       "EmailConfirmationDto": {
         "type": "object",
         "additionalProperties": false,
@@ -1335,12 +1225,9 @@
             "type": "string",
             "format": "date-time"
           },
-          "comments": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/CommentResponseDto"
-            }
+          "commentCount": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

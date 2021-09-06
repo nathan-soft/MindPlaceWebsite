@@ -10,12 +10,12 @@
             <div class="left">
                 <div class="content">
                     <div class="header">
-                        <div class="logo text-center">
+                        <div class="text-center">
                             <img src="~/assets/img/logo-dark.png" style="width: 200px" alt="mindsplace Logo">
                         </div>
-                        <p class="lead">Create a new account</p>
+                        <p class="lead mt-2" style="font-size:16px;">Create a new account as</p>
                     </div>
-                    <form method="post">
+                    <form method="post" id="signUpForm">
                         <div asp-validation-summary="ModelOnly" class="text-danger text-left"></div>
                         @if (HttpContext.Request.Query.ContainsKey("action")
                             && HttpContext.Request.Query["action"].ToString() == "confirmEmail")
@@ -25,91 +25,89 @@
                             </p>
                         }
 
-                        <div class="form-auth-small">
-                            <div class="form-group">
-                                <label asp-for="UserDetails.Email" class="control-label sr-only">Email</label>
-                                <input asp-for="UserDetails.Email" class="form-control" placeholder="Email" />
-                                <span asp-validation-for="UserDetails.Email" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="UserDetails.Password" class="control-label sr-only">Password</label>
-                                <input type="password" asp-for="UserDetails.Password" class="form-control" placeholder="Password" />
-                                <span asp-validation-for="UserDetails.Password" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="signin-password" class="control-label sr-only">Password</label>
-                                <input type="password" class="form-control" runat="server" id="input_confirm_password" placeholder="Confirm password" />
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="UserDetails.FirstName" class="control-label sr-only">First Name</label>
-                                <input asp-for="UserDetails.FirstName" class="form-control" placeholder="Firstname" />
-                                <span asp-validation-for="UserDetails.FirstName" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="UserDetails.LastName" class="control-label sr-only">Last Name</label>
-                                <input asp-for="UserDetails.LastName" class="form-control" placeholder="Last name" />
-                                <span asp-validation-for="UserDetails.LastName" class="text-danger"></span>
-                            </div>
-                            <div class="form-row form-group">
-                                <section class="col-sm-6 mb-3 pr-sm-0 mb-sm-0">
-                                    <label asp-for="UserDetails.Username" class="control-label sr-only">Username</label>
-                                    <input asp-for="UserDetails.Username" class="form-control" placeholder="Nick Name" />
-                                    <span asp-validation-for="UserDetails.Username" class="text-danger"></span>
-                                </section>
-                                <section class="col-sm-6 pl-sm-0">
-                                    <label asp-for="UserDetails.PhoneNumber" class="control-label sr-only">Contact No</label>
-                                    <input asp-for="UserDetails.PhoneNumber" class="form-control" placeholder="Contact No" />
-                                    <span asp-validation-for="UserDetails.PhoneNumber" class="text-danger"></span>
-                                </section>
-                            </div>
-                            <div class="form-row form-group">
-                                <section class="col-sm-6 mb-3 pr-sm-0 mb-sm-0">
-                                    <label asp-for="UserDetails.Qualification" class="control-label sr-only">Qualification</label>
-                                    <input asp-for="UserDetails.Qualification" type="text" class="form-control" placeholder="Qualification" />
-                                    <span asp-validation-for="UserDetails.Qualification" class="text-danger"></span>
-                                </section>
-                                <section class="col-sm-6 pl-sm-0">
-                                    <label asp-for="UserDetails.Employment" class="control-label sr-only">Employment</label>
-                                    <input asp-for="UserDetails.Employment" type="text" class="form-control" placeholder="Employment" />
-                                    <span asp-validation-for="UserDetails.Employment" class="text-danger"></span>
-                                </section>
-                            </div>
-                            <div class="form-group col-md-12" style="padding: 0px">
-                                <label asp-for="UserDetails.Dob" class="control-label sr-only">D.O.B</label>
-                                <input asp-for="UserDetails.Dob" type="date" class="form-control" />
-                                <span asp-validation-for="UserDetails.Dob" class="text-danger"></span>
-                            </div>
-                            <div class="form-group col-md-12" style="padding: 0px">
-                                <label asp-for="UserDetails.Country" class="control-label sr-only">Country</label>
-                                <input asp-for="UserDetails.Country" class="form-control" placeholder="Country" />
-                                <span asp-validation-for="UserDetails.Country" class="text-danger"></span>
-                            </div>
-                            <div class="form-group col-md-12" style="padding: 0px">
-                                <label asp-for="UserDetails.State" class="control-label sr-only">State</label>
-                                <input asp-for="UserDetails.State" class="form-control" placeholder="State" />
-                                <span asp-validation-for="UserDetails.Country" class="text-danger"></span>
-                            </div>
-                            <h6 class="text-left">Gender</h6>
-                            <div class="form-group border text-left p-2 pl-3 rounded bg-white mb-0">
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="male" value="Male" class="custom-control-input" asp-for="UserDetails.Gender">
-                                    <label class="custom-control-label" for="male">Male</label>
-                                </div>
-                                <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="female" value="Female" class="custom-control-input"
-                                           asp-for="UserDetails.Gender">
-                                    <label class="custom-control-label" for="female">Female</label>
-                                </div>
-                                <span asp-validation-for="UserDetails.Gender" class="text-danger"></span>
-                            </div>
-                            <input type="hidden" asp-for="UserDetails.Role" value="Patient"/>
-                            <button type="submit" class="btn btn-warning btn-lg btn-block text-white">REGISTER</button>
-                            <div class="bottom">
-                                <span class="helper-text">
-                                    <i class="fa fa-lock mr-1"></i> Already have an account? <a asp-page="Login" style="color: #f35f09">Login</a>
-                                </span>
-                            </div>
+                    <div class="form-auth-small">
+                        <div class="signup-tab">
+                            <ul class="pl-0 mb-0">
+                                <li data-tab="tab-3" class="animated fadeIn current">
+                                    <a href="#">User</a>
+                                </li>
+                                <li data-tab="tab-4" class="animated fadeIn">
+                                    <a href="#">Professional</a>
+                                </li>
+                            </ul>
                         </div>
+                        <div class="form-group">
+                            <label asp-for="UserDetails.Email" class="control-label sr-only">Email</label>
+                            <input asp-for="UserDetails.Email" class="form-control" placeholder="Email" />
+                            <span asp-validation-for="UserDetails.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UserDetails.Password" class="control-label sr-only">Password</label>
+                            <input type="password" asp-for="UserDetails.Password" class="form-control" placeholder="Password" />
+                            <span asp-validation-for="UserDetails.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="signin-password" class="control-label sr-only">Password</label>
+                            <input type="password" class="form-control" runat="server" id="input_confirm_password" placeholder="Confirm password" />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UserDetails.FirstName" class="control-label sr-only">First Name</label>
+                            <input asp-for="UserDetails.FirstName" class="form-control" placeholder="Firstname" />
+                            <span asp-validation-for="UserDetails.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="UserDetails.LastName" class="control-label sr-only">Last Name</label>
+                            <input asp-for="UserDetails.LastName" class="form-control" placeholder="Last name" />
+                            <span asp-validation-for="UserDetails.LastName" class="text-danger"></span>
+                        </div>
+                        <div class="form-row form-group">
+                            <section class="col-sm-6 mb-3 pr-sm-0 mb-sm-0">
+                                <label asp-for="UserDetails.Username" class="control-label sr-only">Username</label>
+                                <input asp-for="UserDetails.Username" class="form-control" placeholder="Nick Name" />
+                                <span asp-validation-for="UserDetails.Username" class="text-danger"></span>
+                            </section>
+                            <section class="col-sm-6 pl-sm-0">
+                                <label asp-for="UserDetails.PhoneNumber" class="control-label sr-only">Contact No</label>
+                                <input asp-for="UserDetails.PhoneNumber" class="form-control" placeholder="Contact No" />
+                                <span asp-validation-for="UserDetails.PhoneNumber" class="text-danger"></span>
+                            </section>
+                        </div>
+                        <div class="form-group col-md-12" style="padding: 0px">
+                            <label asp-for="UserDetails.Dob" class="control-label sr-only">D.O.B</label>
+                            <input asp-for="UserDetails.Dob" type="date" class="form-control" title="Date of birth" />
+                            <span asp-validation-for="UserDetails.Dob" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-12" style="padding: 0px">
+                            <label asp-for="UserDetails.Country" class="control-label sr-only">Country</label>
+                            <input asp-for="UserDetails.Country" class="form-control" placeholder="Country" />
+                            <span asp-validation-for="UserDetails.Country" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-12" style="padding: 0px">
+                            <label asp-for="UserDetails.State" class="control-label sr-only">State</label>
+                            <input asp-for="UserDetails.State" class="form-control" placeholder="State" />
+                            <span asp-validation-for="UserDetails.Country" class="text-danger"></span>
+                        </div>
+                        <h6 class="text-left">Gender</h6>
+                        <div class="form-group border text-left p-2 pl-3 rounded bg-white mb-0">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="male" value="Male" class="custom-control-input" asp-for="UserDetails.Gender">
+                                <label class="custom-control-label" for="male">Male</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="female" value="Female" class="custom-control-input"
+                                       asp-for="UserDetails.Gender">
+                                <label class="custom-control-label" for="female">Female</label>
+                            </div>
+                            <span asp-validation-for="UserDetails.Gender" class="text-danger"></span>
+                        </div>
+                        <input type="hidden" asp-for="UserDetails.Role" value="Patient" />
+                        <button type="submit" class="btn btn-warning btn-lg btn-block text-white">REGISTER</button>
+                        <div class="bottom">
+                            <span class="helper-text">
+                                <i class="fa fa-lock mr-1"></i> Already have an account? <a asp-page="Login" style="color: #f35f09">Login</a>
+                            </span>
+                        </div>
+                    </div>
 
                     </form>
                 </div>

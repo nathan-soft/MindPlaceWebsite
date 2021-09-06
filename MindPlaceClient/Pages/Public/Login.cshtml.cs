@@ -136,7 +136,15 @@ namespace MindPlaceClient.Pages.Public
                 catch (Exception ex)
                 {
                     //error
-                    ModelState.AddModelError(string.Empty, ex.Message);
+                    if(ex.Message.Contains("No such host is known"))
+                    {
+                        ModelState.AddModelError(string.Empty, "An error occurred, please check your internet connection.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.Message);
+                    }
+                    
                 }
             }
             return Page();

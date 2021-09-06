@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using MindPlaceClient.Code;
+using MindPlaceClient.Dtos;
 using MindPlaceClient.MindPlaceApiService;
 using Newtonsoft.Json;
 
@@ -21,7 +22,7 @@ namespace MindPlaceClient.Pages
         public string Username { get; set; }
         public UserResponseDto UserDetails { get; set; }
 
-        [BindProperty]
+        //[BindProperty]
         public QuestionDto QuestionDetails { get; set; }
 
         public DashBoardModel(IConfiguration configuration, IHttpClientFactory clientFactory)
@@ -62,7 +63,7 @@ namespace MindPlaceClient.Pages
             return Page();
         }
 
-        public async Task<ActionResult> OnPostAskQuestionAsync()
+        public async Task<ActionResult> OnPostAskQuestionAsync(QuestionDto questionDetails)
         {
             //get user
             if (ModelState.IsValid)
@@ -70,7 +71,7 @@ namespace MindPlaceClient.Pages
                 try
                 {
                     TryAddBearerTokenToHeader();
-                    var questionResponse = await _mindPlaceClient.QuestionsPOSTAsync(QuestionDetails);
+                    var questionResponse = await _mindPlaceClient.QuestionsPOSTAsync(questionDetails);
 
                     return new JsonResult(new { Success = true });
                 }
@@ -101,20 +102,15 @@ namespace MindPlaceClient.Pages
             });
         }
 
-        public async Task<ActionResult> OnPostEditQuestionAsync(int questionId)
+        public async Task<ActionResult> OnPostEditQuestionAsync(int questionId, QuestionDto questionDetails)
         {
             //get user
             if (ModelState.IsValid)
             {
-                var questionDetail = new QuestionDto { 
-                    Title = QuestionDetails.Title,
-                    Content = QuestionDetails.Content
-                };
-
                 try
                 {
                     TryAddBearerTokenToHeader();
-                    var questionResponse = await _mindPlaceClient.QuestionsPUTAsync(questionId, questionDetail);
+                    var questionResponse = await _mindPlaceClient.QuestionsPUTAsync(questionId, questionDetails);
 
                     return new JsonResult(new { Success = true });
                 }
@@ -176,17 +172,40 @@ namespace MindPlaceClient.Pages
             return new JsonResult(new { Success = false, Message = "invalid parameter 'questionid" });
         }
 
-        public async Task<ActionResult> OnPostMakeCommentAsync(CommentDto comment)
+        public async Task<ActionResult> OnGetLoadCommentsAsync(int questionId)
         {
-            //mark the question object/field as falid.
-            ModelState.MarkFieldValid(nameof(QuestionDetails));
+            //get comments
+            try
+            {
+                TryAddBearerTokenToHeader();
+                var commentResponse = await _mindPlaceClient.CommentsAllAsync(questionId);
+
+                return new JsonResult(new { Success = true, Data = commentResponse });
+            }
+            catch (ApiException ex) when (!string.IsNullOrWhiteSpace(ex.Response) && ex.Response.Contains("detail"))
+            {
+                //error from unchase libary.
+                //make sure a "problemDetails" was returned before deserialization
+                var response = JsonConvert.DeserializeObject<MindPlaceApiService.ProblemDetails>(ex.Response);
+                return new JsonResult(new { Success = false, Message = response.Detail });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { Success = false, Message = ex.Message });
+            }
+
+           
+        }
+
+        public async Task<ActionResult> OnPostMakeCommentAsync(NewComment comment)
+        {
             //get user
             if (ModelState.IsValid)
             {
                 try
                 {
                     TryAddBearerTokenToHeader();
-                    var questionResponse = await _mindPlaceClient.CommentsPOSTAsync(comment.);
+                    var commentResponse = await _mindPlaceClient.CommentsPOSTAsync(comment.questionId, comment);
 
                     return new JsonResult(new { Success = true });
                 }
@@ -195,13 +214,11 @@ namespace MindPlaceClient.Pages
                     //error from unchase libary.
                     //make sure a "problemDetails" was returned before deserialization
                     var response = JsonConvert.DeserializeObject<MindPlaceApiService.ProblemDetails>(ex.Response);
-                    //ModelState.AddModelError(string.Empty, response.Detail);
                     return new JsonResult(new { Success = false, Message = response.Detail });
                 }
                 catch (Exception ex)
                 {
                     return new JsonResult(new { Success = false, Message = ex.Message });
-                    //ModelState.AddModelError(string.Empty, ex.Message);
                 }
             }
 
@@ -214,7 +231,7 @@ namespace MindPlaceClient.Pages
                     key = jk,
                     errors = ModelState[jk].Errors.Select(e => e.ErrorMessage).ToArray()
                 })
-            });
+            });;
         }
     }
 

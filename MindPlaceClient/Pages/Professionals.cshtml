@@ -16,27 +16,49 @@
                 {
                     foreach (var professional in Model.Professionals)
                     {
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <div class="company_profile_info">
-                                <div class="company-up-info">
-                                    <img src="~/assets/img/user1.png" alt="">
-                                    <h3>@($"{professional.FirstName} {professional.LastName}")</h3>
+                        //check that the professional isn't following the current use and the current user hasn't subscribed to the professional
+                        if (!professional.Following.Any(u => u.Username == User.GetLoggedOnUsername()) 
+                                        && !professional.Followers.Any(u => u.Username == User.GetLoggedOnUsername()))
+                        {
+                            //Show the professional
+                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                <div id="prof_@professional.UserName" class="company_profile_info">
+                                    <div class="company-up-info">
+                                        <img src="~/assets/img/user1.png" alt="">
+                                        <h3>@($"{professional.FirstName} {professional.LastName}")</h3>
 
-                                    <ul>
-                                        <li><a href="#" title="" class="follow">Subcribe</a></li>
-                                    </ul>
+                                        <ul>
+                                            <li>
+                                                <a href="#" title="subscribe" class="follow">Subscribe</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <a href="#" class="view-more-pro">
+                                        View Profile
+                                        <div class="card custom-tooltip shadow align-items-center">
+                                            <div class="image-Wrapper">
+                                                <img class="rounded-circle" src="~/assets/img/user1.png" alt="">
+                                            </div>
+                                            <div class="user-info flex-column justify-content-center">
+                                                <h4 class="card-title d-flex flex-wrap mb-2">
+                                                    @($"{professional.FirstName} {professional.LastName}")
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
-                                <a asp-page="Dashboard" asp-route-username="@professional.UserName" class="view-more-pro">
-                                    View Profile
-                                </a>
                             </div>
-                        </div>
+                        }
+
                     }
                 }
                 else
                 {
-                    <h3 class="align-middle text-black-50 text-center co-12">No Professional Found.</h3>
+                    <h3 class="align-middle text-black-50 text-center col-12">No Professional Found.</h3>
                 }
+
+                @*Used in javascript*@
+                <form method="post" class="d-none"></form>
             </div>
         </div>
         <div class="process-comm d-none">

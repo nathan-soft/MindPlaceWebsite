@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace MindPlaceClient.Pages
         {
         }
 
-        public async Task<PageResult> OnGetAsync()
+        public async Task<PageResult> OnGetNotificationsAsync()
         {
             try
             {
@@ -35,16 +36,10 @@ namespace MindPlaceClient.Pages
                 var userNotifications = await _mindPlaceClient.NotificationsAsync(User.GetLoggedOnUsername());
                 UserNotifications = userNotifications.ToList();
             }
-            catch (ApiException ex) when (!string.IsNullOrWhiteSpace(ex.Response) && ex.Response.Contains("detail"))
-            {
-                //error from unchase libary.
-                //make sure a "problemDetails" was returned before deserialization
-                var response = JsonConvert.DeserializeObject<MindPlaceApiService.ProblemDetails>(ex.Response);
-                ModelState.AddModelError(string.Empty, response.Detail);
-            }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, ex.Message);
+                var exceptionMessage = HandleException(ex);
+                ModelState.AddModelError(string.Empty, exceptionMessage);
             }
 
             return Page();
@@ -62,17 +57,11 @@ namespace MindPlaceClient.Pages
                     return new JsonResult(new { Success = true});
 
                 }
-                catch (ApiException ex) when (!string.IsNullOrWhiteSpace(ex.Response) && ex.Response.Contains("detail"))
-                {
-                    //error from unchase libary.
-                    //make sure a "problemDetails" was returned before deserialization
-                    var response = JsonConvert.DeserializeObject<MindPlaceApiService.ProblemDetails>(ex.Response);
-                    return new JsonResult(new { Success = false, Message = response.Detail });
-                }
                 catch (Exception ex)
                 {
                     //error
-                    return new JsonResult(new { Success = false, ex.Message });
+                    var exceptionMessage = HandleException(ex);
+                    return new JsonResult(new { Success = false, Message = exceptionMessage });
                 }
             }
 
@@ -88,28 +77,95 @@ namespace MindPlaceClient.Pages
             });
         }
 
-        //public async Task<IActionResult> GetUserNotifications(string username)
-        //{
-        //    try
-        //    {
-        //        TryAddBearerTokenToHeader();
-        //        var userNotifications = await _mindPlaceClient.NotificationsAsync(User.GetLoggedOnUsername());
-        //        UserNotifications = UserNotifications.ToList();
-        //        return new JsonResult(new { Success = true, Data = UserNotifications });
-               
-        //    }
-        //    catch (ApiException ex) when (!string.IsNullOrWhiteSpace(ex.Response) && ex.Response.Contains("detail"))
-        //    {
-        //        //error from unchase libary.
-        //        //make sure a "problemDetails" was returned before deserialization
-        //        var response = JsonConvert.DeserializeObject<MindPlaceApiService.ProblemDetails>(ex.Response);
-        //        return new JsonResult(new { Success = false, Message = response.Detail });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new JsonResult(new { Success = false, ex.Message });
-        //    }
-        //}
+        public async Task<IActionResult> OnGetUserSubscriptionRequests(string username)
+        {
+            try
+            {
+                TryAddBearerTokenToHeader();
+                var pendingRequests = await _mindPlaceClient.SubscriptionRequestsAsync(User.GetLoggedOnUsername());
+
+                return new JsonResult(new { Success = true, Data = pendingRequests.ToList(), CurrentUserRole = User.GetPrimaryRole() });
+            }
+            catch (Exception ex)
+            {
+                var exceptionMessage = HandleException(ex);
+                return new JsonResult(new { Success = false, Message = exceptionMessage });
+            }
+        }
+
+        public async Task<ActionResult> OnPostAcceptSubscriptionRequestAsync([FromForm]int requestId)
+        {
+            if (requestId < 1)
+            {
+                return new JsonResult(new { Success = false, Message = "Invalid subscription request submitted." });
+            }
+
+            var detail = new UpdateSubscriptionRequestDto() { PatientUsername = User.GetLoggedOnUsername() };
+            try
+            {
+                TryAddBearerTokenToHeader();
+                //send submitted data.
+                var response = await _mindPlaceClient.FollowPUTAsync(requestId, detail);
+                return new JsonResult(new { Success = true });
+
+            }
+            catch (Exception ex)
+            {
+                //error
+                var exceptionMessage = HandleException(ex);
+                return new JsonResult(new { Success = false, Message = exceptionMessage });
+            }
+        }
+
+        public async Task<ActionResult> OnPostDeleteSubscriptionRequestAsync([FromForm] int requestId)
+        {
+            if (requestId < 1)
+            {
+                return new JsonResult(new { Success = false, Message = "Invalid subscription request submitted." });
+            }
+
+            try
+            {
+                TryAddBearerTokenToHeader();
+                //send submitted data.
+                var response = await _mindPlaceClient.FollowDELETEAsync(requestId);
+                return new JsonResult(new { Success = true });
+
+            }
+            catch (Exception ex)
+            {
+                //error
+                var exceptionMessage = HandleException(ex);
+                return new JsonResult(new { Success = false, Message = exceptionMessage });
+            }
+        }
+
+        private string HandleException(Exception ex)
+        {
+            if (ex is ApiException)
+            {
+                var apiException = (ApiException)ex;
+               if(!string.IsNullOrWhiteSpace(apiException.Response) && apiException.Response.Contains("detail"))
+                {
+                    //make sure a "problemDetails" was returned before deserialization
+                    var response = JsonConvert.DeserializeObject<MindPlaceApiService.ProblemDetails>(apiException.Response);
+                    return response.Detail;
+                }
+                else if(!string.IsNullOrWhiteSpace(apiException.Response) && apiException.Response.Contains("Message"))
+                {
+                    return apiException.Response.Substring(25).Replace("\"}", "");
+                }
+                else
+                {
+                    return apiException.Response;
+                }
+            }
+            else
+            {
+                return ex.Message;
+            }
+            
+        }
 
     }
 

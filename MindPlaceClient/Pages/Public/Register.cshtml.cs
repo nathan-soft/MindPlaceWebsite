@@ -18,7 +18,7 @@ namespace MindPlaceClient.Pages.Public
     {
         //INPUTS
         [BindProperty]
-        public CreatePatientDto UserDetails { get; set; }
+        public NewUserDto UserDetails { get; set; }
 
         public string[] Genders = new[] { "Male", "Female"};
 
@@ -38,7 +38,7 @@ namespace MindPlaceClient.Pages.Public
             {
                 try
                 {
-                    var response = await _mindPlaceClient.RegisterPatientAsync(UserDetails);
+                    var response = await _mindPlaceClient.RegisterUserAsync(UserDetails);
                     return Redirect("/Public/Register?action=confirmEmail");
                 }
                 catch (ApiException ex) when (!string.IsNullOrWhiteSpace(ex.Response) && ex.Response.Contains("detail"))

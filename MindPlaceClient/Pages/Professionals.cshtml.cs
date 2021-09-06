@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using MindPlaceClient.Code;
 using MindPlaceClient.MindPlaceApiService;
+using Newtonsoft.Json;
 
 namespace MindPlaceClient.Pages
 {
@@ -23,15 +24,8 @@ namespace MindPlaceClient.Pages
 
         }
 
-
         public async Task<ActionResult> OnGetAsync()
         {
-            if (User.IsInRole("Professional"))
-            {
-                //professional should not see this page.
-                return Forbid();
-            }
-
             try
             {
                 TryAddBearerTokenToHeader();
@@ -45,6 +39,53 @@ namespace MindPlaceClient.Pages
             }
 
             return Page();
+        }
+
+        public async Task<ActionResult> OnGetTopProfessionalsAsync()
+        {
+            try
+            {
+                var response = await GetProfessonalsAsync();
+                return new JsonResult(new { Success = true, Data = response});
+
+            }
+            catch (ApiException ex)
+            {
+                return new JsonResult(new { Success = false, Message = ex.Message });
+            }
+        }
+
+        public async Task<ActionResult> OnPostAsync([FromForm]string usernameOfProfessional)
+        {
+            if (string.IsNullOrWhiteSpace(usernameOfProfessional)) {
+                return new JsonResult(new { Success = false, Message = "Please select a professional." });
+            }
+
+            try
+            {
+                var detail = new SubscriptionRequestDto() { UsernameOfProfessional = usernameOfProfessional };
+                TryAddBearerTokenToHeader();
+                var response = await _mindPlaceClient.FollowPOSTAsync(detail);
+                return new JsonResult(new { Success = true });
+            }
+            catch (ApiException ex) when (!string.IsNullOrWhiteSpace(ex.Response) && ex.Response.Contains("detail"))
+            {
+                //error from unchase libary.
+                //make sure a "problemDetails" was returned before deserialization
+                var response = JsonConvert.DeserializeObject<MindPlaceApiService.ProblemDetails>(ex.Response);
+                return new JsonResult(new { Success = false, Message = response.Detail });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { Success = false, Message = ex.Message });
+            }
+        }
+
+        private async Task<ICollection<UserResponseDto>> GetProfessonalsAsync()
+        {
+            TryAddBearerTokenToHeader();
+            var response = await _mindPlaceClient.ProfessionalsAsync();
+            return response;
         }
     }
 }

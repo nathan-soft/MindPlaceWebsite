@@ -25,6 +25,27 @@ namespace MindPlaceClient.Code
             return principal.Claims.First(c => c.Type == ClaimTypes.Name).Value;
         }
 
+
+        /// <summary>
+        /// Gets the primary role of the current user.
+        /// </summary>
+        /// <param name="principal"></param>
+        /// <returns>Returns a string containing the current user primary role.</returns>
+        public static string GetPrimaryRole(this ClaimsPrincipal principal)
+        {
+            if (principal.IsInRole("Patient"))
+            {
+                return "Patient";
+            }
+            else if (principal.IsInRole("Professional")) {
+                return "Professional";
+            }
+            else
+            {
+                return "Admin";
+            }
+        }
+
         /// <summary>
         /// Gets the jwt token from the current logged in user claims.
         /// </summary>
@@ -71,11 +92,5 @@ namespace MindPlaceClient.Code
 
             return userRole;
         }
-    }
-
-    public class NewComment : CommentDto
-    {
-        [Required]
-        public int questionId { get; set; }
     }
 }
