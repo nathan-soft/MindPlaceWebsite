@@ -3286,7 +3286,7 @@ footer {
 }
 
 .overview-box {
-    width: 570px;
+    width: 500px;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -6430,7 +6430,7 @@ a:hover {
     z-index: 1000;
     display: none;
     float: left;
-    min-width: 10rem;
+    min-width: 7rem;
     padding: .5rem 0;
     margin: .125rem 0 0;
     font-size: 1rem;
@@ -6676,9 +6676,9 @@ a:hover {
     box-shadow: 0 2px #e4e4e4;
 }
 
-.dropdown-menu.show {
+/*.dropdown-menu.show {
     display: contents;
-}
+}*/
 
 .postpaid:checked:after {
     content: "\f17b";

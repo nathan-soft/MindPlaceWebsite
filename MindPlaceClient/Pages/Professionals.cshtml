@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{handler?}"
 @model MindPlaceClient.Pages.ProfessionalsModel
 @{
     ViewData["Title"] = "Therapist";
@@ -17,38 +17,77 @@
                     foreach (var professional in Model.Professionals)
                     {
                         //check that the professional isn't following the current use and the current user hasn't subscribed to the professional
-                        if (!professional.Following.Any(u => u.Username == User.GetLoggedOnUsername()) 
-                                        && !professional.Followers.Any(u => u.Username == User.GetLoggedOnUsername()))
-                        {
-                            //Show the professional
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <div id="prof_@professional.UserName" class="company_profile_info">
-                                    <div class="company-up-info">
-                                        <img src="~/assets/img/user1.png" alt="">
-                                        <h3>@($"{professional.FirstName} {professional.LastName}")</h3>
+                        //if (!professional.Following.Any(u => u.Username == User.GetLoggedOnUsername())
+                        //                && !professional.Followers.Any(u => u.Username == User.GetLoggedOnUsername()))
+                        //{
 
-                                        <ul>
-                                            <li>
-                                                <a href="#" title="subscribe" class="follow">Subscribe</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <a href="#" class="view-more-pro">
-                                        View Profile
-                                        <div class="card custom-tooltip shadow align-items-center">
-                                            <div class="image-Wrapper">
-                                                <img class="rounded-circle" src="~/assets/img/user1.png" alt="">
-                                            </div>
-                                            <div class="user-info flex-column justify-content-center">
-                                                <h4 class="card-title d-flex flex-wrap mb-2">
-                                                    @($"{professional.FirstName} {professional.LastName}")
-                                                </h4>
-                                            </div>
-                                        </div>
-                                    </a>
+                        //}
+
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div id="prof_@professional.Username" class="company_profile_info">
+                                <div class="company-up-info">
+                                    <img src="~/assets/img/user1.png" alt="">
+                                    <h3>
+                                        @professional.FullName
+                                    </h3>
+
+                                    <ul>
+                                        <li>
+                                            <a href="#" title="subscribe" class="follow">Subscribe</a>
+                                        </li>
+                                    </ul>
                                 </div>
+                                <a href="#" class="view-more-pro">
+                                    View Profile
+                                    <div class="card custom-tooltip shadow align-items-center">
+                                        <div class="image-Wrapper">
+                                            <img class="rounded-circle" src="~/assets/img/user1.png" alt="">
+                                        </div>
+                                        <div class="user-info flex-column justify-content-center text-left">
+                                            <h5 class="card-title d-flex flex-wrap mb-2">
+                                                @professional.FullName
+                                            </h5>
+                                            <section id="education">
+                                                <div class="card-text py-2 d-flex">
+                                                    <span class="icon-container px-1">
+                                                        <i class="fa fa-graduation-cap"></i>
+                                                    </span>
+                                                    <p>
+                                                        Studied at <b>National Open University of Nigeria - Lagos Study Center</b>
+                                                    </p>
+                                                </div>
+                                                <div class="card-text py-2 d-flex">
+                                                    <span class="icon-container px-1">
+                                                        <i class="fa fa-graduation-cap"></i>
+                                                    </span>
+                                                    <p>
+                                                        Studied at <b>National Open University of Nigeria - Lagos Study Center</b>
+                                                    </p>
+                                                </div>
+                                            </section>
+                                            <section id="work">
+                                                <div class="card-text py-2 d-flex">
+                                                    <span class="icon-container px-1">
+                                                        <i class="fa fa-graduation-cap"></i>
+                                                    </span>
+                                                    <p>
+                                                        Studied at <b>National Open University of Nigeria - Lagos Study Center</b>
+                                                    </p>
+                                                </div>
+                                                <div class="card-text py-2 d-flex">
+                                                    <span class="icon-container px-1">
+                                                        <i class="fa fa-graduation-cap"></i>
+                                                    </span>
+                                                    <p>
+                                                        Studied at <b>National Open University of Nigeria - Lagos Study Center</b>
+                                                    </p>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                        }
+                        </div>
 
                     }
                 }

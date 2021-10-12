@@ -1,0 +1,231 @@
+﻿@page "{handler?}"
+@model MindPlaceClient.Pages.ForumModel
+@{
+    ViewData["Title"] = "Forum";
+}
+
+
+<section class="forum-nav bg-white">
+    <div class="container">
+        <div class="forum-nav d-flex justify-content-between">
+            <ul class="nav">
+                <li class="nav-item @((Model.FilterText.Contains("Latest") || string.IsNullOrWhiteSpace(Model.FilterText))? "active" : "")">
+                    <a href="#" class="nav-link" title="">Latest</a>
+                </li>
+                <li class="nav-item @(Model.FilterText.Contains("Unanswered")? "active" : "")"><a href="#" class="nav-link">Unanswered</a></li>
+                <li class="nav-item @(Model.FilterText.Contains("Trending")? "active" : "")"><a href="#" class="nav-link">Trending</a></li>
+                <li class="nav-item @(Model.FilterText.Contains("Popular This Week")? "active" : "")">
+                    <a href="#" class="nav-link">Popular This Week</a>
+                </li>
+                <li class="nav-item @(Model.FilterText.Contains("Popular of Month")? "active" : "")">
+                    <a href="#" class="nav-link">Popular of Month</a>
+                </li>
+            </ul>
+            @*VISIBLE ON SMALL TO MEDIUM SCREENS*@
+            <div class="nav2 forum-nav__search-group">
+                <button type="button" class="forum-nav__search-group__filter-button" title="filter" data-toggle="dropdown">
+                    <i class="fa fa-filter"></i>
+                </button>
+                <div class="dropdown-menu shadow">
+                    <a class="dropdown-item @((Model.FilterText.Contains("Latest") || string.IsNullOrWhiteSpace(Model.FilterText))? "active" : "")" href="#">Latest</a>
+                    <a class="dropdown-item @(Model.FilterText.Contains("Unanswered")? "active" : "")" href="#">Unanswered</a>
+                    <a class="dropdown-item @(Model.FilterText.Contains("Trending")? "active" : "")" href="#">Trending</a>
+                    <a class="dropdown-item @(Model.FilterText.Contains("Popular This Week")? "active" : "")" href="#">Popular This Week</a>
+                    <a class="dropdown-item @(Model.FilterText.Contains("Popular of Month")? "active" : "")" href="#">Popular of Month</a>
+                </div>
+                <input class="form-control py-2" type="text" placeholder="search" id="search">
+                <span class="fa fa-search forum-nav__search-group__search-icon"></span>
+            </div>
+
+            @*VISIBLE ON BIG SCREENS*@
+            <div class="align-self-center">
+                <i class="fa fa-search font-weight-bold pr-2 align-middle forum-nav__search-icon" style="font-size: 20px; color:#e44d3a;"></i>
+                <input type="button" class="btn btn-primary ask-question" value="Ask a question" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="forum-page">
+    <div class="container">
+        <div class="forum-questions-sec">
+            <div class="row">
+                <div class="col-lg-8">
+                    @if(Model.Questions.Any())
+                    {
+                        <div class="forum-questions">
+                            @foreach (var question in Model.Questions)
+                            {
+                                <div class="usr-question" id="question_@question.Id">
+                                    <div class="usr_img">
+                                        <img src="images/resources/usrr-img1.png" alt="">
+                                    </div>
+                                    <div class="usr_quest">
+                                        <h3>@question.Title</h3>
+                                        <ul class="react-links">
+                                            <li><a href="#" title=""><i class="fas fa-heart"></i>Vote 150</a></li>
+                                            <li>
+                                                <a href="#" title="">
+                                                    <i class="fas fa-comment-alt"></i>
+                                                    @if (question.CommentCount == 0)
+                                                    {
+                                                        @:Comment @question.CommentCount
+                                                    }
+                                                    else
+                                                    {
+                                                        @:Comments @question.CommentCount
+                                                    }
+                                                </a>
+                                            </li>
+                                            <li><a href="#" title=""><i class="fas fa-eye"></i>Views 50</a></li>
+                                        </ul>
+                                        <ul class="quest-tags">
+                                            @foreach (var tag in question.Tags)
+                                            {
+                                                <li><a href="#" title="">@tag</a></li>
+                                            }
+                                        </ul>
+                                    </div>
+                                    <span class="quest-posted-time" data-date-string="@question.CreatedOn.ToString("yyyy-MM-ddTHH:mm:ss")">
+                                        <i class="fa fa-clock-o"></i>3 min ago
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                        <nav aria-label="Page navigation example" class="full-pagi">
+                            <ul class="pagination">
+                                @if(Model.Pager.CurrentPage > 1)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link pvr" asp-page="Forum" asp-route-pageNumber="@(Model.Pager.CurrentPage - 1)">
+                                            Previous
+                                        </a>
+                                    </li>
+                                }
+
+                                @foreach (var p in Model.Pager.Pages)
+                                {
+                                    <li class="page-item @(p == Model.Pager.CurrentPage ? "active" : "")">
+                                        <a class="page-link" asp-page="Forum" asp-route-pageNumber="@p">@p</a>
+                                    </li>
+                                }
+
+                                @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link pvr" asp-page="Forum" asp-route-pageNumber="@(Model.Pager.CurrentPage + 1)">
+                                            Next
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    }
+                    else {
+                        <section class="empty-state mt-0 mt-sm-5 mb-5 py-5 text-center">
+                            <p class="text-black-50 h3">No question asked yet. Be the first...</p>
+                            <input type="button" class="btn btn-primary ask-question" value="Ask a question" />
+                        </section>
+                    }
+
+                </div>
+                <div class="col-lg-4">
+                    <div class="widget widget-user">
+                        <h3 class="title-wd">Top User of the Week</h3>
+                        <ul>
+                            <li>
+                                <div class="usr-msg-details">
+                                    <div class="usr-ms-img">
+                                        <img src="images/resources/m-img1.png" alt="">
+                                    </div>
+                                    <div class="usr-mg-info">
+                                        <h3>Jessica William</h3>
+                                        <p>Graphic Designer </p>
+                                    </div>
+                                </div>
+                                <span>
+                                    <img src="images/price1.png" alt="">1185
+                                </span>
+                            </li>
+                            <li>
+                                <div class="usr-msg-details">
+                                    <div class="usr-ms-img">
+                                        <img src="images/resources/m-img2.png" alt="">
+                                    </div>
+                                    <div class="usr-mg-info">
+                                        <h3>John Doe</h3>
+                                        <p>PHP Developer</p>
+                                    </div>
+                                </div>
+                                <span>
+                                    <img src="images/price2.png" alt="">1165
+                                </span>
+                            </li>
+                            <li>
+                                <div class="usr-msg-details">
+                                    <div class="usr-ms-img">
+                                        <img src="images/resources/m-img3.png" alt="">
+                                    </div>
+                                    <div class="usr-mg-info">
+                                        <h3>Poonam</h3>
+                                        <p>Wordpress Developer </p>
+                                    </div>
+                                </div>
+                                <span>
+                                    <img src="images/price3.png" alt="">1120
+                                </span>
+                            </li>
+                            <li>
+                                <div class="usr-msg-details">
+                                    <div class="usr-ms-img">
+                                        <img src="images/resources/m-img4.png" alt="">
+                                    </div>
+                                    <div class="usr-mg-info">
+                                        <h3>Bill Gates</h3>
+                                        <p>C & C++ Developer </p>
+                                    </div>
+                                </div>
+                                <span>
+                                    <img src="images/price4.png" alt="">1009
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="widget widget-adver">
+                        <img src="images/resources/adver-img.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="overview-box" id="question-box">
+    <div class="overview-edit">
+        <h3>Ask a Question</h3>
+        <div>
+            <form id="forumForm" autocomplete="off">
+                <div class="form-group">
+                    <input type="text" class="px-2 mb-0" name="question" placeholder="Question Title">
+                    <span class="text-danger" asp-validation-for="QuestionDetails.Title"></span>
+                </div>
+
+                <section>
+                    <div class="tags-container d-flex flex-wrap align-items-center w-100 border px-2 pb-1">
+                        <input type="text" class="mb-0 border-0 pl-0" name="tags" placeholder="Tags">
+                    </div>
+                    <span class="text-danger" asp-validation-for="QuestionDetails.Title"></span>
+                </section>
+                <section class="tags-container__suggestion-box shadow d-none">
+                </section>
+
+                <div class="form-group mt-3">
+                    <textarea class="px-2 mb-0" placeholder="Your question..."></textarea>
+                    <span class="text-danger" asp-validation-for="QuestionDetails.Content"></span>
+                </div>
+                <button type="button" class="save">Submit</button>
+                <button type="button" class="cancel">Cancel</button>
+            </form>
+        </div>
+    </div>
+</div>

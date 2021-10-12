@@ -8,12 +8,15 @@
 <section class="profile-account-setting">
     <div class="container">
         <div class="account-tabs-setting">
-            <div class="row">
+            <div class="row justify-content-center justify-content-lg-start">
                 <div class="col-lg-3">
                     <div class="acc-leftbar">
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                             <a class="nav-item nav-link active" id="nav-notification-tab" data-toggle="tab" href="#nav-notification" role="tab" aria-controls="nav-notification" aria-selected="false">
                                 <i class="fa fa-flash"></i>Notifications
+                            </a>
+                            <a class="nav-item nav-link d-flex flex-row align-items-center" id="nav-workandeducation-tab" data-toggle="tab" href="#work-education" role="tab" aria-controls="nav-workandeducation" aria-selected="false">
+                                <i class="fa fa-mortar-board" style="font-size:17px;"></i>Experience & Qualification
                             </a>
                             <a class="nav-item nav-link" id="nav-password-tab" data-toggle="tab" href="#nav-password" role="tab" aria-controls="nav-password" aria-selected="false">
                                 <i class="fa fa-lock"></i>Change Password
@@ -24,7 +27,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-9">
+                <div class="col-lg-9" style="max-width: 650px">
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-notification" role="tabpanel" aria-labelledby="nav-notification-tab">
                             <div class="acc-setting">
@@ -37,21 +40,82 @@
                                             var rand = new Random();
                                             var randomNumber = rand.Next(1, 4);
                                             var profileUrl = $"~/images/resources/ny-img{randomNumber}.png";
-                                            <div class="notfication-details">
-                                                <div class="noty-user-img">
-                                                    <img src="@profileUrl" alt="">
-                                                </div>
-                                                <div class="notification-info">
-                                                    <h3><a href="#" title="">@notification.Creator.FullName</a> @notification.Message</h3>
-                                                    <span>2 min ago</span>
-                                                </div>
-                                            </div>
+                                    <div class="notfication-details">
+                                        <div class="noty-user-img">
+                                            <img src="@profileUrl" alt="">
+                                        </div>
+                                        <div class="notification-info">
+                                            <h3><a href="#" title="">@notification.Creator.FullName</a> @notification.Message</h3>
+                                            <span>2 min ago</span>
+                                        </div>
+                                    </div>
                                         }
                                     }
                                     else
                                     {
-                                        <h3 class="h3 text-black-50 text-center py-4">No Notification Found.</h3>
+                                    <h3 class="h3 text-black-50 text-center py-4">No Notification Found.</h3>
                                     }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="work-education" role="tabpanel" aria-labelledby="nav-workandeducation-tab">
+                            <div class="acc-setting">
+                                <h3>Experience & Qualification</h3>
+                                <div class="card border-0 work-edu-wrapper">
+                                    @***************************** WORK EXPERIENCE SECTION ********************************@
+                                    <section id="workExperiencesContainer">
+                                        <section class="d-flex flex-column mb-4">
+                                            <h3 class="heading mb-0">Experience</h3>
+                                            <a href="#mindPlaceModal" class="btn-addNew mt-3 d-flex align-items-center" 
+                                               data-toggle="modal" data-backdrop="static">
+                                                <span class="p-1 mr-2 icon">+</span> 
+                                                <span>Add a work experience</span>
+                                            </a>
+                                        </section>
+                                        <div class="loader float-none" style="font-size:30px">Loading...</div>
+                                        <p class="card-text text-black-50 text-center h5 d-none empty-state">No work experience found.</p>
+                                    </section>
+
+                                    @***************************** QUALIFICATIONS SECTION ********************************@
+                                <section id="qualificationsContainer" class="mt-5 pb-3">
+                                    <section class="d-flex flex-column mb-4">
+                                        <h3 class="heading mb-0">Qualification</h3>
+                                        <a href="#mindPlaceModal" id="btn-addQualification" class="btn-addNew mt-3 d-flex align-items-center" 
+                                           data-toggle="modal" data-backdrop="static"
+                                        >
+                                            <span class="p-1 mr-2 icon">+</span>
+                                            <span>Add a qualification</span>
+                                        </a>
+                                    </section>
+                                    <div class="loader float-none" style="font-size:30px">Loading...</div>
+                                    <p class="card-text text-black-50 text-center h5 d-none empty-state">No qualification found.</p>
+                                    @*<div id="quafctn_3" class="work-details d-flex mt-4">
+                                        <section class="descriptive-img-container">
+                                            <img src="~/images/museum.svg" width="52" height="52">
+                                        </section>
+                                        <section class="d-flex w-100">
+                                            <div class="px-3 flex-grow-1">
+                                                <h3 class="mb-0">University of Lagos</h3>
+                                                <p class="mb-0">
+                                                    Bachelor of science <b>-</b><span class=""> Computer Science</span>
+                                                </p>
+                                                <p class="d-flex text-black-50">
+                                                    <span>2013 – 2017</span>
+                                                </p>
+                                            </div>
+                                            
+                                            <div class="dropup dropleft align-self-start">
+                                                <button class="border-0 action-block" data-toggle="dropdown">
+                                                    <i class="fa fa-ellipsis-h" style="font-size:20px"></i>
+                                                </button>
+                                                <div class="dropdown-menu shadow">
+                                                    <a class="dropdown-item pl-4 mb-0 post-jb we-action-btn" href="#">Edit</a>
+                                                    <a class="dropdown-item pl-4 mb-0 we-action-btn" href="#">Delete</a>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>*@
+                                </section>
                                 </div>
                             </div>
                         </div>
@@ -108,6 +172,199 @@
         </div>
     </div>
 </section>
+
+
+
+@******************************************************* MODAL ******************************************************@
+@*<div class="post-popup job_post">
+    <div class="post-project">
+        <h3>New Work Experience</h3>
+        <div class="post-project-fields">
+            <div>
+                <form id="workExperienceForm" class="row" method="post" asp-page-handler="AddWorkExperience">
+                    <div id="validationSummary" class="text-danger mb-4 ml-3 d-none"></div>
+                    <div class="col-lg-12">
+                        <label asp-for="WorkExperience.JobTitle" class="mb-2">Job Title</label>
+                        <input asp-for="WorkExperience.JobTitle" class="mb-3">
+                        <span class="text-danger" asp-validation-for="WorkExperience.JobTitle"></span>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <label asp-for="WorkExperience.CompanyName" class="mb-2">Company</label>
+                        <input asp-for="WorkExperience.CompanyName" class="mb-3">
+                        <span class="text-danger" asp-validation-for="WorkExperience.CompanyName"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="WorkExperience.EmploymentType" class="mb-2">Employment Type</label>
+                        <select asp-for="WorkExperience.EmploymentType" class="mb-3" asp-items="Model.EmploymentTypes">
+                            <option value="">Select employment type</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="WorkExperience.EmploymentType"></span>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <label asp-for="WorkExperience.Location" class="mb-2">State & Country</label>
+                        <input asp-for="WorkExperience.Location" placeholder="Carlifornia, USA" class="mb-3">
+                        <span class="text-danger" asp-validation-for="WorkExperience.Location"></span>
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input id="chkCurrentlyWorking" asp-for="WorkExperience.CurrentlyWorking" class="form-check-input mt-0" checked>I currently work here
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label asp-for="WorkExperience.StartYear" class="mb-2">Start Year</label>
+                        <select asp-for="WorkExperience.StartYear" class="mb-3" asp-items="@(new SelectList(AppHelper.GetYears()))">
+                            <option value="">Start Year</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="WorkExperience.StartYear"></span>
+                    </div>
+
+                    <div class="col-sm-6 endYear d-none">
+                        <label asp-for="WorkExperience.EndYear" class="mb-2">End Year</label>
+                        <select id="drpdwnEndYear"
+                                asp-for="WorkExperience.EndYear"
+                                class="mb-3"
+                                asp-items="@(new SelectList(AppHelper.GetYears()))">
+                            <option value="0">End Year</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="WorkExperience.EndYear"></span>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <ul>
+                            <li>
+                                <button class="active" type="submit">Save</button>
+                            </li>
+                            <li class="cancel"><a href="#" title="">Cancel</a></li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+<div class="modal fade" id="mindPlaceModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content border-0">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title">New Work Experience</h5>
+            </div>
+            <div class="modal-body p-3">
+                <form id="workExperienceForm" method="post" asp-page-handler="AddWorkExperience">
+                    <div id="validationSummary" class="text-danger mb-4 d-none"></div>
+                    <div class="form-group">
+                        <label asp-for="WorkExperience.JobTitle" class="mb-2">Job Title</label>
+                        <input asp-for="WorkExperience.JobTitle" class="form-control text-capitalize">
+                        <span class="text-danger" asp-validation-for="WorkExperience.JobTitle"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="WorkExperience.CompanyName" class="mb-2">Company</label>
+                        <input asp-for="WorkExperience.CompanyName" class="form-control text-capitalize">
+                        <span class="text-danger" asp-validation-for="WorkExperience.CompanyName"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="WorkExperience.EmploymentType" class="mb-2">Employment Type</label>
+                        <select class="form-control text-capitalize" asp-for="WorkExperience.EmploymentType" asp-items="Model.EmploymentTypes">
+                            <option value="">Select employment type</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="WorkExperience.EmploymentType"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="WorkExperience.Location" class="mb-2">State & Country</label>
+                        <input asp-for="WorkExperience.Location" placeholder="Carlifornia, USA" class="form-control text-capitalize">
+                        <span class="text-danger" asp-validation-for="WorkExperience.Location"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input id="chkCurrentlyWorking" asp-for="WorkExperience.CurrentlyWorking" class="form-check-input mt-0" checked>I currently work here
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-row">
+                        <div class="col">
+                            <label asp-for="WorkExperience.StartYear" class="mb-2">Start Year</label>
+                            <select class="form-control" asp-for="WorkExperience.StartYear" asp-items="@(new SelectList(AppHelper.GetYears()))">
+                                <option value="">Start Year</option>
+                            </select>
+                            <span class="text-danger" asp-validation-for="WorkExperience.StartYear"></span>
+                        </div>
+                        <div class="col endYear d-none">
+                            <label asp-for="WorkExperience.EndYear" class="mb-2">End Year</label>
+                            <select id="drpdwnEndYear" 
+                                    class="form-control" 
+                                    asp-for="WorkExperience.EndYear" 
+                                    asp-items="@(new SelectList(AppHelper.GetYears()))"
+                            >
+                                <option value="0">End Year</option>
+                            </select>
+                            <span class="text-danger" asp-validation-for="WorkExperience.EndYear"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-primary px-3 mr-2 active">Save</button>
+                        <button type="submit" class="btn btn-secondary px-3 cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+
+                <form id="qualificationForm" method="post" class="d-none text-capitalize" asp-page-handler="AddQualification">
+                    <div id="validationSummary" class="text-danger mb-4 ml-3 d-none"></div>
+                    <div class="form-group">
+                        <label asp-for="Qualification.SchoolName" class="mb-2">School</label>
+                        <input asp-for="Qualification.SchoolName" class="form-control text-capitalize">
+                        <span class="text-danger small" asp-validation-for="Qualification.SchoolName"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Qualification.QualificationType" class="mb-2">Degree</label>
+                        <input class="form-control text-capitalize" asp-for="Qualification.QualificationType" placeholder="Ex: Bachelor's">
+                        <span class="text-danger small" asp-validation-for="Qualification.QualificationType"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Qualification.Major" class="mb-2">Field of study</label>
+                        <input class="form-control text-capitalize" asp-for="Qualification.Major" placeholder="Ex: Business">
+                        <span class="text-danger small" asp-validation-for="Qualification.Major"></span>
+                    </div>
+                    <div class="form-group form-row">
+                        <div class="col">
+                            <label asp-for="Qualification.StartYear" class="mb-2">Start Year</label>
+                            <select class="form-control" asp-for="Qualification.StartYear" asp-items="@(new SelectList(AppHelper.GetYears()))">
+                                <option value="">Start Year</option>
+                            </select>
+                            <span class="text-danger small" asp-validation-for="Qualification.StartYear"></span>
+                        </div>
+                        <div class="col">
+                            <label asp-for="Qualification.EndYear" class="mb-2">End Year</label>
+                            <select class="form-control" asp-for="Qualification.EndYear" asp-items="@(new SelectList(AppHelper.GetYears()))">
+                                <option value="">End Year</option>
+                            </select>
+                            <span class="text-danger small" asp-validation-for="Qualification.EndYear"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-primary active px-3 mr-2">Save</button>
+                        <button type="submit" class="btn btn-secondary px-3 cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @section Scripts{
     @if(ModelState.Keys.Contains("") && ModelState[""].Errors.Count > 0)

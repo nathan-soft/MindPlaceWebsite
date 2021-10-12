@@ -1,4 +1,37 @@
 ﻿/*************************** Global ******************************/
+.btn-primary, .btn-primary:hover {
+    background-color: #f35f09!important;
+    border: 1px solid #f35f09!important;
+    color: #fff!important;
+}
+
+.btn-secondary, .btn-secondary:hover {
+    background-color: #e4e6eb !important;
+    border: 1px solid #e4e6eb!important;
+    color: #050505 !important;
+}
+
+.form-check {
+    padding-left: 1.25rem;
+}
+
+.form-check input{
+    height:1em!important;
+    width: 1em!important;
+}
+
+
+/**********ASK QUESTION MODALS**********/
+@media (max-width: 499px){
+    .overview-box {
+        width: 100%
+    }
+}
+
+
+
+
+
 .loader,
 .loader:before,
 .loader:after {
@@ -323,8 +356,182 @@ padding: 20px;*/
 
 
 
+/*************************** FORUM PAGE ******************************/
+.forum-nav .forum-nav__search-group {
+    display: none;
+    position: relative;
+    font-size: 14px;
+    height: 35px;
+    padding: 0 8px;
+}
 
-/*************************** Professional PAGE ******************************/
+.forum-nav__search-group .dropdown-menu{
+    width: initial;
+}
+
+.forum-nav__search-group .dropdown-menu a {
+    padding: .5rem 1.5rem;
+    margin-bottom: 0;
+}
+
+    .forum-nav__search-group .dropdown-menu a.active {
+        color: #F35F09;
+        background-color: transparent;
+    }
+
+
+.forum-nav__search-group input.form-control {
+    /*background-color: #FAF8FA;
+        border: 1px solid #E5E5E5;*/
+    color: #b2b2b2;
+    padding-right: 24px;
+    transition: all 0.5s
+}
+
+.forum-nav__search-group input.form-control:focus{
+   border: 1px solid #F35F09;
+   box-shadow:none;
+}
+
+.forum-nav__search-group__filter-button {
+    font-size: 25px;
+    color: #b2b2b2;
+    margin-right: .3em;
+    align-self: center;
+    background-color: white;
+    border: none;
+    transition:all 0.4s
+}
+
+    .forum-nav__search-group__filter-button:focus {
+        color: #F35F09;
+        outline: none;
+    }
+
+.forum-nav__search-group__search-icon {
+    position: absolute;
+    top: .7rem;
+    right: 15px;
+    font-size: 15px;
+    color: #b2b2b2;
+}
+
+.forum-nav ul li {
+    padding: 20px 0;
+}
+
+.forum-nav ul li.active {
+    border-bottom: 2px solid #e44d3a;
+}
+
+.forum-nav ul li a {
+    color: #b2b2b2;
+    font-size: 14px;
+    font-weight: 600;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.forum-nav ul li.active a {
+    color: #e44d3a;
+}
+
+#forumForm span {
+    float: none;
+    margin-bottom: 0;
+}
+
+div.tags-container input {
+    height: 25px;
+    width: 120px;
+}
+
+div.tag {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    float: none;
+    width: auto;
+    padding: 8px;
+    margin-right: 0.5em;
+    margin-top: .25em;
+    background-color: #e4e6eb;
+    border-radius: 16px;
+}
+
+span.tag__name {
+    color: #050505;
+    font-size:14px;
+}
+
+
+
+.tags-container__suggestion-box {
+    display:flex;
+    flex-direction: column;
+    position: relative;
+    /*min-height: 50px;*/
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    border-radius: 0 0 8px 8px;
+}
+
+    .tags-container__suggestion-box span {
+        color: #00000080;
+        font-size: 16px;
+    }
+
+        .tags-container__suggestion-box span:hover {
+            background-color: #e4e6eb;
+            color: #050505;
+            cursor:pointer;
+        }
+
+
+    @media (max-width: 479px) {
+        .forum-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .forum-nav__search-group {
+        width: 100%;
+        order: 2;
+        margin-top:15px;
+    }
+
+    .forum-nav__search-group__filter-button {
+        margin-left: -1px;
+    }
+}
+
+@media (max-width: 992px) {
+    .forum-nav {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        align-items: center;
+    }
+
+        .forum-nav .nav {
+            display: none;
+        }
+
+        .forum-nav .forum-nav__search-group {
+            display: flex;
+        }
+
+    .forum-nav__search-icon {
+        display: none;
+    }
+}
+
+
+
+
+
+
+/*************************** PROFESSIONAL PAGE ******************************/
 
 .view-more-pro {
     position: relative;
@@ -335,24 +542,24 @@ padding: 20px;*/
     display: none;
     flex-direction: row;
     width: max-content;
-    max-width: 400px;
+    max-width: 350px;
     padding: 16px;
     height: auto;
-    max-height: 300px;
-    z-index: 1000;
+    max-height: 250px;
+    z-index: 4000;
 }
 
     .custom-tooltip .image-Wrapper {
-        flex-basis: 96px;
-        max-width: 96px;
-        height: 96px;
-        max-height: 96px;
+        flex-basis: 56px;
+        max-width: 56px;
+        height: 56px;
+        max-height: 56px;
         align-self: center;
     }
 
         .custom-tooltip .image-Wrapper img {
-            width: 96px;
-            max-width: 96px;
+            width: 56px;
+            max-width: 56px;
             max-height: 100%;
         }
 
@@ -362,6 +569,7 @@ padding: 20px;*/
         padding-right: 16px;
         font-size: 15px;
         height: auto;
+        max-height: 230px;
         overflow-y: auto;
     }
 
@@ -386,4 +594,78 @@ padding: 20px;*/
 
 .view-more-pro:hover .custom-tooltip {
     display: flex;
+}
+
+
+
+/*************************** SETTINGS PAGE ******************************/
+.nav-tabs a#nav-workandeducation-tab {
+    line-height: 16px;
+}
+
+#work-education section,
+#work-education div {
+    float: none; /*resetting template code.*/
+}
+
+#work-education .work-edu-wrapper {
+    padding: 1.25em;
+}
+
+#work-education .descriptive-img-container {
+    width: 40px;
+    min-width: 40px;
+}
+
+#work-education .descriptive-img-container img {
+    margin-top: -4px;
+}
+
+.work-edu-wrapper .heading {
+    font-size: 18px;
+}
+
+
+.btn-addNew, .btn-addNew:hover {
+    color: #f35f09;
+    font-size: 15px;
+}
+
+.btn-addNew .icon{
+    font-size: 20px;
+    border: 1px solid #f35f09!important;
+    border-radius: 50%;
+}
+
+#mindPlaceModal .modal-header {
+    display:flex!important;
+    background-color: #f35f09;
+    color: #fff;
+}
+
+#mindPlaceModal div input, #mindPlaceModal div textarea, #mindPlaceModal div select {
+    color: #b2b2b2;
+    font-size: 14px;
+    border: 1px solid #e5e5e5;
+    font-weight: 500;
+}
+
+#mindPlaceModal div input, #mindPlaceModal div select {
+    height: 40px;
+}
+
+.action-block {
+    align-self: self-start;
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+    background-color: #e4e6eb !important;
+    color: #050505 !important;
+    /*display: flex;
+    justify-content: center;
+    align-items: center;*/
+}
+
+button.action-block:hover {
+    cursor: pointer
 }

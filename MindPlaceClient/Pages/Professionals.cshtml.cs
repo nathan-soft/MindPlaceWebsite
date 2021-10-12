@@ -16,7 +16,7 @@ namespace MindPlaceClient.Pages
     [Authorize(Roles = "Patient")]
     public class ProfessionalsModel : BasePageModel
     {
-        public List<UserResponseDto> Professionals { get; set; } = new List<UserResponseDto>();
+        public List<AbbrvUser> Professionals { get; set; } = new List<AbbrvUser>();
 
         public ProfessionalsModel(IConfiguration configuration, IHttpClientFactory clientFactory)
             : base(configuration, clientFactory.CreateClient())
@@ -29,7 +29,7 @@ namespace MindPlaceClient.Pages
             try
             {
                 TryAddBearerTokenToHeader();
-                var response = await _mindPlaceClient.ProfessionalsAsync();
+                var response = await GetProfessonalsAsync();
 
                 Professionals = response.ToList();
             }
@@ -46,6 +46,7 @@ namespace MindPlaceClient.Pages
             try
             {
                 var response = await GetProfessonalsAsync();
+                //var currentUser = User.GetPrimaryRole() == "Patie"
                 return new JsonResult(new { Success = true, Data = response});
 
             }
@@ -81,10 +82,10 @@ namespace MindPlaceClient.Pages
             }
         }
 
-        private async Task<ICollection<UserResponseDto>> GetProfessonalsAsync()
+        private async Task<ICollection<AbbrvUser>> GetProfessonalsAsync()
         {
             TryAddBearerTokenToHeader();
-            var response = await _mindPlaceClient.ProfessionalsAsync();
+            var response = await _mindPlaceClient.SuggestedProfessionalsAsync();
             return response;
         }
     }
