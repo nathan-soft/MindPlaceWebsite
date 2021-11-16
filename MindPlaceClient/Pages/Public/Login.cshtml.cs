@@ -42,7 +42,7 @@ namespace MindPlaceClient.Pages.Public
                 try
                 {
                     //confirm the user's email.
-                    await _mindPlaceClient.ConfirmEmailAsync(new EmailConfirmationDto() { Token = token, Username = userId });
+                    await _mindPlaceClient.ConfirmUserEmailAsync(new EmailConfirmationDto() { Token = token, Username = userId });
                     return Redirect($"/Public/Login?username={userId}&action=mailConfirmed");
                 }
                 catch (ApiException ex) when(!string.IsNullOrWhiteSpace(ex.Response) && ex.Response.Contains("detail"))
@@ -66,9 +66,6 @@ namespace MindPlaceClient.Pages.Public
         {
             if (ModelState.IsValid)
             {
-                //var c = new HttpClient();
-                //var client = new Client(_configuration.GetSection("ApiBaseUrl").Value, c);
-
                 try
                 {
                     var response = await _mindPlaceClient.LoginAsync(Login);
@@ -79,7 +76,7 @@ namespace MindPlaceClient.Pages.Public
                 
                     
 
-                    var userResponse = await _mindPlaceClient.UsersAsync(jwtToken.Subject);
+                    var userResponse = await _mindPlaceClient.GetUserAsync(jwtToken.Subject);
                     if (userResponse == null)
                     {
                        ModelState.AddModelError("", "A network error occurred while trying to log you in, please try again.");

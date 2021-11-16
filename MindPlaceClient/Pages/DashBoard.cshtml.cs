@@ -41,7 +41,7 @@ namespace MindPlaceClient.Pages
             try
             {
                 TryAddBearerTokenToHeader();
-                UserDetails = await _mindPlaceClient.UsersAsync(Username);
+                UserDetails = await _mindPlaceClient.GetUserAsync(Username);
                 if (UserDetails.Questions == null)
                 {
                     return NotFound();
@@ -71,7 +71,7 @@ namespace MindPlaceClient.Pages
                 try
                 {
                     TryAddBearerTokenToHeader();
-                    var questionResponse = await _mindPlaceClient.QuestionsPOSTAsync(questionDetails);
+                    var questionResponse = await _mindPlaceClient.AddQuestionAsync(questionDetails);
 
                     return new JsonResult(new { Success = true });
                 }
@@ -110,7 +110,7 @@ namespace MindPlaceClient.Pages
                 try
                 {
                     TryAddBearerTokenToHeader();
-                    var questionResponse = await _mindPlaceClient.QuestionsPUTAsync(questionId, questionDetails);
+                    var questionResponse = await _mindPlaceClient.EditQuestionAsync(questionId, questionDetails);
 
                     return new JsonResult(new { Success = true });
                 }
@@ -149,7 +149,7 @@ namespace MindPlaceClient.Pages
                 try
                 {
                     TryAddBearerTokenToHeader();
-                    var questionResponse = await _mindPlaceClient.QuestionsDELETEAsync(questionId);
+                    var questionResponse = await _mindPlaceClient.DeleteQuestionAsync(questionId);
 
                     return new JsonResult(new { Success = true });
                 }
@@ -178,7 +178,7 @@ namespace MindPlaceClient.Pages
             try
             {
                 TryAddBearerTokenToHeader();
-                var commentResponse = await _mindPlaceClient.CommentsAllAsync(questionId);
+                var commentResponse = await _mindPlaceClient.GetCommentsAsync(questionId);
 
                 return new JsonResult(new { Success = true, Data = commentResponse });
             }
@@ -205,9 +205,9 @@ namespace MindPlaceClient.Pages
                 try
                 {
                     TryAddBearerTokenToHeader();
-                    var commentResponse = await _mindPlaceClient.CommentsPOSTAsync(comment.questionId, comment);
+                    var commentResponse = await _mindPlaceClient.AddCommentAsync(comment.questionId, comment);
 
-                    return new JsonResult(new { Success = true });
+                    return new JsonResult(new { Success = true, CurrentUser = User.GetFullName() });
                 }
                 catch (ApiException ex) when (!string.IsNullOrWhiteSpace(ex.Response) && ex.Response.Contains("detail"))
                 {

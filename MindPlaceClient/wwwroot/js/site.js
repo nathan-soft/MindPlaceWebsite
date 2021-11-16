@@ -322,7 +322,7 @@ if (location.pathname.toLowerCase().includes("dashboard")) {
                     let now = moment();
                     let newComment = "<div class='comments mt-3 text-justify border-0'>";
                     newComment += "<img src ='https://i.imgur.com/yTFUilP.jpg' alt='Profile Image' class='rounded-circle' width ='40' height ='40'/>";
-                    newComment += "<h3>Jhon Doe</h3>";
+                    newComment += `<h3>${response.currentUser}</h3>`;
                     newComment += `<span class='small' data-date-string='${now.format("YYYY-MM-DDTHH:mm:ss")}'>${now.fromNow()}</span>`;
                     newComment += `<p>${comment}</p>`;
                     newComment += "</div>";
@@ -527,7 +527,7 @@ if (location.pathname.toLowerCase().includes("professionals")) {
 
 
 //////////////////////////////////////////////////////FORUM PAGE ////////////////////////////////////////////////////////
-if (location.pathname.toLowerCase().includes("forum")) {
+if (location.pathname.toLowerCase().includes("forum") && !location.pathname.toLowerCase().includes("posts")) {
     let form = document.getElementById("forumForm");
 
     //==========================Close Forum Modal================================//
@@ -567,13 +567,6 @@ if (location.pathname.toLowerCase().includes("forum")) {
             var url = `${location.protocol}//${location.host}${location.pathname}?${urlQueryParams.toString()}`;
             //reload
             location.assign(url);
-            //if (item.parentElement.classList.contains("nav-item")) {
-            //    let anchorParent = item.parentElement;
-            //    //remove active from anchor parent sibling;
-            //    anchorParent.parentElement.querySelector("li.active").classList.remove("active");
-            //    //mark anchor parent as active
-            //    anchorParent.classList.add("active");
-            //}
         });
     });
 
@@ -596,7 +589,7 @@ if (location.pathname.toLowerCase().includes("forum")) {
                 matchingTags = getMatchingTagNames(searchPhrase);
             } else {
                 //fetch from db/API
-                let response = await getTags().catch(error => {
+                let response = await fetchTags().catch(error => {
                         displayMessage("Couldn't fetch tags because a server error occurred, please contact your system administrator.");
                     });
                 if (Array.isArray(response)) {
@@ -639,7 +632,6 @@ if (location.pathname.toLowerCase().includes("forum")) {
         }
     }));
 
-    
 
     //==========================Execute a Function When Someone Writes in the "tag" input field================================//
     form.querySelector(".tags-container input").addEventListener("keydown", function (e) {
@@ -674,13 +666,13 @@ if (location.pathname.toLowerCase().includes("forum")) {
             if (spanText.length >= 1) {
                 //make sure there's no duplicate tag
                 //get all already selected tags
-                let selectedTags = form.querySelectorAll(".tags-container .tag__name");
+                let selectedTags = getSelectedTags();
                 //make sure there are selected tags...
                 if (selectedTags.length) {
                     //loop through and check for duplicates
                     let duplicateExist = false;
                     for (var selectedTag of selectedTags) {
-                        if (selectedTag.textContent.toLowerCase() == spanText.toLowerCase()) {
+                        if (selectedTag.toLowerCase() == spanText.toLowerCase()) {
                             //duplicate
                             //exit loop and stop further code processing.
                             duplicateExist = true;
@@ -728,7 +720,201 @@ if (location.pathname.toLowerCase().includes("forum")) {
             spanEle.parentElement.classList.add("d-none");
         }
     });
+
+    //==========================SUBMIT THE FORUM FORM===============================//
+    form.querySelector("button.save").addEventListener("click", (async function () {
+        //get validationSummary div
+        let validationSummaryBox = form.querySelector("#validationSummary");
+
+        //serialize the form
+        let formData = new FormData(form);
+
+        //get the tags.
+        let selectedTags = getSelectedTags();
+
+        if (selectedTags.length) {
+            //append tags to form data
+            selectedTags.forEach(tag => {
+                formData.append("QuestionDetails.Tags", tag);
+            });
+        }
+       
+        
+
+        let response = await sendPostRequest(location.href, new URLSearchParams(formData).toString()).catch(function (error) {
+            handleHttpRequestError(error.message, "Couldn't connect to the server, please check your network and try again.");
+        });
+
+        if (response) {
+            if (response.success) {
+                //success.
+                let question = response.data;
+                let tagList = "";
+                //create list element to hold tags...
+                selectedTags.forEach(tag => {
+                    tagList += `<li><a href="#" title="">${tag}</a></li>`;
+                });
+
+                //construct html
+                let forumQuestionHtml = `<div class="usr-question" id="question_${question.id}">
+                                            <div class="usr_img">
+                                                <img src="images/resources/usrr-img1.png" alt="">
+                                            </div>
+                                            <div class="usr_quest">
+                                                <h3>${question.title}</h3>
+                                                <ul class="react-links">
+                                                    <li><a href="#" title=""><i class="fas fa-heart"></i>Vote 0</a></li>
+                                                    <li>
+                                                        <a href="#" title="">
+                                                            <i class="fas fa-comment-alt"></i>
+                                                            Comment 0
+                                                        </a>
+                                                    </li>
+                                                    <li><a href="#" title=""><i class="fas fa-eye"></i>Views 0</a></li>
+                                                </ul>
+                                                <ul class="quest-tags">
+                                                    ${tagList}
+                                                </ul>
+                                            </div>
+                                            <span class="quest-posted-time" data-date-string="${question.createdOn}">
+                                                <i class="fa fa-clock-o"></i>3 min ago
+                                            </span>
+                                         </div>`;
+
+                
+                let forumQuestions = document.querySelector(".forum-questions");
+                if (forumQuestions) {
+                    //append to page
+                    forumQuestions.insertAdjacentHTML("afterbegin", forumQuestionHtml);
+                } else {
+                    //reload to page for changes to take effect
+                    location.reload();
+                }
+
+                //get the empty state.
+                let emptyState = document.querySelector(".empty-state");
+                if (emptyState) {
+                    //hide the empty state
+                    emptyState.classList.add("d-none");
+                }
+
+                displayMessage("Forum post have been submitted.");
+                //close the modal
+                form.querySelector(".cancel").click();
+            } else {
+                if (response.errorType) {
+                    //model error occurred.
+                    response.errorModel.forEach(function (item, index) {
+                        //get the field with a wrong value.
+                        let errorSpan = form.querySelector('span[data-valmsg-for="' + capitalizeFirstLetter(item.key) + '"]');
+                        errorSpan.classList.remove("field-validation-valid");
+                        errorSpan.classList.add("field-validation-error");
+                        //show the first error from list of errors.
+                        errorSpan.textContent = item.errors[0];
+                    });
+                } else {
+                    //show error msg.
+                    validationSummaryBox.textContent = response.message;
+                    validationSummaryBox.classList.remove("d-none");
+                }
+            }
+        }
+    }));
 }
+
+
+//////////////////////////////////////////////////////FORUM-POST PAGE ////////////////////////////////////////////////////////
+if (location.pathname.toLowerCase().includes("posts")) {
+    let addCommentForm = document.querySelector("form#AddComment");
+    if (addCommentForm) {
+        //typing a comment.
+        addCommentForm.querySelector("textarea").addEventListener("keyup", function (e) {
+            //get the content of the input after trimming white-spaces
+            if (this.value.trim().length >= 1) {
+                //enable submit button if it's still disabled.
+                if (this.nextElementSibling.disabled) {
+                    this.nextElementSibling.disabled = false;
+                }
+            } else {
+                //disable submit button if it's enabled.
+                if (!this.nextElementSibling.disabled) {
+                    this.nextElementSibling.disabled = true;
+                }
+            }
+        });
+
+        //Submitting a comment
+        addCommentForm.addEventListener("submit", (async function (e) {
+            e.preventDefault();
+            //get questionId
+            let questionId = addCommentForm.dataset.postId;
+            //get comment
+            let comment = addCommentForm.querySelector("textarea").value.trim();
+            //submit form
+            var response = await postNewComment(questionId, addCommentForm);
+
+            if (response) {
+                if (response.success) {
+                    //success.
+                    //create new comment
+                    let now = moment();
+                    const fragment = document.createDocumentFragment();
+
+                    let newComment = document.createElement('li');
+                    let topWrapper = document.createElement('div');
+                    topWrapper.classList.add(["comment-list", "pb-0"]);
+                    let divBgImg = document.createElement('div');
+                    divBgImg.classList.add("bg-img");
+                    divBgImg.innerHTML = '<img src="/images/resources/pf-icon2.png" alt="">';
+                    let commentWrapper = document.createElement('div');
+                    commentWrapper.classList.add("comment");
+                    let h3 = document.createElement('h3');
+                    h3.textContent = response.currentUser;
+                    let dateWrapper = document.createElement('span');
+                    dateWrapper.dataset.dateString = `${now.format("YYYY-MM-DDTHH:mm:ss")}`;
+                    dateWrapper.innerHTML = `<img src="/images/clock.png" alt=""> ${now.fromNow()}`;
+                    let p = document.createElement('p');
+                    p.textContent = comment;
+
+                    //Append appropriate children.
+                    commentWrapper.append(h3, dateWrapper, p);
+                    topWrapper.append(divBgImg, commentWrapper);
+                    newComment.append(topWrapper);
+                    fragment.append(newComment);
+
+                    //Append to DOM
+                    document.querySelector(".comment-sec ul").prepend(newComment);
+
+                    //increment the total number of comment being displayed.
+                    let commentCountH3 = document.querySelector("post-comment-box").firstChild;
+                    //get number of comment(s)
+                    let commentCount = commentCountH3.textContent.trim().split(" ")[0];
+                    //increase by 1
+                    commentCountH3.textContent = `${++commentCount} ${(++commentCount > 1) ? 'Comments' : 'Comment'}`;
+                    //reset the form
+                    addCommentForm.reset();
+                    addCommentForm.querySelector("button").disabled = true;
+                } else {
+                    if (response.errorType) {
+                        //model error occurred.
+                        let errors;
+                        response.errorModel.forEach(function (item, index) {
+                            //get the first error from each field/property list of errors.
+                            errors += "\n" + item.errors[0];
+                        });
+                        alert(errors);
+                    } else {
+                        //error
+                        alert(response.message);
+                    }
+                }
+            }
+        }));
+
+    }
+}
+
+
 
 
 
@@ -793,7 +979,7 @@ if (location.pathname.toLowerCase().includes("settings")) {
     }));
 
 
-    /////////////////////////////////LOAD PENDING REQUESTS//////////////////////////////
+    /////////////////////////////////LOAD PENDING REQUESTS///////////////////////////////
     document.getElementById("nav-privcy-tab").addEventListener("click", (async function (e) {
         e.preventDefault();
         let thisElement = this;
@@ -1399,7 +1585,7 @@ if (location.pathname.toLowerCase().includes("settings")) {
 
 
 
-async function getTags() {
+async function fetchTags() {
     //get url
     let url = `${location.pathname}/FetchTags`;
     //get subscriptionRequest Container
@@ -1418,6 +1604,18 @@ async function getTags() {
             throw new Error(response.message);
         }
     }
+}
+
+function getSelectedTags() {
+    let tags = document.getElementById("forumForm").querySelectorAll(".tags-container .tag__name");
+    let selectedTags = [];
+    //check for emty or null.
+    if (tags.length) {
+        for (var tag of tags) {
+            selectedTags.push(tag.textContent);
+        }
+    }
+    return selectedTags;
 }
 
 /**

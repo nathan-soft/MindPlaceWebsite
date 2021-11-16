@@ -37,10 +37,22 @@
                 <span class="fa fa-search forum-nav__search-group__search-icon"></span>
             </div>
 
-            @*VISIBLE ON BIG SCREENS*@
+            
             <div class="align-self-center">
+                @*VISIBLE ON BIG SCREENS*@
                 <i class="fa fa-search font-weight-bold pr-2 align-middle forum-nav__search-icon" style="font-size: 20px; color:#e44d3a;"></i>
-                <input type="button" class="btn btn-primary ask-question" value="Ask a question" />
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Patient")) { 
+                        <input type="button" class="btn btn-primary ask-question" value="Ask a question" />
+                    }
+                }
+                else
+                {
+                    <a href="/Public/Login?ReturnUrl=@HttpContext.Request.Path" class="btn btn-primary ask-question--loggedin_false">
+                        Ask a question
+                    </a>
+                }
             </div>
         </div>
     </div>
@@ -50,7 +62,7 @@
     <div class="container">
         <div class="forum-questions-sec">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-8 mb-5 mb-lg-0">
                     @if(Model.Questions.Any())
                     {
                         <div class="forum-questions">
@@ -58,12 +70,12 @@
                             {
                                 <div class="usr-question" id="question_@question.Id">
                                     <div class="usr_img">
-                                        <img src="images/resources/usrr-img1.png" alt="">
+                                        <img src="images/resources/pf-icon1.png" alt="">
                                     </div>
                                     <div class="usr_quest">
-                                        <h3>@question.Title</h3>
+                                        <h3><a asp-page="ForumPost" asp-route-postId="@question.Id" class="text-dark">@question.Title</a></h3>
                                         <ul class="react-links">
-                                            <li><a href="#" title=""><i class="fas fa-heart"></i>Vote 150</a></li>
+                                            <li><a href="#" title=""><i class="fas fa-heart"></i>Vote 0</a></li>
                                             <li>
                                                 <a href="#" title="">
                                                     <i class="fas fa-comment-alt"></i>
@@ -77,7 +89,7 @@
                                                     }
                                                 </a>
                                             </li>
-                                            <li><a href="#" title=""><i class="fas fa-eye"></i>Views 50</a></li>
+                                            <li><a href="#" title=""><i class="fas fa-eye"></i>Views 0</a></li>
                                         </ul>
                                         <ul class="quest-tags">
                                             @foreach (var tag in question.Tags)
@@ -93,7 +105,7 @@
                             }
                         </div>
                         <nav aria-label="Page navigation example" class="full-pagi">
-                            <ul class="pagination">
+                            <ul class="pagination justify-content-center">
                                 @if(Model.Pager.CurrentPage > 1)
                                 {
                                     <li class="page-item">
@@ -105,8 +117,9 @@
 
                                 @foreach (var p in Model.Pager.Pages)
                                 {
-                                    <li class="page-item @(p == Model.Pager.CurrentPage ? "active" : "")">
-                                        <a class="page-link" asp-page="Forum" asp-route-pageNumber="@p">@p</a>
+                                    <li class="page-item">
+                                        <a class="page-link @(p == Model.Pager.CurrentPage ? "active" : "")" 
+                                           asp-page="Forum" asp-route-pageNumber="@p">@p</a>
                                     </li>
                                 }
 
@@ -204,23 +217,24 @@
     <div class="overview-edit">
         <h3>Ask a Question</h3>
         <div>
-            <form id="forumForm" autocomplete="off">
+            <form id="forumForm" autocomplete="off" method="post">
+                <div id="validationSummary" class="text-danger mb-2 d-none"></div>
                 <div class="form-group">
-                    <input type="text" class="px-2 mb-0" name="question" placeholder="Question Title">
+                    <input type="text" class="px-2 mb-0" asp-for="QuestionDetails.Title" placeholder="Question Title">
                     <span class="text-danger" asp-validation-for="QuestionDetails.Title"></span>
                 </div>
 
                 <section>
                     <div class="tags-container d-flex flex-wrap align-items-center w-100 border px-2 pb-1">
-                        <input type="text" class="mb-0 border-0 pl-0" name="tags" placeholder="Tags">
+                        <input type="text" class="mb-0 border-0 pl-0" placeholder="Tags">
                     </div>
-                    <span class="text-danger" asp-validation-for="QuestionDetails.Title"></span>
+                    <span class="text-danger" asp-validation-for="QuestionDetails.Tags"></span>
                 </section>
                 <section class="tags-container__suggestion-box shadow d-none">
                 </section>
 
                 <div class="form-group mt-3">
-                    <textarea class="px-2 mb-0" placeholder="Your question..."></textarea>
+                    <textarea class="px-2 mb-0" asp-for="QuestionDetails.Content" placeholder="Your question..."></textarea>
                     <span class="text-danger" asp-validation-for="QuestionDetails.Content"></span>
                 </div>
                 <button type="button" class="save">Submit</button>

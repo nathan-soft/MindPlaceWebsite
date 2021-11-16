@@ -79,13 +79,19 @@
                         </div>
                         <div class="form-group col-md-12" style="padding: 0px">
                             <label asp-for="UserDetails.Country" class="control-label sr-only">Country</label>
-                            <input asp-for="UserDetails.Country" class="form-control" placeholder="Country" />
+                            @*<input asp-for="UserDetails.Country" class="form-control" placeholder="Country" />*@
+                            <select id="countryId" class="countries order-alpha form-control" asp-for="UserDetails.Country">
+                                <option value="">Select Country</option>
+                            </select>
                             <span asp-validation-for="UserDetails.Country" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-12" style="padding: 0px">
                             <label asp-for="UserDetails.State" class="control-label sr-only">State</label>
-                            <input asp-for="UserDetails.State" class="form-control" placeholder="State" />
-                            <span asp-validation-for="UserDetails.Country" class="text-danger"></span>
+                            @*<input  class="form-control" placeholder="State" />*@
+                            <select id="stateId" class="states order-alpha form-control" asp-for="UserDetails.State">
+                                <option value="">Select State</option>
+                            </select>
+                            <span asp-validation-for="UserDetails.State" class="text-danger"></span>
                         </div>
                         <h6 class="text-left">Gender</h6>
                         <div class="form-group border text-left p-2 pl-3 rounded bg-white mb-0">
@@ -142,4 +148,8 @@
     </div>
 
 </div>
+
+@section Scripts{ 
+    <script src="//geodata.solutions/includes/countrystate.js"></script>
+}
 

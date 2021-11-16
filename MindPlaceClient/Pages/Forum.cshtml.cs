@@ -37,7 +37,7 @@ namespace MindPlaceClient.Pages
         {
             try
             {
-                var response = await _mindPlaceClient.ForumGETAsync(FilterText, SearchText, pageNumber, PageSize);
+                var response = await _mindPlaceClient.GetForumQuestionsAsync(FilterText, SearchText, pageNumber, PageSize);
                 Questions = response.Data.ToList();
                 // get pagination info for the current page
                 Pager = new Pager(response.Meta.TotalCount, pageNumber, PageSize, 5);
@@ -55,7 +55,7 @@ namespace MindPlaceClient.Pages
         {
             try
             {
-                var tags = await _mindPlaceClient.TagsAllAsync();
+                var tags = await _mindPlaceClient.ListTagsAsync();
                 return new JsonResult(new { Success = true, Data = tags });
             }
             catch (Exception ex)
@@ -68,12 +68,17 @@ namespace MindPlaceClient.Pages
 
         public async Task<ActionResult> OnPostAsync(ForumQuestionDto questionDetails)
         {
+            if (questionDetails.Tags.Count < 1 || questionDetails.Tags.Contains(null))
+            {
+                ModelState.TryAddModelError("questionDetails.Tags", "Please enter a valid question tag.");
+            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
                     TryAddBearerTokenToHeader();
-                    var questionResponse = await _mindPlaceClient.ForumPOSTAsync(questionDetails);
+                    var questionResponse = await _mindPlaceClient.AddForumQuestionAsync(questionDetails);
 
                     return new JsonResult(new { Success = true, Data = questionResponse });
                 }

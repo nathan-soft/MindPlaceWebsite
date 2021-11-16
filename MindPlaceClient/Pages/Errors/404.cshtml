@@ -1,0 +1,22 @@
+﻿@page
+@model MindPlaceClient.Pages.Errors._404Model
+@{
+    ViewData["Title"] = "Status Code " + @Model.ErrorStatusCode +"";
+}
+
+<main class="d-flex flex-column text-center align-items-center">
+    <h3 class="font-weight-bolder mb-2">Sorry, this page isn't available</h3>
+
+    <p>
+        The link you've followed may be broken, or the page may have been removed.
+        @if (HttpContext.User.Identity.IsAuthenticated)
+        {
+            if (HttpContext.User.IsInRole("Professional") || HttpContext.User.IsInRole("Patient"))
+            {
+                <a asp-page="/DashBoard/@User.GetLoggedOnUsername()">Go back to Mindplace.</a>
+            }
+        }
+    </p>
+
+
+</main>

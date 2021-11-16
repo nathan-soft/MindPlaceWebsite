@@ -10,7 +10,7 @@
         "tags": [
           "Auth"
         ],
-        "operationId": "login",
+        "operationId": "Login",
         "requestBody": {
           "content": {
             "application/json-patch+json": {
@@ -54,7 +54,7 @@
         "tags": [
           "Auth"
         ],
-        "operationId": "register-user",
+        "operationId": "CreateUser",
         "requestBody": {
           "content": {
             "application/json-patch+json": {
@@ -103,12 +103,56 @@
         }
       }
     },
+    "/api/Auth/send-email-token": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "SendEmailToken",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailTokenDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailTokenDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailTokenDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailTokenDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Follow": {
       "post": {
         "tags": [
           "Follow"
         ],
-        "operationId": "FollowPOST",
+        "operationId": "CreateSubscriptionRequest",
         "requestBody": {
           "content": {
             "application/json-patch+json": {
@@ -152,7 +196,7 @@
         "tags": [
           "Follow"
         ],
-        "operationId": "FollowPUT",
+        "operationId": "AcceptSubscriptionRequest",
         "parameters": [
           {
             "name": "id",
@@ -205,7 +249,7 @@
         "tags": [
           "Follow"
         ],
-        "operationId": "FollowDELETE",
+        "operationId": "DeleteSubscriptionRequest",
         "parameters": [
           {
             "name": "id",
@@ -236,7 +280,7 @@
         "tags": [
           "Qualifications"
         ],
-        "operationId": "QualificationsAll",
+        "operationId": "FetchUserQualifications",
         "responses": {
           "200": {
             "description": "Success",
@@ -267,7 +311,7 @@
         "tags": [
           "Qualifications"
         ],
-        "operationId": "QualificationsPOST",
+        "operationId": "AddQualification",
         "requestBody": {
           "content": {
             "application/json-patch+json": {
@@ -341,7 +385,7 @@
         "tags": [
           "Qualifications"
         ],
-        "operationId": "QualificationsPUT",
+        "operationId": "UpdateQualification",
         "parameters": [
           {
             "name": "qualificationId",
@@ -434,7 +478,7 @@
         "tags": [
           "Qualifications"
         ],
-        "operationId": "QualificationsDELETE",
+        "operationId": "DeleteQualification",
         "parameters": [
           {
             "name": "qualificationId",
@@ -495,7 +539,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "QuestionsAll",
+        "operationId": "GetQuestions",
         "responses": {
           "200": {
             "description": "Success",
@@ -516,7 +560,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "QuestionsPOST",
+        "operationId": "AddQuestion",
         "requestBody": {
           "content": {
             "application/json-patch+json": {
@@ -560,7 +604,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "forumGET",
+        "operationId": "GetForumQuestions",
         "parameters": [
           {
             "name": "FilterText",
@@ -610,7 +654,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "forumPOST",
+        "operationId": "AddForumQuestion",
         "requestBody": {
           "content": {
             "application/json-patch+json": {
@@ -636,12 +680,42 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/QuestionResponseDto"
+                  "$ref": "#/components/schemas/ForumQuestionResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -654,7 +728,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "QuestionsGET",
+        "operationId": "GetQuestion",
         "parameters": [
           {
             "name": "questionId",
@@ -672,7 +746,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/QuestionResponseDto"
+                  "$ref": "#/components/schemas/ForumQuestionResponseDto"
                 }
               }
             }
@@ -683,7 +757,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "QuestionsPUT",
+        "operationId": "EditQuestion",
         "parameters": [
           {
             "name": "questionId",
@@ -756,7 +830,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "QuestionsDELETE",
+        "operationId": "DeleteQuestion",
         "parameters": [
           {
             "name": "questionId",
@@ -783,11 +857,40 @@
       }
     },
     "/api/Questions/forum/{questionId}": {
+      "get": {
+        "tags": [
+          "Questions"
+        ],
+        "operationId": "GetForumQuestion",
+        "parameters": [
+          {
+            "name": "questionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForumPostResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
       "put": {
         "tags": [
           "Questions"
         ],
-        "operationId": "forumPUT",
+        "operationId": "EditForumQuestion",
         "parameters": [
           {
             "name": "questionId",
@@ -829,7 +932,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/QuestionResponseDto"
+                  "$ref": "#/components/schemas/ForumQuestionResponseDto"
                 }
               }
             }
@@ -862,7 +965,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "commentsAll",
+        "operationId": "GetComments",
         "parameters": [
           {
             "name": "questionId",
@@ -894,7 +997,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "commentsPOST",
+        "operationId": "AddComment",
         "parameters": [
           {
             "name": "questionId",
@@ -931,12 +1034,42 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CommentResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -949,7 +1082,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "commentsGET",
+        "operationId": "GetComment",
         "parameters": [
           {
             "name": "questionId",
@@ -987,7 +1120,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "commentsPUT",
+        "operationId": "EditComment",
         "parameters": [
           {
             "name": "questionId",
@@ -1069,7 +1202,7 @@
         "tags": [
           "Questions"
         ],
-        "operationId": "commentsDELETE",
+        "operationId": "DeleteComment",
         "parameters": [
           {
             "name": "questionId",
@@ -1109,7 +1242,7 @@
         "tags": [
           "Tags"
         ],
-        "operationId": "TagsAll",
+        "operationId": "ListTags",
         "responses": {
           "200": {
             "description": "Success",
@@ -1140,7 +1273,7 @@
         "tags": [
           "Tags"
         ],
-        "operationId": "Tags",
+        "operationId": "AddTag",
         "requestBody": {
           "content": {
             "application/json-patch+json": {
@@ -1214,7 +1347,7 @@
         "tags": [
           "Users"
         ],
-        "operationId": "Users",
+        "operationId": "GetUser",
         "parameters": [
           {
             "name": "username",
@@ -1244,7 +1377,7 @@
         "tags": [
           "Users"
         ],
-        "operationId": "professionals",
+        "operationId": "GetProfessionals",
         "responses": {
           "200": {
             "description": "Success",
@@ -1267,7 +1400,7 @@
         "tags": [
           "Users"
         ],
-        "operationId": "suggested-professionals",
+        "operationId": "GetSuggestedProfessionals",
         "responses": {
           "200": {
             "description": "Success",
@@ -1290,7 +1423,7 @@
         "tags": [
           "Users"
         ],
-        "operationId": "confirm-email",
+        "operationId": "ConfirmUserEmail",
         "requestBody": {
           "content": {
             "application/json-patch+json": {
@@ -1334,7 +1467,7 @@
         "tags": [
           "Users"
         ],
-        "operationId": "notifications",
+        "operationId": "GetUserNotifications",
         "parameters": [
           {
             "name": "username",
@@ -1367,7 +1500,7 @@
         "tags": [
           "Users"
         ],
-        "operationId": "subscription-requests",
+        "operationId": "GetUserSubscriptionRequests",
         "parameters": [
           {
             "name": "username",
@@ -1400,7 +1533,7 @@
         "tags": [
           "Users"
         ],
-        "operationId": "change-password",
+        "operationId": "ChangePassword",
         "parameters": [
           {
             "name": "username",
@@ -1454,7 +1587,7 @@
         "tags": [
           "WorkExperience"
         ],
-        "operationId": "WorkExperienceAll",
+        "operationId": "FetchUserWorkExperiences",
         "responses": {
           "200": {
             "description": "Success",
@@ -1485,7 +1618,7 @@
         "tags": [
           "WorkExperience"
         ],
-        "operationId": "WorkExperiencePOST",
+        "operationId": "AddWorkExperience",
         "requestBody": {
           "content": {
             "application/json-patch+json": {
@@ -1559,7 +1692,7 @@
         "tags": [
           "WorkExperience"
         ],
-        "operationId": "WorkExperiencePUT",
+        "operationId": "UpdateWorkExperience",
         "parameters": [
           {
             "name": "workExperienceId",
@@ -1652,7 +1785,7 @@
         "tags": [
           "WorkExperience"
         ],
-        "operationId": "WorkExperienceDELETE",
+        "operationId": "DeleteWorkExperience",
         "parameters": [
           {
             "name": "workExperienceId",
@@ -1711,6 +1844,27 @@
   },
   "components": {
     "schemas": {
+      "AbbrvCommentResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "user": {
+            "$ref": "#/components/schemas/AbbrvUser"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "AbbrvUser": {
         "type": "object",
         "additionalProperties": false,
@@ -1797,6 +1951,65 @@
           },
           "token": {
             "type": "string"
+          }
+        }
+      },
+      "EmailTokenDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "username"
+        ],
+        "properties": {
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "ForumPostResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "user": {
+            "$ref": "#/components/schemas/AbbrvUser"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "commentCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "viewCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tags": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "topComments": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/AbbrvCommentResponseDto"
+            }
           }
         }
       },
@@ -1938,6 +2151,10 @@
           "dob": {
             "type": "string",
             "format": "date"
+          },
+          "referralCode": {
+            "type": "string",
+            "nullable": true
           },
           "state": {
             "type": "string"

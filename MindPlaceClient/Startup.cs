@@ -53,6 +53,8 @@ namespace MindPlaceClient
                 app.UseHsts();
             }
 
+            app.UseStatusCodePagesWithReExecute("/Errors/404", "?code={0}");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

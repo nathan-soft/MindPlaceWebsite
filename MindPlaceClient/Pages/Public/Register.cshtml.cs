@@ -34,11 +34,16 @@ namespace MindPlaceClient.Pages.Public
 
         public async Task<ActionResult> OnPostAsync()
         {
+            if ((DateTime.Now.Year - UserDetails.Dob.Year) < 16)
+            {
+                ModelState.TryAddModelError("UserDetails.Dob", "You have to be at least 16 years old to register on Mindplace.");
+            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var response = await _mindPlaceClient.RegisterUserAsync(UserDetails);
+                    var response = await _mindPlaceClient.CreateUserAsync(UserDetails);
                     return Redirect("/Public/Register?action=confirmEmail");
                 }
                 catch (ApiException ex) when (!string.IsNullOrWhiteSpace(ex.Response) && ex.Response.Contains("detail"))

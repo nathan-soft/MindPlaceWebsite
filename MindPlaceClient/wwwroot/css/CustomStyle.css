@@ -531,6 +531,97 @@ span.tag__name {
 
 
 
+
+
+/*************************** FORUM POST PAGE ******************************/
+
+.ask-question--loggedin_false {
+    padding: 10px 25px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 3px;
+}
+
+.post-comment-box .comment-sec ul li {
+    padding: 23px 0;
+}
+
+.post-comment-box .comment-sec ul li:not(:last-child) {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.post-comment-box .comment h3 {
+    margin-bottom: 9px;
+    font-size: 16px;
+}
+
+comment-section{
+    max-height: 533px;
+    overflow: auto;
+}
+
+.post_comment_sec form textarea {
+    float: left;
+    width: 100%;
+    height: 130px;
+    border: 1px solid #dce2eb;
+    padding: 15px;
+    resize: none;
+}
+
+.post_comment_sec form button {
+    color: #ffffff;
+    font-size: 14px;
+    background-color: #e44d3a;
+    padding: 10px 25px;
+    border: 0;
+    font-weight: 600;
+    margin-top: 20px;
+    cursor: pointer;
+}
+    .post_comment_sec form button:disabled {
+        background-color: #fff;
+        color: #bec3c9;
+        border: 1px solid #bec3c9;
+        cursor: default;
+    }
+
+@media (max-width: 410px) {
+    .quest-tags li {
+         width: auto; 
+    }
+}
+
+
+@media (max-width: 395px){
+    .forum-post-view{
+        border-bottom:none;
+    }
+    .post-comment-box {
+        padding: 0;
+    }
+        .post-comment-box > h3 {
+            padding: 13px 20px;
+            border-top: 1px solid #e5e5e5;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .post-comment-box > .user-poster {
+            padding: 20px;
+        }
+    .comment-section {
+        padding-bottom: 0;
+        border-bottom: 1px solid #e5e5e5;
+    }
+}
+
+
+
+
+
+
+
+
 /*************************** PROFESSIONAL PAGE ******************************/
 
 .view-more-pro {

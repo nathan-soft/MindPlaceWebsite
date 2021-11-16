@@ -45,7 +45,7 @@ namespace MindPlaceClient.Pages
             try
             {
                 TryAddBearerTokenToHeader();
-                var userNotifications = await _mindPlaceClient.NotificationsAsync(User.GetLoggedOnUsername());
+                var userNotifications = await _mindPlaceClient.GetUserNotificationsAsync(User.GetLoggedOnUsername());
                 UserNotifications = userNotifications.ToList();
             }
             catch (Exception ex)
@@ -94,7 +94,7 @@ namespace MindPlaceClient.Pages
             try
             {
                 TryAddBearerTokenToHeader();
-                var pendingRequests = await _mindPlaceClient.SubscriptionRequestsAsync(User.GetLoggedOnUsername());
+                var pendingRequests = await _mindPlaceClient.GetUserSubscriptionRequestsAsync(User.GetLoggedOnUsername());
 
                 return new JsonResult(new { Success = true, Data = pendingRequests.ToList(), CurrentUserRole = User.GetPrimaryRole() });
             }
@@ -117,7 +117,7 @@ namespace MindPlaceClient.Pages
             {
                 TryAddBearerTokenToHeader();
                 //send submitted data.
-                var response = await _mindPlaceClient.FollowPUTAsync(requestId, detail);
+                var response = await _mindPlaceClient.AcceptSubscriptionRequestAsync(requestId, detail);
                 return new JsonResult(new { Success = true });
 
             }
@@ -140,7 +140,7 @@ namespace MindPlaceClient.Pages
             {
                 TryAddBearerTokenToHeader();
                 //send submitted data.
-                var response = await _mindPlaceClient.FollowDELETEAsync(requestId);
+                var response = await _mindPlaceClient.DeleteSubscriptionRequestAsync(requestId);
                 return new JsonResult(new { Success = true });
 
             }
@@ -158,7 +158,7 @@ namespace MindPlaceClient.Pages
             {
                 TryAddBearerTokenToHeader();
                 //send submitted data.
-                var response = await _mindPlaceClient.WorkExperienceAllAsync();
+                var response = await _mindPlaceClient.FetchUserWorkExperiencesAsync();
                 return new JsonResult(new { Success = true, Data = response });
             }
             catch (Exception ex)
@@ -177,7 +177,7 @@ namespace MindPlaceClient.Pages
                 {
                     TryAddBearerTokenToHeader();
                     //send submitted data.
-                    var response = await _mindPlaceClient.WorkExperiencePOSTAsync(workExperience);
+                    var response = await _mindPlaceClient.AddWorkExperienceAsync(workExperience);
                     return new JsonResult(new { Success = true, Data = response });
 
                 }
@@ -208,7 +208,7 @@ namespace MindPlaceClient.Pages
                 {
                     TryAddBearerTokenToHeader();
                     //send submitted data.
-                    var response = await _mindPlaceClient.WorkExperiencePUTAsync(workExperienceId, workExperience);
+                    var response = await _mindPlaceClient.UpdateWorkExperienceAsync(workExperienceId, workExperience);
                     return new JsonResult(new { Success = true, Data = response });
                 }
                 catch (Exception ex)
@@ -242,7 +242,7 @@ namespace MindPlaceClient.Pages
             {
                 TryAddBearerTokenToHeader();
                 //send submitted data.
-                var response = await _mindPlaceClient.WorkExperienceDELETEAsync(workExperienceId);
+                var response = await _mindPlaceClient.DeleteWorkExperienceAsync(workExperienceId);
                 return new JsonResult(new { Success = true });
 
             }
@@ -263,7 +263,7 @@ namespace MindPlaceClient.Pages
             {
                 TryAddBearerTokenToHeader();
                 //send submitted data.
-                var response = await _mindPlaceClient.QualificationsAllAsync();
+                var response = await _mindPlaceClient.FetchUserQualificationsAsync();
                 return new JsonResult(new { Success = true, Data = response });
             }
             catch (Exception ex)
@@ -282,7 +282,7 @@ namespace MindPlaceClient.Pages
                 {
                     TryAddBearerTokenToHeader();
                     //send submitted data.
-                    var response = await _mindPlaceClient.QualificationsPOSTAsync(qualification);
+                    var response = await _mindPlaceClient.AddQualificationAsync(qualification);
                     return new JsonResult(new { Success = true, Data = response });
                 }
                 catch (Exception ex)
@@ -314,7 +314,7 @@ namespace MindPlaceClient.Pages
                 {
                     TryAddBearerTokenToHeader();
                     //send submitted data.
-                    var response = await _mindPlaceClient.QualificationsPUTAsync(qualificationId, qualification);
+                    var response = await _mindPlaceClient.UpdateQualificationAsync(qualificationId, qualification);
                     return new JsonResult(new { Success = true, Data = response });
                 }
                 catch (Exception ex)
@@ -349,7 +349,7 @@ namespace MindPlaceClient.Pages
             {
                 TryAddBearerTokenToHeader();
                 //send submitted data.
-                var response = await _mindPlaceClient.QualificationsDELETEAsync(qualificationId);
+                var response = await _mindPlaceClient.DeleteQualificationAsync(qualificationId);
                 return new JsonResult(new { Success = true });
 
             }

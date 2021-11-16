@@ -130,15 +130,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ResponseMessageDto> RegisterUserAsync(NewUserDto body)
+        public System.Threading.Tasks.Task<ResponseMessageDto> CreateUserAsync(NewUserDto body)
         {
-            return RegisterUserAsync(body, System.Threading.CancellationToken.None);
+            return CreateUserAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseMessageDto> RegisterUserAsync(NewUserDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ResponseMessageDto> CreateUserAsync(NewUserDto body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Auth/register-user");
@@ -217,15 +217,92 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ResponseMessageDto> FollowPOSTAsync(SubscriptionRequestDto body)
+        public System.Threading.Tasks.Task<string> SendEmailTokenAsync(EmailTokenDto body)
         {
-            return FollowPOSTAsync(body, System.Threading.CancellationToken.None);
+            return SendEmailTokenAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseMessageDto> FollowPOSTAsync(SubscriptionRequestDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<string> SendEmailTokenAsync(EmailTokenDto body, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Auth/send-email-token");
+    
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json-patch+json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+    
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+    
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<string>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ResponseMessageDto> CreateSubscriptionRequestAsync(SubscriptionRequestDto body)
+        {
+            return CreateSubscriptionRequestAsync(body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ResponseMessageDto> CreateSubscriptionRequestAsync(SubscriptionRequestDto body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Follow");
@@ -294,15 +371,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ResponseMessageDto> FollowPUTAsync(int id, UpdateSubscriptionRequestDto body)
+        public System.Threading.Tasks.Task<ResponseMessageDto> AcceptSubscriptionRequestAsync(int id, UpdateSubscriptionRequestDto body)
         {
-            return FollowPUTAsync(id, body, System.Threading.CancellationToken.None);
+            return AcceptSubscriptionRequestAsync(id, body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseMessageDto> FollowPUTAsync(int id, UpdateSubscriptionRequestDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ResponseMessageDto> AcceptSubscriptionRequestAsync(int id, UpdateSubscriptionRequestDto body, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -375,15 +452,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ResponseMessageDto> FollowDELETEAsync(int id)
+        public System.Threading.Tasks.Task<ResponseMessageDto> DeleteSubscriptionRequestAsync(int id)
         {
-            return FollowDELETEAsync(id, System.Threading.CancellationToken.None);
+            return DeleteSubscriptionRequestAsync(id, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseMessageDto> FollowDELETEAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ResponseMessageDto> DeleteSubscriptionRequestAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -453,15 +530,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<QualificationResponseDto>> QualificationsAllAsync()
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<QualificationResponseDto>> FetchUserQualificationsAsync()
         {
-            return QualificationsAllAsync(System.Threading.CancellationToken.None);
+            return FetchUserQualificationsAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<QualificationResponseDto>> QualificationsAllAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<QualificationResponseDto>> FetchUserQualificationsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Qualifications");
@@ -537,15 +614,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<QualificationResponseDto> QualificationsPOSTAsync(QualificationDto body)
+        public System.Threading.Tasks.Task<QualificationResponseDto> AddQualificationAsync(QualificationDto body)
         {
-            return QualificationsPOSTAsync(body, System.Threading.CancellationToken.None);
+            return AddQualificationAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<QualificationResponseDto> QualificationsPOSTAsync(QualificationDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<QualificationResponseDto> AddQualificationAsync(QualificationDto body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Qualifications");
@@ -644,15 +721,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<QualificationResponseDto> QualificationsPUTAsync(int qualificationId, QualificationDto body)
+        public System.Threading.Tasks.Task<QualificationResponseDto> UpdateQualificationAsync(int qualificationId, QualificationDto body)
         {
-            return QualificationsPUTAsync(qualificationId, body, System.Threading.CancellationToken.None);
+            return UpdateQualificationAsync(qualificationId, body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<QualificationResponseDto> QualificationsPUTAsync(int qualificationId, QualificationDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<QualificationResponseDto> UpdateQualificationAsync(int qualificationId, QualificationDto body, System.Threading.CancellationToken cancellationToken)
         {
             if (qualificationId == null)
                 throw new System.ArgumentNullException("qualificationId");
@@ -765,15 +842,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ResponseMessageDto> QualificationsDELETEAsync(int qualificationId)
+        public System.Threading.Tasks.Task<ResponseMessageDto> DeleteQualificationAsync(int qualificationId)
         {
-            return QualificationsDELETEAsync(qualificationId, System.Threading.CancellationToken.None);
+            return DeleteQualificationAsync(qualificationId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseMessageDto> QualificationsDELETEAsync(int qualificationId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ResponseMessageDto> DeleteQualificationAsync(int qualificationId, System.Threading.CancellationToken cancellationToken)
         {
             if (qualificationId == null)
                 throw new System.ArgumentNullException("qualificationId");
@@ -867,15 +944,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<QuestionResponseDto>> QuestionsAllAsync()
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<QuestionResponseDto>> GetQuestionsAsync()
         {
-            return QuestionsAllAsync(System.Threading.CancellationToken.None);
+            return GetQuestionsAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<QuestionResponseDto>> QuestionsAllAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<QuestionResponseDto>> GetQuestionsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Questions");
@@ -941,15 +1018,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<QuestionResponseDto> QuestionsPOSTAsync(QuestionDto body)
+        public System.Threading.Tasks.Task<QuestionResponseDto> AddQuestionAsync(QuestionDto body)
         {
-            return QuestionsPOSTAsync(body, System.Threading.CancellationToken.None);
+            return AddQuestionAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<QuestionResponseDto> QuestionsPOSTAsync(QuestionDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<QuestionResponseDto> AddQuestionAsync(QuestionDto body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Questions");
@@ -1018,15 +1095,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ForumQuestionResponseDtoPaginatedResponse> ForumGETAsync(string filterText, string searchText, int? pageNumber, int? pageSize)
+        public System.Threading.Tasks.Task<ForumQuestionResponseDtoPaginatedResponse> GetForumQuestionsAsync(string filterText, string searchText, int? pageNumber, int? pageSize)
         {
-            return ForumGETAsync(filterText, searchText, pageNumber, pageSize, System.Threading.CancellationToken.None);
+            return GetForumQuestionsAsync(filterText, searchText, pageNumber, pageSize, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ForumQuestionResponseDtoPaginatedResponse> ForumGETAsync(string filterText, string searchText, int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ForumQuestionResponseDtoPaginatedResponse> GetForumQuestionsAsync(string filterText, string searchText, int? pageNumber, int? pageSize, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Questions/forum?");
@@ -1109,15 +1186,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<QuestionResponseDto> ForumPOSTAsync(ForumQuestionDto body)
+        public System.Threading.Tasks.Task<ForumQuestionResponseDto> AddForumQuestionAsync(ForumQuestionDto body)
         {
-            return ForumPOSTAsync(body, System.Threading.CancellationToken.None);
+            return AddForumQuestionAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<QuestionResponseDto> ForumPOSTAsync(ForumQuestionDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ForumQuestionResponseDto> AddForumQuestionAsync(ForumQuestionDto body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Questions/forum");
@@ -1155,9 +1232,9 @@ namespace MindPlaceClient.MindPlaceApiService
                         ProcessResponse(client_, response_);
     
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<QuestionResponseDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ForumQuestionResponseDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1165,9 +1242,33 @@ namespace MindPlaceClient.MindPlaceApiService
                             return objectResponse_.Object;
                         }
                         else
+                        if (status_ == 400)
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -1186,15 +1287,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<QuestionResponseDto> QuestionsGETAsync(int questionId)
+        public System.Threading.Tasks.Task<ForumQuestionResponseDto> GetQuestionAsync(int questionId)
         {
-            return QuestionsGETAsync(questionId, System.Threading.CancellationToken.None);
+            return GetQuestionAsync(questionId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<QuestionResponseDto> QuestionsGETAsync(int questionId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ForumQuestionResponseDto> GetQuestionAsync(int questionId, System.Threading.CancellationToken cancellationToken)
         {
             if (questionId == null)
                 throw new System.ArgumentNullException("questionId");
@@ -1235,7 +1336,7 @@ namespace MindPlaceClient.MindPlaceApiService
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<QuestionResponseDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ForumQuestionResponseDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1264,15 +1365,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<QuestionResponseDto> QuestionsPUTAsync(int questionId, QuestionDto body)
+        public System.Threading.Tasks.Task<QuestionResponseDto> EditQuestionAsync(int questionId, QuestionDto body)
         {
-            return QuestionsPUTAsync(questionId, body, System.Threading.CancellationToken.None);
+            return EditQuestionAsync(questionId, body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<QuestionResponseDto> QuestionsPUTAsync(int questionId, QuestionDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<QuestionResponseDto> EditQuestionAsync(int questionId, QuestionDto body, System.Threading.CancellationToken cancellationToken)
         {
             if (questionId == null)
                 throw new System.ArgumentNullException("questionId");
@@ -1365,15 +1466,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ResponseMessageDto> QuestionsDELETEAsync(int questionId)
+        public System.Threading.Tasks.Task<ResponseMessageDto> DeleteQuestionAsync(int questionId)
         {
-            return QuestionsDELETEAsync(questionId, System.Threading.CancellationToken.None);
+            return DeleteQuestionAsync(questionId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseMessageDto> QuestionsDELETEAsync(int questionId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ResponseMessageDto> DeleteQuestionAsync(int questionId, System.Threading.CancellationToken cancellationToken)
         {
             if (questionId == null)
                 throw new System.ArgumentNullException("questionId");
@@ -1443,15 +1544,93 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<QuestionResponseDto> ForumPUTAsync(int questionId, ForumQuestionDto body)
+        public System.Threading.Tasks.Task<ForumPostResponseDto> GetForumQuestionAsync(int questionId)
         {
-            return ForumPUTAsync(questionId, body, System.Threading.CancellationToken.None);
+            return GetForumQuestionAsync(questionId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<QuestionResponseDto> ForumPUTAsync(int questionId, ForumQuestionDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ForumPostResponseDto> GetForumQuestionAsync(int questionId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (questionId == null)
+                throw new System.ArgumentNullException("questionId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Questions/forum/{questionId}");
+            urlBuilder_.Replace("{questionId}", System.Uri.EscapeDataString(ConvertToString(questionId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+    
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+    
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ForumPostResponseDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+    
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ForumQuestionResponseDto> EditForumQuestionAsync(int questionId, ForumQuestionDto body)
+        {
+            return EditForumQuestionAsync(questionId, body, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ForumQuestionResponseDto> EditForumQuestionAsync(int questionId, ForumQuestionDto body, System.Threading.CancellationToken cancellationToken)
         {
             if (questionId == null)
                 throw new System.ArgumentNullException("questionId");
@@ -1495,7 +1674,7 @@ namespace MindPlaceClient.MindPlaceApiService
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<QuestionResponseDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ForumQuestionResponseDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1544,15 +1723,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<CommentResponseDto>> CommentsAllAsync(int questionId)
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<CommentResponseDto>> GetCommentsAsync(int questionId)
         {
-            return CommentsAllAsync(questionId, System.Threading.CancellationToken.None);
+            return GetCommentsAsync(questionId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<CommentResponseDto>> CommentsAllAsync(int questionId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<CommentResponseDto>> GetCommentsAsync(int questionId, System.Threading.CancellationToken cancellationToken)
         {
             if (questionId == null)
                 throw new System.ArgumentNullException("questionId");
@@ -1622,15 +1801,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<CommentResponseDto> CommentsPOSTAsync(int questionId, CommentDto body)
+        public System.Threading.Tasks.Task<CommentResponseDto> AddCommentAsync(int questionId, CommentDto body)
         {
-            return CommentsPOSTAsync(questionId, body, System.Threading.CancellationToken.None);
+            return AddCommentAsync(questionId, body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<CommentResponseDto> CommentsPOSTAsync(int questionId, CommentDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CommentResponseDto> AddCommentAsync(int questionId, CommentDto body, System.Threading.CancellationToken cancellationToken)
         {
             if (questionId == null)
                 throw new System.ArgumentNullException("questionId");
@@ -1672,7 +1851,7 @@ namespace MindPlaceClient.MindPlaceApiService
                         ProcessResponse(client_, response_);
     
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<CommentResponseDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -1682,9 +1861,33 @@ namespace MindPlaceClient.MindPlaceApiService
                             return objectResponse_.Object;
                         }
                         else
+                        if (status_ == 400)
                         {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Bad Request", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Server Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("Error", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
                     }
                     finally
@@ -1703,15 +1906,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<CommentResponseDto> CommentsGETAsync(int questionId, int commentId)
+        public System.Threading.Tasks.Task<CommentResponseDto> GetCommentAsync(int questionId, int commentId)
         {
-            return CommentsGETAsync(questionId, commentId, System.Threading.CancellationToken.None);
+            return GetCommentAsync(questionId, commentId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<CommentResponseDto> CommentsGETAsync(int questionId, int commentId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CommentResponseDto> GetCommentAsync(int questionId, int commentId, System.Threading.CancellationToken cancellationToken)
         {
             if (questionId == null)
                 throw new System.ArgumentNullException("questionId");
@@ -1785,15 +1988,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<CommentResponseDto> CommentsPUTAsync(int questionId, int commentId, CommentDto body)
+        public System.Threading.Tasks.Task<CommentResponseDto> EditCommentAsync(int questionId, int commentId, CommentDto body)
         {
-            return CommentsPUTAsync(questionId, commentId, body, System.Threading.CancellationToken.None);
+            return EditCommentAsync(questionId, commentId, body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<CommentResponseDto> CommentsPUTAsync(int questionId, int commentId, CommentDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CommentResponseDto> EditCommentAsync(int questionId, int commentId, CommentDto body, System.Threading.CancellationToken cancellationToken)
         {
             if (questionId == null)
                 throw new System.ArgumentNullException("questionId");
@@ -1890,15 +2093,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ResponseMessageDto> CommentsDELETEAsync(int questionId, int commentId)
+        public System.Threading.Tasks.Task<ResponseMessageDto> DeleteCommentAsync(int questionId, int commentId)
         {
-            return CommentsDELETEAsync(questionId, commentId, System.Threading.CancellationToken.None);
+            return DeleteCommentAsync(questionId, commentId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseMessageDto> CommentsDELETEAsync(int questionId, int commentId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ResponseMessageDto> DeleteCommentAsync(int questionId, int commentId, System.Threading.CancellationToken cancellationToken)
         {
             if (questionId == null)
                 throw new System.ArgumentNullException("questionId");
@@ -1972,15 +2175,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TagResponseDto>> TagsAllAsync()
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TagResponseDto>> ListTagsAsync()
         {
-            return TagsAllAsync(System.Threading.CancellationToken.None);
+            return ListTagsAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TagResponseDto>> TagsAllAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TagResponseDto>> ListTagsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tags");
@@ -2056,15 +2259,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<QualificationResponseDto> TagsAsync(TagDto body)
+        public System.Threading.Tasks.Task<QualificationResponseDto> AddTagAsync(TagDto body)
         {
-            return TagsAsync(body, System.Threading.CancellationToken.None);
+            return AddTagAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<QualificationResponseDto> TagsAsync(TagDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<QualificationResponseDto> AddTagAsync(TagDto body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tags");
@@ -2163,15 +2366,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<UserResponseDto> UsersAsync(string username)
+        public System.Threading.Tasks.Task<UserResponseDto> GetUserAsync(string username)
         {
-            return UsersAsync(username, System.Threading.CancellationToken.None);
+            return GetUserAsync(username, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<UserResponseDto> UsersAsync(string username, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<UserResponseDto> GetUserAsync(string username, System.Threading.CancellationToken cancellationToken)
         {
             if (username == null)
                 throw new System.ArgumentNullException("username");
@@ -2241,15 +2444,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserResponseDto>> ProfessionalsAsync()
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserResponseDto>> GetProfessionalsAsync()
         {
-            return ProfessionalsAsync(System.Threading.CancellationToken.None);
+            return GetProfessionalsAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserResponseDto>> ProfessionalsAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<UserResponseDto>> GetProfessionalsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users/professionals");
@@ -2315,15 +2518,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AbbrvUser>> SuggestedProfessionalsAsync()
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AbbrvUser>> GetSuggestedProfessionalsAsync()
         {
-            return SuggestedProfessionalsAsync(System.Threading.CancellationToken.None);
+            return GetSuggestedProfessionalsAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AbbrvUser>> SuggestedProfessionalsAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<AbbrvUser>> GetSuggestedProfessionalsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users/suggested-professionals");
@@ -2389,15 +2592,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<string> ConfirmEmailAsync(EmailConfirmationDto body)
+        public System.Threading.Tasks.Task<string> ConfirmUserEmailAsync(EmailConfirmationDto body)
         {
-            return ConfirmEmailAsync(body, System.Threading.CancellationToken.None);
+            return ConfirmUserEmailAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<string> ConfirmEmailAsync(EmailConfirmationDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<string> ConfirmUserEmailAsync(EmailConfirmationDto body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Users/confirm-email");
@@ -2466,15 +2669,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<NotificationResponseDto>> NotificationsAsync(string username)
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<NotificationResponseDto>> GetUserNotificationsAsync(string username)
         {
-            return NotificationsAsync(username, System.Threading.CancellationToken.None);
+            return GetUserNotificationsAsync(username, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<NotificationResponseDto>> NotificationsAsync(string username, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<NotificationResponseDto>> GetUserNotificationsAsync(string username, System.Threading.CancellationToken cancellationToken)
         {
             if (username == null)
                 throw new System.ArgumentNullException("username");
@@ -2544,15 +2747,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SubscriptionResponseDto>> SubscriptionRequestsAsync(string username)
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SubscriptionResponseDto>> GetUserSubscriptionRequestsAsync(string username)
         {
-            return SubscriptionRequestsAsync(username, System.Threading.CancellationToken.None);
+            return GetUserSubscriptionRequestsAsync(username, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SubscriptionResponseDto>> SubscriptionRequestsAsync(string username, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<SubscriptionResponseDto>> GetUserSubscriptionRequestsAsync(string username, System.Threading.CancellationToken cancellationToken)
         {
             if (username == null)
                 throw new System.ArgumentNullException("username");
@@ -2703,15 +2906,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<WorkExperienceResponseDto>> WorkExperienceAllAsync()
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<WorkExperienceResponseDto>> FetchUserWorkExperiencesAsync()
         {
-            return WorkExperienceAllAsync(System.Threading.CancellationToken.None);
+            return FetchUserWorkExperiencesAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<WorkExperienceResponseDto>> WorkExperienceAllAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<WorkExperienceResponseDto>> FetchUserWorkExperiencesAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/WorkExperience");
@@ -2787,15 +2990,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<WorkExperienceResponseDto> WorkExperiencePOSTAsync(WorkExperienceDto body)
+        public System.Threading.Tasks.Task<WorkExperienceResponseDto> AddWorkExperienceAsync(WorkExperienceDto body)
         {
-            return WorkExperiencePOSTAsync(body, System.Threading.CancellationToken.None);
+            return AddWorkExperienceAsync(body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<WorkExperienceResponseDto> WorkExperiencePOSTAsync(WorkExperienceDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<WorkExperienceResponseDto> AddWorkExperienceAsync(WorkExperienceDto body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/WorkExperience");
@@ -2894,15 +3097,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<WorkExperienceResponseDto> WorkExperiencePUTAsync(int workExperienceId, WorkExperienceDto body)
+        public System.Threading.Tasks.Task<WorkExperienceResponseDto> UpdateWorkExperienceAsync(int workExperienceId, WorkExperienceDto body)
         {
-            return WorkExperiencePUTAsync(workExperienceId, body, System.Threading.CancellationToken.None);
+            return UpdateWorkExperienceAsync(workExperienceId, body, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<WorkExperienceResponseDto> WorkExperiencePUTAsync(int workExperienceId, WorkExperienceDto body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<WorkExperienceResponseDto> UpdateWorkExperienceAsync(int workExperienceId, WorkExperienceDto body, System.Threading.CancellationToken cancellationToken)
         {
             if (workExperienceId == null)
                 throw new System.ArgumentNullException("workExperienceId");
@@ -3015,15 +3218,15 @@ namespace MindPlaceClient.MindPlaceApiService
     
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ResponseMessageDto> WorkExperienceDELETEAsync(int workExperienceId)
+        public System.Threading.Tasks.Task<ResponseMessageDto> DeleteWorkExperienceAsync(int workExperienceId)
         {
-            return WorkExperienceDELETEAsync(workExperienceId, System.Threading.CancellationToken.None);
+            return DeleteWorkExperienceAsync(workExperienceId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ResponseMessageDto> WorkExperienceDELETEAsync(int workExperienceId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ResponseMessageDto> DeleteWorkExperienceAsync(int workExperienceId, System.Threading.CancellationToken cancellationToken)
         {
             if (workExperienceId == null)
                 throw new System.ArgumentNullException("workExperienceId");
@@ -3219,6 +3422,24 @@ namespace MindPlaceClient.MindPlaceApiService
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.2)")]
+    public partial class AbbrvCommentResponseDto 
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public AbbrvUser User { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("content", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Content { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("createdOn", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset CreatedOn { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.2)")]
     public partial class AbbrvUser 
     {
         [Newtonsoft.Json.JsonProperty("fullName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3287,6 +3508,49 @@ namespace MindPlaceClient.MindPlaceApiService
         [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Token { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.2)")]
+    public partial class EmailTokenDto 
+    {
+        [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Username { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.5.2.0 (Newtonsoft.Json v12.0.0.2)")]
+    public partial class ForumPostResponseDto 
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Id { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public AbbrvUser User { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Title { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("content", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Content { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("createdOn", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset CreatedOn { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("commentCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int CommentCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("viewCount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int ViewCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("tags", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<string> Tags { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("topComments", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.ICollection<AbbrvCommentResponseDto> TopComments { get; set; }
     
     
     }
@@ -3395,6 +3659,9 @@ namespace MindPlaceClient.MindPlaceApiService
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTimeOffset Dob { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("referralCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ReferralCode { get; set; }
     
         [Newtonsoft.Json.JsonProperty("state", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]

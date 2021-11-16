@@ -1638,6 +1638,7 @@ main {
 
 .bg-img {
     display: table-cell;
+    width:40px;
 }
 
     .bg-img img {
@@ -1651,7 +1652,7 @@ main {
 .comment {
     display: table-cell;
     vertical-align: top;
-    width: 100%;
+    width: calc(100% - 40px);
     padding-left: 10px;
 }
 

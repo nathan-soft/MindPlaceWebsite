@@ -1,0 +1,173 @@
+﻿@page "/forum/posts/{postId:int}/{handler?}"
+@model MindPlaceClient.Pages.ForumPostModel
+@{
+    ViewData["Title"] = "Forum";
+}
+
+
+<section class="forum-page">
+    <div class="container">
+        <div class="forum-questions-sec">
+            <div class="row">
+                <div class="col-lg-8 mb-5 mb-lg-0">
+                    <div class="forum-post-view">
+                        <div class="usr-question">
+                            <div class="usr_img">
+                                <img src="/images/resources/pf-icon1.png" alt="">
+                            </div>
+                            <div class="usr_quest">
+                                <h3>@Model.Post.Title</h3>
+                                <span><i class="fa fa-clock-o"></i>3 min ago</span>
+                                <ul class="react-links d-none">
+                                    <li><a href="#" title=""><i class="fa fa-heart"></i> Vote 150</a></li>
+                                    <li><a href="#" title=""><i class="fa fa-share-alt"></i> Share</a></li>
+                                </ul>
+                                <ul class="quest-tags mt-0">
+                                    @if (Model.Post.Tags.Any())
+                                    {
+                                        foreach (var tag in Model.Post.Tags)
+                                        {
+                                            <li><a href="#" title="Tag Name">@tag</a></li>
+                                        }
+                                    }
+                                </ul>
+                                <p>
+                                    @Model.Post.Content
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-comment-box">
+                        <h3 class="mb-0">
+                            @if(Model.Post.CommentCount > 0)
+                            {
+                                @(Model.Post.CommentCount + " Comments")
+                            }
+                            else
+                            {
+                                @("0 Comment")
+                            }
+                        </h3>
+
+                        <div class="comment-section shadow-none pt-1">
+                            <div class="comment-sec">
+                                <ul>
+                                    @if (Model.Post.TopComments.Any())
+                                    {
+                                        foreach (var comment in Model.Post.TopComments)
+                                        {
+                                            <li>
+                                                <div class="comment-list pb-0">
+                                                    <div class="bg-img">
+                                                        <img src="/images/resources/pf-icon2.png" alt="">
+                                                    </div>
+                                                    <div class="comment">
+                                                        <h3>@comment.User.FullName</h3>
+                                                        <span data-date-string='@comment.CreatedOn.ToString("YYYY-MM-DDTHH:mm:ss")'>
+                                                            <img src="/images/clock.png" alt=""> 3 min ago
+                                                        </span>
+                                                        <p>@comment.Content</p>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+
+
+                        <div class="user-poster">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="usr-post-img">
+                                    <img src="/images/resources/pf-icon3.png" alt="">
+                                </div>
+                                <div class="post_comment_sec">
+                                    <form id="AddComment" method="post" data-post-id="@Model.Post.Id" asp-page="/DashBoard" asp-route-username="@User.GetLoggedOnUsername()" asp-page-handler="MakeComment">
+                                        <textarea placeholder="Your Answer" name="content"></textarea>
+                                        <button type="submit" disabled>Post Answer</button>
+                                    </form>
+                                </div>
+                            }
+                            else
+                            {
+                                <h5 class="h5 text-black-50">
+                                    <a asp-page="/Public/Login" asp-route-ReturnUrl="@HttpContext.Request.Path.Value">Login</a> to leave a comment.
+                                </h5>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="widget widget-user">
+                        <h3 class="title-wd">Top User of the Week</h3>
+                        <ul>
+                            <li>
+                                <div class="usr-msg-details">
+                                    <div class="usr-ms-img">
+                                        <img src="/images/resources/m-img1.png" alt="">
+                                    </div>
+                                    <div class="usr-mg-info">
+                                        <h3>Jessica William</h3>
+                                        <p>Graphic Designer </p>
+                                    </div>
+                                </div>
+                                <span>
+                                    <img src="/images/price1.png" alt="">1185
+                                </span>
+                            </li>
+                            <li>
+                                <div class="usr-msg-details">
+                                    <div class="usr-ms-img">
+                                        <img src="/images/resources/m-img2.png" alt="">
+                                    </div>
+                                    <div class="usr-mg-info">
+                                        <h3>John Doe</h3>
+                                        <p>PHP Developer</p>
+                                    </div>
+                                </div>
+                                <span>
+                                    <img src="/images/price2.png" alt="">1165
+                                </span>
+                            </li>
+                            <li>
+                                <div class="usr-msg-details">
+                                    <div class="usr-ms-img">
+                                        <img src="/images/resources/m-img3.png" alt="">
+                                    </div>
+                                    <div class="usr-mg-info">
+                                        <h3>Poonam</h3>
+                                        <p>Wordpress Developer </p>
+                                    </div>
+                                </div>
+                                <span>
+                                    <img src="/images/price3.png" alt="">1120
+                                </span>
+                            </li>
+                            <li>
+                                <div class="usr-msg-details">
+                                    <div class="usr-ms-img">
+                                        <img src="/images/resources/m-img4.png" alt="">
+                                    </div>
+                                    <div class="usr-mg-info">
+                                        <h3>Bill Gates</h3>
+                                        <p>C & C++ Developer </p>
+                                    </div>
+                                </div>
+                                <span>
+                                    <img src="/images/price4.png" alt="">1009
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="widget widget-adver">
+                        <img src="/images/resources/adver-img.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

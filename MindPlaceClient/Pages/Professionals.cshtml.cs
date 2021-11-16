@@ -66,7 +66,7 @@ namespace MindPlaceClient.Pages
             {
                 var detail = new SubscriptionRequestDto() { UsernameOfProfessional = usernameOfProfessional };
                 TryAddBearerTokenToHeader();
-                var response = await _mindPlaceClient.FollowPOSTAsync(detail);
+                var response = await _mindPlaceClient.CreateSubscriptionRequestAsync(detail);
                 return new JsonResult(new { Success = true });
             }
             catch (ApiException ex) when (!string.IsNullOrWhiteSpace(ex.Response) && ex.Response.Contains("detail"))
@@ -85,7 +85,7 @@ namespace MindPlaceClient.Pages
         private async Task<ICollection<AbbrvUser>> GetProfessonalsAsync()
         {
             TryAddBearerTokenToHeader();
-            var response = await _mindPlaceClient.SuggestedProfessionalsAsync();
+            var response = await _mindPlaceClient.GetSuggestedProfessionalsAsync();
             return response;
         }
     }
