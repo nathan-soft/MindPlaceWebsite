@@ -43,12 +43,18 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="UserDetails.Password" class="control-label sr-only">Password</label>
-                            <input type="password" asp-for="UserDetails.Password" class="form-control" placeholder="Password" />
+                            <div class="passwordFieldContainer position-relative">
+                                <input type="password" asp-for="UserDetails.Password" class="form-control" placeholder="Password" />
+                                <i class="fa fa-eye-slash togglePassword"></i>
+                            </div>
                             <span asp-validation-for="UserDetails.Password" class="text-danger"></span>
                         </div>
                         <div class="form-group">
                             <label for="signin-password" class="control-label sr-only">Password</label>
-                            <input type="password" class="form-control" runat="server" id="input_confirm_password" placeholder="Confirm password" />
+                            <div class="passwordFieldContainer position-relative">
+                                <input type="password" class="form-control" id="input_confirm_password" placeholder="Confirm password" />
+                                <i class="fa fa-eye-slash togglePassword"></i>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label asp-for="UserDetails.FirstName" class="control-label sr-only">First Name</label>

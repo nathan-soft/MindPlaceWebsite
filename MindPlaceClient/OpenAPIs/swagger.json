@@ -1,4 +1,4 @@
-﻿{
+{
   "openapi": "3.0.1",
   "info": {
     "title": "MindPlaceApi",
@@ -1876,7 +1876,6 @@
     "schemas": {
       "AbbrvCommentResponseDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "id": {
             "type": "integer",
@@ -1893,11 +1892,11 @@
             "type": "string",
             "format": "date-time"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "AbbrvUser": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "fullName": {
             "type": "string",
@@ -1907,45 +1906,45 @@
             "type": "string",
             "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "ChangePasswordRequest": {
-        "type": "object",
-        "additionalProperties": false,
         "required": [
           "newPassword",
           "oldPassword"
         ],
+        "type": "object",
         "properties": {
           "oldPassword": {
             "type": "string",
             "format": "password"
           },
           "newPassword": {
-            "type": "string",
-            "format": "password",
             "maxLength": 100,
-            "minLength": 6
+            "minLength": 6,
+            "type": "string",
+            "format": "password"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "CommentDto": {
-        "type": "object",
-        "additionalProperties": false,
         "required": [
           "content"
         ],
+        "type": "object",
         "properties": {
           "content": {
-            "type": "string",
             "maxLength": 200,
-            "minLength": 1
+            "minLength": 1,
+            "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "CommentResponseDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "id": {
             "type": "integer",
@@ -1966,15 +1965,15 @@
             "type": "integer",
             "format": "int32"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "EmailConfirmationDto": {
-        "type": "object",
-        "additionalProperties": false,
         "required": [
           "token",
           "username"
         ],
+        "type": "object",
         "properties": {
           "username": {
             "type": "string"
@@ -1982,23 +1981,23 @@
           "token": {
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "EmailTokenDto": {
-        "type": "object",
-        "additionalProperties": false,
         "required": [
           "username"
         ],
+        "type": "object",
         "properties": {
           "username": {
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "ForumPostResponseDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "id": {
             "type": "integer",
@@ -2029,52 +2028,52 @@
           },
           "tags": {
             "type": "array",
-            "nullable": true,
             "items": {
               "type": "string"
-            }
+            },
+            "nullable": true
           },
           "topComments": {
             "type": "array",
-            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/AbbrvCommentResponseDto"
-            }
+            },
+            "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "ForumQuestionDto": {
-        "type": "object",
-        "additionalProperties": false,
         "required": [
           "content",
           "title"
         ],
+        "type": "object",
         "properties": {
           "title": {
-            "type": "string",
             "maxLength": 100,
-            "minLength": 5
+            "minLength": 5,
+            "type": "string"
           },
           "content": {
-            "type": "string",
             "maxLength": 5000,
-            "minLength": 10
+            "minLength": 10,
+            "type": "string"
           },
           "tags": {
-            "type": "array",
             "maxItems": 3,
             "minItems": 1,
-            "nullable": true,
+            "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "ForumQuestionResponseDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "id": {
             "type": "integer",
@@ -2105,36 +2104,36 @@
           },
           "tags": {
             "type": "array",
-            "nullable": true,
             "items": {
               "type": "string"
-            }
+            },
+            "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "ForumQuestionResponseDtoPaginatedResponse": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "data": {
             "type": "array",
-            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ForumQuestionResponseDto"
-            }
+            },
+            "nullable": true
           },
           "meta": {
             "$ref": "#/components/schemas/PaginationMetaData"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "LoginDto": {
-        "type": "object",
-        "additionalProperties": false,
         "required": [
           "password",
           "username"
         ],
+        "type": "object",
         "properties": {
           "username": {
             "type": "string"
@@ -2143,11 +2142,10 @@
             "type": "string",
             "format": "password"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "NewUserDto": {
-        "type": "object",
-        "additionalProperties": false,
         "required": [
           "country",
           "dob",
@@ -2161,6 +2159,7 @@
           "state",
           "username"
         ],
+        "type": "object",
         "properties": {
           "email": {
             "type": "string",
@@ -2193,10 +2192,10 @@
             "type": "string"
           },
           "password": {
-            "type": "string",
-            "format": "password",
             "maxLength": 100,
-            "minLength": 6
+            "minLength": 6,
+            "type": "string",
+            "format": "password"
           },
           "phoneNumber": {
             "type": "string"
@@ -2208,11 +2207,11 @@
           "role": {
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "NotificationResponseDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "id": {
             "type": "integer",
@@ -2240,11 +2239,11 @@
             "type": "string",
             "format": "date-time"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "PaginationMetaData": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "currentPage": {
             "type": "integer",
@@ -2270,11 +2269,11 @@
             "type": "boolean",
             "readOnly": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "ProblemDetails": {
         "type": "object",
-        "additionalProperties": {},
         "properties": {
           "type": {
             "type": "string",
@@ -2297,16 +2296,16 @@
             "type": "string",
             "nullable": true
           }
-        }
+        },
+        "additionalProperties": { }
       },
       "QualificationDto": {
-        "type": "object",
-        "additionalProperties": false,
         "required": [
           "major",
           "qualificationType",
           "schoolName"
         ],
+        "type": "object",
         "properties": {
           "schoolName": {
             "type": "string"
@@ -2325,16 +2324,16 @@
             "type": "integer",
             "format": "int32"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "QualificationResponseDto": {
-        "type": "object",
-        "additionalProperties": false,
         "required": [
           "major",
           "qualificationType",
           "schoolName"
         ],
+        "type": "object",
         "properties": {
           "schoolName": {
             "type": "string"
@@ -2357,31 +2356,31 @@
             "type": "integer",
             "format": "int32"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "QuestionDto": {
-        "type": "object",
-        "additionalProperties": false,
         "required": [
           "content",
           "title"
         ],
+        "type": "object",
         "properties": {
           "title": {
-            "type": "string",
             "maxLength": 100,
-            "minLength": 5
+            "minLength": 5,
+            "type": "string"
           },
           "content": {
-            "type": "string",
             "maxLength": 5000,
-            "minLength": 10
+            "minLength": 10,
+            "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "QuestionResponseDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "id": {
             "type": "integer",
@@ -2406,31 +2405,31 @@
             "type": "integer",
             "format": "int32"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "ResponseMessageDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "message": {
             "type": "string",
             "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "SubscriptionRequestDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "usernameOfProfessional": {
             "type": "string",
             "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "SubscriptionResponseDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "id": {
             "type": "integer",
@@ -2447,23 +2446,23 @@
             "type": "string",
             "format": "date-time"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "TagDto": {
-        "type": "object",
-        "additionalProperties": false,
         "required": [
           "tagName"
         ],
+        "type": "object",
         "properties": {
           "tagName": {
             "type": "string"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "TagResponseDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "id": {
             "type": "integer",
@@ -2473,11 +2472,11 @@
             "type": "string",
             "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "TokenDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "access_token": {
             "type": "string",
@@ -2487,21 +2486,21 @@
             "type": "string",
             "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "UpdateSubscriptionRequestDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "patientUsername": {
             "type": "string",
             "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "UserResponseDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "email": {
             "type": "string",
@@ -2525,10 +2524,10 @@
           },
           "roles": {
             "type": "array",
-            "nullable": true,
             "items": {
               "type": "string"
-            }
+            },
+            "nullable": true
           },
           "userName": {
             "type": "string",
@@ -2576,30 +2575,29 @@
           },
           "followers": {
             "type": "array",
-            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/AbbrvUser"
-            }
+            },
+            "nullable": true
           },
           "following": {
             "type": "array",
-            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/AbbrvUser"
-            }
+            },
+            "nullable": true
           },
           "questions": {
             "type": "array",
-            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/QuestionResponseDto"
-            }
+            },
+            "nullable": true
           }
-        }
+        },
+        "additionalProperties": false
       },
       "WorkExperienceDto": {
-        "type": "object",
-        "additionalProperties": false,
         "required": [
           "companyName",
           "employmentType",
@@ -2607,6 +2605,7 @@
           "location",
           "startYear"
         ],
+        "type": "object",
         "properties": {
           "companyName": {
             "type": "string"
@@ -2631,11 +2630,11 @@
           "currentlyWorking": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "WorkExperienceResponseDto": {
         "type": "object",
-        "additionalProperties": false,
         "properties": {
           "id": {
             "type": "integer",
@@ -2668,7 +2667,8 @@
           "currentlyWorking": {
             "type": "boolean"
           }
-        }
+        },
+        "additionalProperties": false
       }
     },
     "securitySchemes": {
@@ -2681,7 +2681,7 @@
   },
   "security": [
     {
-      "Bearer": []
+      "Bearer": [ ]
     }
   ]
 }

@@ -41,15 +41,15 @@
                         <h3 class="mb-0">
                             @if(Model.Post.CommentCount > 0)
                             {
-                                @(Model.Post.CommentCount + " Comments")
+                                @("Comments " + Model.Post.CommentCount)
                             }
                             else
                             {
-                                @("0 Comment")
+                                @("Comment 0")
                             }
                         </h3>
 
-                        <div class="comment-section shadow-none pt-1">
+                        <div class="comment-section">
                             <div class="comment-sec">
                                 <ul>
                                     @if (Model.Post.TopComments.Any())

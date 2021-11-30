@@ -18,8 +18,6 @@ namespace MindPlaceClient.Pages
     [Authorize]
     public class DashBoardModel : BasePageModel
     {
-        [BindProperty(SupportsGet = true)]
-        public string Username { get; set; }
         public UserResponseDto UserDetails { get; set; }
 
         //[BindProperty]
@@ -33,16 +31,11 @@ namespace MindPlaceClient.Pages
         public async Task<ActionResult> OnGetAsync()
         {
             //get user
-            if (string.IsNullOrWhiteSpace(Username))
-            {
-                return NotFound();
-            }
-
             try
             {
                 TryAddBearerTokenToHeader();
-                UserDetails = await _mindPlaceClient.GetUserAsync(Username);
-                if (UserDetails.Questions == null)
+                UserDetails = await _mindPlaceClient.GetUserAsync(User.GetLoggedOnUsername());
+                if (UserDetails == null)
                 {
                     return NotFound();
                 }

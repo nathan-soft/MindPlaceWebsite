@@ -40,7 +40,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label asp-for="Login.Password" class="control-label sr-only">Password</label>
-                                    <input asp-for="Login.Password" class="form-control" type="password" placeholder="Password" />
+                                    <div class="passwordFieldContainer position-relative">
+                                        <input asp-for="Login.Password" class="form-control" type="password" placeholder="Password" />
+                                        <i class="fa fa-eye-slash togglePassword"></i>
+                                    </div>
                                     <span asp-validation-for="Login.Password" class="text-danger"></span>
                                 </div>
                                 <div class="form-group d-flex w-100 justify-content-between">

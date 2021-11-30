@@ -888,9 +888,9 @@ if (location.pathname.toLowerCase().includes("posts")) {
                     //increment the total number of comment being displayed.
                     let commentCountH3 = document.querySelector("post-comment-box").firstChild;
                     //get number of comment(s)
-                    let commentCount = commentCountH3.textContent.trim().split(" ")[0];
+                    let commentCount = commentCountH3.textContent.trim().split(" ")[1];
                     //increase by 1
-                    commentCountH3.textContent = `${++commentCount} ${(++commentCount > 1) ? 'Comments' : 'Comment'}`;
+                    commentCountH3.textContent = `Comments ${++commentCount}`;
                     //reset the form
                     addCommentForm.reset();
                     addCommentForm.querySelector("button").disabled = true;
@@ -1583,7 +1583,29 @@ if (location.pathname.toLowerCase().includes("settings")) {
 
 
 
+/**
+ * Shows or hides the text in a password field.
+ */
+(function togglePasswordField() {
+    const passwordFieldContainer = document.querySelector('.passwordFieldContainer');
+    if (passwordFieldContainer) {
+        const password = passwordFieldContainer.querySelector('input');
+        const togglePassword = passwordFieldContainer.querySelector('.togglePassword');
 
+        togglePassword.addEventListener('click', function (e) {
+            // toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            // toggle the eye / eye slash icon
+            if (type == "password") {
+                this.classList.replace("fa-eye","fa-eye-slash");
+            } else {
+                this.classList.replace("fa-eye-slash", 'fa-eye');
+            }
+            
+        });
+    }
+})();
 
 async function fetchTags() {
     //get url

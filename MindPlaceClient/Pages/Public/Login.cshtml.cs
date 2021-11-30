@@ -119,7 +119,7 @@ namespace MindPlaceClient.Pages.Public
                     else
                     {
                         //redirect user to the dashboard page.
-                        return RedirectToPage("/DashBoard", new { username = jwtToken.Subject });
+                        return RedirectToPage("/DashBoard");
                     }
                     
                 }

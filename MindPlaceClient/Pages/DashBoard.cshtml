@@ -1,4 +1,4 @@
-﻿@page "{username}/{handler?}"
+﻿@page "{handler?}"
 @model MindPlaceClient.Pages.DashBoardModel
 @{
     Layout = "_Layout";
@@ -92,7 +92,7 @@
                             <!--  ASK A QUESTION END -->
 
                             <div class="posts-section">
-                                @if (Model.UserDetails.Questions.Any())
+                                @if (Model.UserDetails != null && Model.UserDetails.Questions.Any())
                                 {
 
                                     var i = 1;
@@ -133,7 +133,7 @@
                                             <div class="job-status-bar border-bottom mb-2">
                                                 <ul class="like-com mt-3">
                                                     <li class="mb-0">
-                                                        <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+                                                        <a data-toggle="collapse" href="@($"#question_{question.Id}--comments")" role="button" aria-expanded="false"
                                                            aria-controls="collapseExample" class="com">
                                                             <i class="fas fa-comment-alt"></i>
                                                             @if (question.CommentCount == 0)
@@ -149,7 +149,7 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <div class="collapse" id="collapseExample">
+                                            <div class="collapse" id="@($"question_{question.Id}--comments")">
                                                 <div class="card card-body border-0 commentsContainer d-none">
                                                     <!-- Main Body -->
                                                     <section>
