@@ -25,6 +25,16 @@ namespace MindPlaceClient.Code
             return principal.Claims.First(c => c.Type == ClaimTypes.Name).Value;
         }
 
+        /// <summary>
+        /// Gets the profile picture url of the currently logged in user if any.
+        /// </summary>
+        /// <returns>The profile picture url of the currently logged in user, or null if none is found</returns>
+        public static string GetLoggedOnUserProfilePicture(this ClaimsPrincipal principal)
+        {
+            return principal.FindFirstValue("ProfilePictureUrl").Trim();
+        }
+        
+
 
         /// <summary>
         /// Gets the primary role of the current user.

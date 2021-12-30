@@ -91,12 +91,12 @@
                                             </li>
                                             <li><a href="#" title=""><i class="fas fa-eye"></i>Views 0</a></li>
                                         </ul>
-                                        <ul class="quest-tags">
+                                        @*<ul class="quest-tags">
                                             @foreach (var tag in question.Tags)
                                             {
                                                 <li><a href="#" title="">@tag</a></li>
                                             }
-                                        </ul>
+                                        </ul>*@
                                     </div>
                                     <span class="quest-posted-time" data-date-string="@question.CreatedOn.ToString("yyyy-MM-ddTHH:mm:ss")">
                                         <i class="fa fa-clock-o"></i>3 min ago
@@ -224,14 +224,14 @@
                     <span class="text-danger" asp-validation-for="QuestionDetails.Title"></span>
                 </div>
 
-                <section>
+                @*<section>
                     <div class="tags-container d-flex flex-wrap align-items-center w-100 border px-2 pb-1">
                         <input type="text" class="mb-0 border-0 pl-0" placeholder="Tags">
                     </div>
                     <span class="text-danger" asp-validation-for="QuestionDetails.Tags"></span>
                 </section>
                 <section class="tags-container__suggestion-box shadow d-none">
-                </section>
+                </section>*@
 
                 <div class="form-group mt-3">
                     <textarea class="px-2 mb-0" asp-for="QuestionDetails.Content" placeholder="Your question..."></textarea>

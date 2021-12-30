@@ -28,6 +28,87 @@
     top: 12px;
     right:12px;
 }
+
+#notificationBox[data-status=loading], #notificationBox[data-status=empty] {
+    min-height: 100px;
+    min-width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/**********USER PROFILE MODAL**********/
+#profileModal .modal-content {
+    max-height: 250px;
+}
+.custom-modal .modal-content {
+    border-radius: 8px;
+}
+
+    .custom-modal .modal-content .modal-body {
+        padding: 16px;
+    }
+
+
+.profile-wrapper .image-Wrapper {
+    flex-basis: 56px;
+    max-width: 56px;
+    height: 56px;
+    max-height: 56px;
+}
+
+    .profile-wrapper .image-Wrapper img {
+        width: 56px;
+        max-width: 56px;
+        max-height: 100%;
+    }
+
+.profile-wrapper .user-details {
+    flex-basis: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 15px;
+    height: auto;
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+    .profile-wrapper .user-details .card-title {
+        padding-left: 6px;
+        padding-right: 6px;
+        font-size: 20px;
+    }
+
+    .profile-wrapper .user-details p {
+        color: #050505;
+    }
+
+    .profile-wrapper .user-details .card-text > * {
+        padding-left: 6px;
+        padding-right: 6px;
+        margin-bottom: 0;
+    }
+
+    .profile-wrapper .user-details .card-text .icon-container {
+        font-size: 20px;
+        color: #1c1e21;
+        padding-top: .25rem;
+    }
+
+alert .closebtn {
+    position: absolute;
+    top: 18px;
+    direction: ltr;
+    /* color: #000000; */
+    right: 18px;
+    font-size: 30px;
+}
+
+@media (min-width: 576px) {
+    #profileModal .modal-dialog {
+        max-width: 400px;
+    }
+}
 /**********ASK QUESTION MODALS**********/
 @media (max-width: 499px) {
     .overview-box {
@@ -250,6 +331,41 @@
 
 
 /*************************** Dashboard PAGE ******************************/
+
+/*******Upload Profile Picture Area**********/
+.usr-pic .add-dp {
+    position: absolute;
+    top: 65%;
+    left: 87%;
+}
+
+#updateProfilePictureForm .imagePreview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 200px;
+    background-color: #e4e6eb;
+    margin-bottom: 1rem;
+    position:relative
+}
+
+    #updateProfilePictureForm .imagePreview.uploading::before {
+        content: "Uploading...";
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height:100%;
+        width: 100%;
+        background-color: white;
+        opacity: 0.4;
+        position: absolute;
+        z-index: 50;
+    }
+
+
+/*******Upload Profile Picture Area End**********/
+
 .commentsContainer {
     padding: 10px;
     background-color: #fcfcfc;
@@ -653,68 +769,6 @@ span.tag__name {
 
 /*************************** PROFESSIONAL PAGE ******************************/
 
-.view-more-pro {
-    position: relative;
-}
-
-.custom-tooltip {
-    position: absolute;
-    display: none;
-    flex-direction: row;
-    width: max-content;
-    max-width: 350px;
-    padding: 16px;
-    height: auto;
-    max-height: 250px;
-    z-index: 4000;
-}
-
-    .custom-tooltip .image-Wrapper {
-        flex-basis: 56px;
-        max-width: 56px;
-        height: 56px;
-        max-height: 56px;
-        align-self: center;
-    }
-
-        .custom-tooltip .image-Wrapper img {
-            width: 56px;
-            max-width: 56px;
-            max-height: 100%;
-        }
-
-    .custom-tooltip .user-info {
-        flex-basis: auto;
-        padding-left: 16px;
-        padding-right: 16px;
-        font-size: 15px;
-        height: auto;
-        max-height: 230px;
-        overflow-y: auto;
-    }
-
-        .custom-tooltip .user-info .card-title {
-            padding-left: 6px;
-            padding-right: 6px;
-            font-size: 20px;
-        }
-
-        .custom-tooltip .user-info .card-text > * {
-            padding-left: 6px;
-            padding-right: 6px;
-            margin-bottom: 0;
-        }
-
-        .custom-tooltip .user-info .card-text .icon-container {
-            font-size: 20px;
-            color: #888888;
-        }
-
-
-
-.view-more-pro:hover .custom-tooltip {
-    display: flex;
-}
 
 
 

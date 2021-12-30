@@ -25,193 +25,228 @@
             <div class="container">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <div class="header-data">
-                        <div class="logo">
-                            <a asp-page="/DashBoard" title="home">
-                                <img src="~/assets/img/logo-dark.png" alt="">
-                            </a>
-                        </div>
+                <div class="header-data">
+                    <div class="logo">
+                        <a asp-page="/DashBoard" title="home">
+                            <img src="~/assets/img/logo-dark.png" alt="">
+                        </a>
+                    </div>
 
-                        <nav>
-                            <ul>
-                                <li>
-                                    <a asp-page="/DashBoard" title="dashboard">
-                                        <span>
-                                            <img src="~/images/icon1.png" alt="">
-                                        </span>
-                                        Home
-                                    </a>
-                                </li>
-                                @if (User.IsInRole("Patient"))
+                    <nav>
+                        <ul>
+                            <li>
+                                <a asp-page="/DashBoard" title="dashboard">
+                                    <span>
+                                        <img src="~/images/icon1.png" alt="">
+                                    </span>
+                                    Home
+                                </a>
+                            </li>
+                            @if (User.IsInRole("Patient"))
                                 {
-                                    <li>
-                                        <a asp-page="/Professionals" title="Professionals">
-                                            <span>
-                                                <img src="~/images/icon4.png" alt="">
-                                            </span>
-                                            Professionals
-                                        </a>
-                                    </li>
+                            <li>
+                                <a asp-page="/Professionals" title="Professionals">
+                                    <span>
+                                        <img src="~/images/icon4.png" alt="">
+                                    </span>
+                                    Professionals
+                                </a>
+                            </li>
                                 }
-                                <li>
-                                    <a asp-page="/Forum" title="Forum">
-                                        <span>
-                                            <img src="~/images/icon5.png" alt="">
-                                        </span>
-                                        Forum
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Messages" class="not-box-openm">
-                                        <span>
-                                            <img src="~/images/icon6.png" alt="">
-                                        </span>
-                                        Messages
-                                    </a>
-                                    <div class="notification-box msg" id="message">
-                                        <div class="nt-title">
-                                            <h4>Setting</h4>
-                                            <a href="#" title="">Clear all</a>
+                            <li>
+                                <a asp-page="/Forum" title="Forum">
+                                    <span>
+                                        <img src="~/images/icon5.png" alt="">
+                                    </span>
+                                    Forum
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" title="Messages" class="not-box-openm">
+                                    <span>
+                                        <img src="~/images/icon6.png" alt="">
+                                    </span>
+                                    Messages
+                                </a>
+                                <div class="notification-box msg" id="message">
+                                    <div class="nt-title">
+                                        <h4>Setting</h4>
+                                        <a href="#" title="">Clear all</a>
+                                    </div>
+                                    <div class="nott-list">
+                                        <div class="notfication-details">
+                                            <div class="noty-user-img">
+                                                <img src="~/images/resources/ny-img1.png" alt="">
+                                            </div>
+                                            <div class="notification-info">
+                                                <h3><a href="message.aspx" title="">Jassica William</a> </h3>
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.</p>
+                                                <span>2 min ago</span>
+                                            </div>
                                         </div>
-                                        <div class="nott-list">
-                                            <div class="notfication-details">
-                                                <div class="noty-user-img">
-                                                    <img src="~/images/resources/ny-img1.png" alt="">
-                                                </div>
-                                                <div class="notification-info">
-                                                    <h3><a href="message.aspx" title="">Jassica William</a> </h3>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.</p>
-                                                    <span>2 min ago</span>
-                                                </div>
+                                        <div class="notfication-details">
+                                            <div class="noty-user-img">
+                                                <img src="~/images/resources/ny-img2.png" alt="">
                                             </div>
-                                            <div class="notfication-details">
-                                                <div class="noty-user-img">
-                                                    <img src="~/images/resources/ny-img2.png" alt="">
-                                                </div>
-                                                <div class="notification-info">
-                                                    <h3><a href="message.aspx" title="">Jassica William</a></h3>
-                                                    <p>Lorem ipsum dolor sit amet.</p>
-                                                    <span>2 min ago</span>
-                                                </div>
+                                            <div class="notification-info">
+                                                <h3><a href="message.aspx" title="">Jassica William</a></h3>
+                                                <p>Lorem ipsum dolor sit amet.</p>
+                                                <span>2 min ago</span>
                                             </div>
-                                            <div class="notfication-details">
-                                                <div class="noty-user-img">
-                                                    <img src="~/images/resources/ny-img3.png" alt="">
-                                                </div>
-                                                <div class="notification-info">
-                                                    <h3><a href="message.aspx" title="">Jassica William</a></h3>
-                                                    <p>
-                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempo incididunt
-                                                        ut labore et dolore magna aliqua.
-                                                    </p>
-                                                    <span>2 min ago</span>
-                                                </div>
+                                        </div>
+                                        <div class="notfication-details">
+                                            <div class="noty-user-img">
+                                                <img src="~/images/resources/ny-img3.png" alt="">
                                             </div>
-                                            <div class="view-all-nots">
-                                                <a asp-page="/Messages">View All Messsages</a>
+                                            <div class="notification-info">
+                                                <h3><a href="message.aspx" title="">Jassica William</a></h3>
+                                                <p>
+                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempo incididunt
+                                                    ut labore et dolore magna aliqua.
+                                                </p>
+                                                <span>2 min ago</span>
                                             </div>
+                                        </div>
+                                        <div class="view-all-nots">
+                                            <a asp-page="/Messages">View All Messsages</a>
                                         </div>
                                     </div>
-                                </li>
-                                <li>
-                                    <a href="#" title="Notifications" class="not-box-open">
-                                        <span>
-                                            <img src="~/images/icon7.png" alt="">
-                                        </span>
-                                        Notifications
-                                    </a>
-                                    <div class="notification-box noti" id="notification">
-                                        <div class="nt-title">
-                                            <h4>Setting</h4>
-                                            <a href="#" title="">Clear all</a>
-                                        </div>
-                                        <div class="nott-list">
-                                            <div class="notfication-details">
-                                                <div class="noty-user-img">
-                                                    <img src="~/images/resources/ny-img1.png" alt="">
-                                                </div>
-                                                <div class="notification-info">
-                                                    <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                                                    <span>2 min ago</span>
-                                                </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="#" title="Notifications" class="not-box-open">
+                                    <span>
+                                        <img src="~/images/icon7.png" alt="">
+                                    </span>
+                                    Notifications
+                                </a>
+                                <div class="notification-box noti shadow" id="notification">
+                                    <div class="nt-title d-none">
+                                        <h4>Setting</h4>
+                                        <a href="#" title="">Clear all</a>
+                                    </div>
+                                    <div id="notificationBox" data-status="empty" class="nott-list">
+                                        @*<div class="notfication-details d-none">
+                                            <div class="noty-user-img">
+                                                <img src="~/images/resources/ny-img2.png" alt="">
                                             </div>
-                                            <div class="notfication-details">
-                                                <div class="noty-user-img">
-                                                    <img src="~/images/resources/ny-img2.png" alt="">
-                                                </div>
-                                                <div class="notification-info">
-                                                    <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                                                    <span>2 min ago</span>
-                                                </div>
+                                            <div class="notification-info">
+                                                <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
+                                                <span>2 min ago</span>
                                             </div>
-                                            <div class="notfication-details">
-                                                <div class="noty-user-img">
-                                                    <img src="~/images/resources/ny-img3.png" alt="">
-                                                </div>
-                                                <div class="notification-info">
-                                                    <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                                                    <span>2 min ago</span>
-                                                </div>
-                                            </div>
-                                            <div class="notfication-details">
-                                                <div class="noty-user-img">
-                                                    <img src="~/images/resources/ny-img2.png" alt="">
-                                                </div>
-                                                <div class="notification-info">
-                                                    <h3><a href="#" title="">Jassica William</a> Comment on your project.</h3>
-                                                    <span>2 min ago</span>
-                                                </div>
-                                            </div>
-                                            <div class="view-all-nots">
-                                                <a asp-page="/Settings">View All Notification</a>
-                                            </div>
+                                        </div>*@
+                                        <div class="loader">Loading...</div>
+                                        <div class="view-all-nots d-none">
+                                            <a asp-page="/Settings">View All Notification</a>
                                         </div>
                                     </div>
-                                </li>
-                            </ul>
-                        </nav>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
 
-                        <div class="menu-btn">
-                            <a href="#" title=""><i class="fa fa-bars"></i></a>
+                    <div class="menu-btn">
+                        <a href="#" title=""><i class="fa fa-bars"></i></a>
+                    </div>
+
+                    <div class="user-account">
+                        <div class="user-info">
+                            <img src="@AppHelper.GetProfileImageUri(User.GetLoggedOnUserProfilePicture())" alt="Profile Image" width="30">
+                            <a href="#" title="">@User.GetFullName().GetInitials()</a>
+                            <i class="la la-sort-down"></i>
                         </div>
-
-                        <div class="user-account">
-                            <div class="user-info">
-                                <img src="~/images/resources/user.png" alt="">
-                                <a href="#" title="">@User.GetFullName().GetInitials()</a>
-                                <i class="la la-sort-down"></i>
-                            </div>
-                            <div class="user-account-settingss" id="users">
-                                <h3>Setting</h3>
-                                <ul class="us-links">
-                                    <li><a asp-page="/Settings" title="">Account Setting</a></li>
-                                    <li><a href="#" title="">Privacy</a></li>
-                                    <li><a href="#" title="">Faqs</a></li>
-                                    <li><a href="#" title="">Terms & Conditions</a></li>
-                                </ul>
-                                <h3 class="tc"><a asp-page="/Public/Login" title="Logout">Logout</a></h3>
-                            </div>
+                        <div class="user-account-settingss" id="users">
+                            <h3>Setting</h3>
+                            <ul class="us-links">
+                                <li><a asp-page="/Settings" title="">Account Setting</a></li>
+                                <li><a href="#" title="">Privacy</a></li>
+                                <li><a href="#" title="">Faqs</a></li>
+                                <li><a href="#" title="">Terms & Conditions</a></li>
+                            </ul>
+                            <h3 class="tc"><a asp-page="/Public/Login" title="Logout">Logout</a></h3>
                         </div>
                     </div>
+                </div>
                  }
                  else
                  {
-                    <div class="public-nav d-flex justify-content-between my-2">
-                        <div class="public-nav-logo">
-                            <a asp-page="/DashBoard" title="home">
-                                <img src="~/assets/img/logo-dark.png" class="bg-white" alt="" width="73">
-                            </a>
-                        </div>
-                        <ul class="nav public-nav-actions align-self-center">
-                            <li class="nav-item"><a asp-page="/Public/Login" class="nav-link text-white" title="Login">Login</a></li>
-                            <li class="nav-item"><a href="/Public/Register" class="nav-link text-white" title="Register">Register</a></li>
-                        </ul>
+                <div class="public-nav d-flex justify-content-between my-2">
+                    <div class="public-nav-logo">
+                        <a asp-page="/DashBoard" title="home">
+                            <img src="~/assets/img/logo-dark.png" class="bg-white" alt="" width="73">
+                        </a>
                     </div>
+                    <ul class="nav public-nav-actions align-self-center">
+                        <li class="nav-item"><a asp-page="/Public/Login" class="nav-link text-white" title="Login">Login</a></li>
+                        <li class="nav-item"><a href="/Public/Register" class="nav-link text-white" title="Register">Register</a></li>
+                    </ul>
+                </div>
                  }
             </div>
         </header>
         @*<main role="main" class="pb-3">*@
         @RenderBody()
+
+
+        <!-- User Profile Modal -->
+        <div class="modal fade custom-modal" id="profileModal">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <span class="fa fa-times-circle closebtn d-none" data-dismiss="modal"></span>
+                        <div class="profile-wrapper d-flex align-items-start">
+                            <div class="image-Wrapper sticky-top">
+                                <img class="rounded-circle" src="~/assets/img/user1.png" alt="">
+                            </div>
+                            <div class="user-details flex-column justify-content-center text-left">
+                                <h5 class="card-title mb-2 sticky-top bg-white font-weight-bold position-sticky top">
+                                    Samuel Amarachi Blessing
+                                </h5>
+                                <section id="education">
+                                    <div class="card-text py-2 d-flex">
+                                        <span class="icon-container px-1">
+                                            <i class="fa fa-graduation-cap"></i>
+                                        </span>
+                                        <p>
+                                            Studied at <b>National Open University of Nigeria - Lagos Study Center</b>
+                                        </p>
+                                    </div>
+                                    <div class="card-text py-2 d-flex">
+                                        <span class="icon-container px-1">
+                                            <i class="fa fa-graduation-cap"></i>
+                                        </span>
+                                        <p>
+                                            Studied at <b>National Open University of Nigeria - Lagos Study Center</b>
+                                        </p>
+                                    </div>
+                                </section>
+                                <section id="work">
+                                    <div class="card-text py-2 d-flex">
+                                        <span class="icon-container px-1">
+                                            <i class="fa fa-briefcase"></i>
+                                        </span>
+                                        <p>
+                                            Studied at <b>National Open University of Nigeria - Lagos Study Center</b>
+                                        </p>
+                                    </div>
+                                    <div class="card-text py-2 d-flex">
+                                        <span class="icon-container px-1">
+                                            <i class="fa fa-briefcase"></i>
+                                        </span>
+                                        <p>
+                                            Studied at <b>National Open University of Nigeria - Lagos Study Center</b>
+                                        </p>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         @*</main>*@
         @RenderSection("Footer", required: false)
     </div>

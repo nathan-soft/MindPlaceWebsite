@@ -75,7 +75,6 @@ namespace MindPlaceClient.Pages.Public
                     _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {response.Access_token}");
                 
                     
-
                     var userResponse = await _mindPlaceClient.GetUserAsync(jwtToken.Subject);
                     if (userResponse == null)
                     {
@@ -90,6 +89,7 @@ namespace MindPlaceClient.Pages.Public
                             new Claim("ApiTokenExpiration", jwtToken.ValidTo.ToString()),
                             new Claim(ClaimTypes.Role, userResponse.GetUserPrimaryRole(userResponse.Roles.ToList())),
                             new Claim("FullName", $"{userResponse.FirstName} {userResponse.LastName}"),
+                            new Claim("ProfilePictureUrl", userResponse.ImageUrl ?? ""),
                         };
 
                     var claimsIdentity = new ClaimsIdentity(

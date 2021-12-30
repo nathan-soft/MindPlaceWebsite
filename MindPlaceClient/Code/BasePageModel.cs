@@ -15,6 +15,7 @@ namespace MindPlaceClient.Code
     {
         public readonly Client _mindPlaceClient;
         public readonly HttpClient _httpClient;
+        public string ErrorMessage { get; set; }
         private readonly IConfiguration _configuration;
 
         public BasePageModel(IConfiguration configuration, HttpClient httpClient)

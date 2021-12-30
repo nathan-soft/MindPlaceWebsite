@@ -1,21 +1,33 @@
 ﻿/////////////////////////////GLOBAL ////////////////////////////
-
-//HIDE THE ACTIVE MODAL WHEN THE CANCEL BUTTON IS CLICKED.
-let cancelButtons = document.querySelectorAll(".cancel");
-if (cancelButtons.length) {
-    cancelButtons.forEach(cancelButton => {
-        let form = getParentForm(cancelButton);
-        cancelButton.addEventListener("click", function (e) {
-            e.preventDefault();
-            //reset the form
+    //HIDE THE ACTIVE MODAL WHEN THE CANCEL BUTTON IS CLICKED.
+    let cancelButtons = document.querySelectorAll(".cancel");
+    if (cancelButtons.length) {
+        cancelButtons.forEach(cancelButton => {
+            //get the form
             let form = getParentForm(cancelButton);
-            form.reset();
-            clearFormFieldsValidationErrors(form);
-            //hide the modal
-            closeModal();
+            cancelButton.addEventListener("click", function (e) {
+                e.preventDefault();
+                //reset the form
+                form.reset();
+                clearFormFieldsValidationErrors(form);
+                //hide the modal
+                closeModal();
+            });
         });
-    });
 }
+
+    
+//refreshes the time portions of every posts and comments
+//run immediately after the page loads and..
+updateTimestamps();
+//run after every 60 seconds.
+setInterval(updateTimestamps, 60000);
+
+    //////////////// GET USER NOTIFICATIONS //////////////////////
+    //run function after waiting 10 secs.
+    setTimeout(async function () { await getUserNotifications(); }, 10000);
+    //run function every 10 mins
+    //setInterval(async function () { await getUserNotifications(); }, 600000);
 
 //////////////////////////////////////////////////////REGISTER PAGE ////////////////////////////////////////////////////////
 if (location.pathname.toLowerCase().includes("public/register")) {
@@ -51,8 +63,6 @@ if (location.pathname.toLowerCase().includes("public/register")) {
 
 //////////////////////////////////////////////////////DASBOARD PAGE ////////////////////////////////////////////////////////
 if (location.pathname.toLowerCase().includes("dashboard")) {
-
-    setInterval(refreshQuestionsAndCommentsTimestamp, 60000);
 
     //SUBMIT NEW QUESTION FORM.
     document.getElementById("questionForm").addEventListener("submit", (async function (e) {
@@ -250,7 +260,7 @@ if (location.pathname.toLowerCase().includes("dashboard")) {
                                 commentList += `<img src="https://i.imgur.com/yTFUilP.jpg" class="rounded-circle" width="40" height="40" />`;
                                 commentList += `<h3>${commentDetails.user.fullName}</h3>`;
                                 commentList += `<span class="small" data-date-string="${commentDetails.createdOn}">`;
-                                commentList += `${moment(`${commentDetails.createdOn}`).calendar()}`;
+                                commentList += `${moment(`${commentDetails.createdOn}`).fromNow()}`;
                                 commentList += `</span>`;
                                 commentList += `<p>${commentDetails.content}</p>`;
                                 commentList += `</div>`;
@@ -360,62 +370,54 @@ if (location.pathname.toLowerCase().includes("dashboard")) {
 
     //LOAD TOP PROFESSIONALS
     document.addEventListener("DOMContentLoaded", (async function () {
-        //get top professionals
-        let response = await GetTopProfessionals();
-
-        //get slider Wrapper
-        let sliderWrapper = document.querySelector(".profiles-slider");
         let topProfessionalsSection = document.querySelector(".top-profiles");
-        if (response) {
-            if (response.success) {
-                let professionals = response.data;
 
-                if (Array.isArray(professionals) && professionals.length) {
-                    //initialize variable
-                    let professional = "";
-                    professionals.forEach(profInfo => {
-                        professional += `<div id="prof_${profInfo.username}" class="user-profy">`;
-                        professional += `<img src="/images/resources/user1.png" alt="">`;
-                        professional += `<h3>${profInfo.fullName}</h3>`;
-                        professional += `<ul><li><a href="#" title="" class="followw">Subscribe</a></li></ul>`;
-                        professional += `<a href="#" class="view-more-pro">`;
-                        professional += `View Profile`;
-                        professional += `<div class="card custom-tooltip shadow align-items-center">`;
-                        professional += `<div class="image-Wrapper">`;
-                        professional += `<img class="rounded-circle" src="/assets/img/user1.png" alt="">`;
-                        professional += `</div>`;
-                        professional += `<div class="user-info flex-column justify-content-center">`;
-                        professional += `<h4 class="card-title d-flex flex-wrap mb-2">`;
-                        professional += `${profInfo.fullName}`;
-                        professional += `</h4>`;
-                        professional += `</div>`;
-                        professional += `</div>`;
-                        professional += `</a>`;
-                        professional += `</div>`;
-                    });
+        //would be null if the page is being accessed by a "professional".
+        if (topProfessionalsSection) {
+            //get top professionals
+            let response = await GetTopProfessionals();
 
-                    sliderWrapper.insertAdjacentHTML("beforeend", professional);
 
-                    //remove loader/spinner from page;
-                    sliderWrapper.previousElementSibling.remove();
-                    //show slick slider wrapper
-                    sliderWrapper.classList.remove("d-none");
-                    initializeSlickSlider();
-                    return;
-                } 
-            } else {
-                //error
-                alert(response.message);
+            //get slider Wrapper
+            let sliderWrapper = document.querySelector(".profiles-slider");
+
+            if (response) {
+                if (response.success) {
+                    let professionals = response.data;
+
+                    if (Array.isArray(professionals) && professionals.length) {
+                        //initialize variable
+                        let professional = "";
+                        professionals.forEach(profInfo => {
+                            professional += `<div id="prof_${profInfo.username}" class="user-profy">`;
+                            professional += `<img src="/images/resources/user1.png" alt="">`;
+                            professional += `<h3>${profInfo.fullName}</h3>`;
+                            professional += `<ul><li><a href="#" title="" class="followw">Subscribe</a></li></ul>`;
+                            professional += `<a href="#" class="view-more-pro">`;
+                            professional += `View Profile`;
+                            professional += `</a>`;
+                            professional += `</div>`;
+                        });
+
+                        sliderWrapper.insertAdjacentHTML("beforeend", professional);
+
+                        //remove loader/spinner from page;
+                        sliderWrapper.previousElementSibling.remove();
+                        //show slick slider wrapper
+                        sliderWrapper.classList.remove("d-none");
+                        initializeSlickSlider();
+                        return;
+                    } else {
+                        //An empty array was returned
+                        //hide the section
+                        topProfessionalsSection.classList.add("d-none");
+                    }
+                } else {
+                    //error from response
+                    alert(response.message);
+                }
             }
         }
-        //if we got here, an error happened somewhere.
-        //check that the variable is not null.
-        //could be null if the page is being accessed by a "professional".
-        if (topProfessionalsSection) {
-            //hide the section
-            topProfessionalsSection.classList.add("d-none");
-        }
-        
     }));
 
     //SUBSCRIBING TO A PROFESSIONAL FROM THE DASHBOARD PAGE
@@ -456,12 +458,99 @@ if (location.pathname.toLowerCase().includes("dashboard")) {
         }
     }));
 
+    //CHANGE PROFILE PHOTO
+    {
+        let file; //this is a global variable that'll contain the uploaded file content/blob
+        let btnUpload = document.querySelector("button.uploadImage");
+        let uploadProfileImageInput = document.getElementById("profileImageFileUpload");
+        let profileUploadForm = getParentForm(btnUpload);
+        //get the img tag that'll be used to preview the uploaded image
+        const img = profileUploadForm.querySelector(".thumbnail");
+        let validationSummaryDiv = profileUploadForm.querySelector("#validationSummary");
+
+        if (btnUpload) {
+            //open the file explorer by...
+            btnUpload.addEventListener("click", () => {
+                //...calling the input click handler;
+                uploadProfileImageInput.click();
+            });
+        }
+
+        uploadProfileImageInput.addEventListener("change", function () {
+            //get the first user select file
+            file = this.files[0];
+            let validExtensions = ["image/jpeg", "image/jpg", "image/png"];
+            if (verifyFileUploadType(validExtensions, file.type)) {
+                let fileReader = new FileReader();
+                fileReader.readAsDataURL(file);
+
+                //runs when reading from the file is completed.
+                fileReader.onload = () => {
+
+                    //update the image url to point to the uploaded image.
+                    img.src = fileReader.result;
+                    //show the image...
+                    img.classList.remove("d-none");
+                    //hide the "Preview image" text.
+                    img.previousElementSibling.classList.add("d-none");
+
+                    //Uploading state
+                    img.style.opacity = 0.40;
+                    btnUpload.setAttribute("disabled", "true");
+                    btnUpload.firstElementChild.classList.remove("d-none");
+                    btnUpload.lastChild.textContent = "Uploading...";
+
+                    //send to server...
+                    uploadFileToServer();
+                }
+            } else {
+                
+                validationSummaryDiv.textContent = "'Jpeg' and 'png' are the only supported image types.";
+            }
+        });
 
 
+        function verifyFileUploadType(validExtensions, fileType) {
+            if (validExtensions.includes(fileType)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
+        async function uploadFileToServer() {
+            //set url...
+            let url = profileUploadForm.action;
+            let formData = new FormData(profileUploadForm);
+            //formData.append("profilePicture", file);
 
+            //send request
+            let response = await sendPostRequest(url, formData).catch(function (error) {
+                if (error.message.includes("An error occurred")) {
+                    //custom error thrown inside the function.
+                    validationSummaryDiv.textContent = error.message.replace("Error: ", "");
+                } else {
+                    validationSummaryDiv.textContent = "A connection error occurred. please check your network and try again.";
+                }
+            });
 
+            if (response) {
+                if (response.success) {
+                    //success.
+                    alert("Your profile picture has been updated!");
+                    //close modal.
+                } else {
+                    //$("#fieldOfExpertise").modal("hide");
+                    //show error msg.
+                    validationSummaryDiv.textContent = response.message;
+                }
+            }
+        }
+    }
+    
+    
 
+    
     
 }
 
@@ -537,9 +626,9 @@ if (location.pathname.toLowerCase().includes("forum") && !location.pathname.toLo
         //hide suggestion box
         form.querySelector(".tags-container__suggestion-box").classList.add("d-none");
         //clear the tag box
-        form.querySelectorAll(".tags-container .tag .tag__close-button").forEach(ele => {
-            ele.click();
-        });
+        //form.querySelectorAll(".tags-container .tag .tag__close-button").forEach(ele => {
+        //    ele.click();
+        //});
     });
 
     //==========================Filter Questions================================//
@@ -571,155 +660,155 @@ if (location.pathname.toLowerCase().includes("forum") && !location.pathname.toLo
     });
 
     //==========================Make The Tag Input Active When The Container Is Clicked On================================//
-    form.querySelector(".tags-container").addEventListener("click", function () {
-        this.querySelector("input").focus();
-    });
+    //form.querySelector(".tags-container").addEventListener("click", function () {
+    //    this.querySelector("input").focus();
+    //});
 
     //==========================Toggle the suggestion box/div================================//
-    let tags = [];
-    form.querySelector(".tags-container input").addEventListener("keyup", (async function (e) {
-        let searchPhrase = this.value.trim().toLowerCase();
-        let suggestionBox = form.querySelector(".tags-container__suggestion-box");
-        if (searchPhrase.length >= 1) {
-            let matchingTags = [];
-            //fetch tag list from db or local variable.
-            if (tags.length >= 1) {
-                //fetch from local variable
-                //get tags that match the input value.
-                matchingTags = getMatchingTagNames(searchPhrase);
-            } else {
-                //fetch from db/API
-                let response = await fetchTags().catch(error => {
-                        displayMessage("Couldn't fetch tags because a server error occurred, please contact your system administrator.");
-                    });
-                if (Array.isArray(response)) {
-                    //add tag names to the tags array.
-                    tags = response.map(tag => tag.name);
-                    //get tags that match the input value
-                    matchingTags = getMatchingTagNames(searchPhrase);
-                }
-                //else
-                //NOTE: the else part is meant to handle empty array, but i'm fairly certain there wouldn't be anytime that scenerio is ever encountered.
-            }
+    //let tags = [];
+    //form.querySelector(".tags-container input").addEventListener("keyup", (async function (e) {
+    //    let searchPhrase = this.value.trim().toLowerCase();
+    //    let suggestionBox = form.querySelector(".tags-container__suggestion-box");
+    //    if (searchPhrase.length >= 1) {
+    //        let matchingTags = [];
+    //        //fetch tag list from db or local variable.
+    //        if (tags.length >= 1) {
+    //            //fetch from local variable
+    //            //get tags that match the input value.
+    //            matchingTags = getMatchingTagNames(searchPhrase);
+    //        } else {
+    //            //fetch from db/API
+    //            let response = await fetchTags().catch(error => {
+    //                    displayMessage("Couldn't fetch tags because a server error occurred, please contact your system administrator.");
+    //                });
+    //            if (Array.isArray(response)) {
+    //                //add tag names to the tags array.
+    //                tags = response.map(tag => tag.name);
+    //                //get tags that match the input value
+    //                matchingTags = getMatchingTagNames(searchPhrase);
+    //            }
+    //            //else
+    //            //NOTE: the else part is meant to handle empty array, but i'm fairly certain there wouldn't be anytime that scenerio is ever encountered.
+    //        }
 
-            let taglistResult = "";
-            if (matchingTags.length) {
-                //matching tags found
-                matchingTags.forEach(tag => {
-                    taglistResult += `<span class="px-3 py-2 tags-container__suggestion-box__tag">${tag}</span>`;
-                });
-            } else {
-                //no matching tag found
-                taglistResult = `<p class="text-center py-2" style="font-size:16px;">No tag found.</p>`;
-            }
+    //        let taglistResult = "";
+    //        if (matchingTags.length) {
+    //            //matching tags found
+    //            matchingTags.forEach(tag => {
+    //                taglistResult += `<span class="px-3 py-2 tags-container__suggestion-box__tag">${tag}</span>`;
+    //            });
+    //        } else {
+    //            //no matching tag found
+    //            taglistResult = `<p class="text-center py-2" style="font-size:16px;">No tag found.</p>`;
+    //        }
            
 
-            //remove previous appended childs.
-            suggestionBox.innerHTML = "";
-            //append to suggestion box
-            suggestionBox.insertAdjacentHTML("afterbegin", taglistResult);
-            //show suggestion box
-            suggestionBox.classList.remove("d-none");
-        } else {
-            //hide suggestion box
-            suggestionBox.classList.add("d-none");
-        }
+    //        //remove previous appended childs.
+    //        suggestionBox.innerHTML = "";
+    //        //append to suggestion box
+    //        suggestionBox.insertAdjacentHTML("afterbegin", taglistResult);
+    //        //show suggestion box
+    //        suggestionBox.classList.remove("d-none");
+    //    } else {
+    //        //hide suggestion box
+    //        suggestionBox.classList.add("d-none");
+    //    }
 
 
 
-        function getMatchingTagNames(searchString) {
-            return tags.filter(tag => tag.toLowerCase().includes(searchString));
-        }
-    }));
+    //    function getMatchingTagNames(searchString) {
+    //        return tags.filter(tag => tag.toLowerCase().includes(searchString));
+    //    }
+    //}));
 
 
     //==========================Execute a Function When Someone Writes in the "tag" input field================================//
-    form.querySelector(".tags-container input").addEventListener("keydown", function (e) {
-        //let container = ele;
-        let inputValue = this.value.trim();
+    //form.querySelector(".tags-container input").addEventListener("keydown", function (e) {
+    //    //let container = ele;
+    //    let inputValue = this.value.trim();
         
-        if (e.which == 13) {
-            e.preventDefault();
-            //enter key was pressed.
-            //validate the text in the input
-        }
+    //    if (e.which == 13) {
+    //        e.preventDefault();
+    //        //enter key was pressed.
+    //        //validate the text in the input
+    //    }
 
-        //if backspace was pressed.
-        if (e.which == 8) {
-            //check that there are no text/value in the input field
-            //and that there are tags that have been added to the tags container div/element.
-            if (inputValue.length < 1 && this.previousElementSibling) {
-                //remove the last tag that was added, if any...
-                this.previousElementSibling.remove();
-            }
-        }
+    //    //if backspace was pressed.
+    //    if (e.which == 8) {
+    //        //check that there are no text/value in the input field
+    //        //and that there are tags that have been added to the tags container div/element.
+    //        if (inputValue.length < 1 && this.previousElementSibling) {
+    //            //remove the last tag that was added, if any...
+    //            this.previousElementSibling.remove();
+    //        }
+    //    }
 
-    });
+    //});
 
     //==========================Select a tag from the suggestion box===============================//
-    form.querySelector(".tags-container__suggestion-box").addEventListener("click", function (e) {
-        if (e.target.classList.contains("tags-container__suggestion-box__tag")) {
-            let spanEle = e.target;
-            let spanText = spanEle.textContent;
-            let tagInput = form.querySelector(".tags-container input");
+    //form.querySelector(".tags-container__suggestion-box").addEventListener("click", function (e) {
+    //    if (e.target.classList.contains("tags-container__suggestion-box__tag")) {
+    //        let spanEle = e.target;
+    //        let spanText = spanEle.textContent;
+    //        let tagInput = form.querySelector(".tags-container input");
 
-            if (spanText.length >= 1) {
-                //make sure there's no duplicate tag
-                //get all already selected tags
-                let selectedTags = getSelectedTags();
-                //make sure there are selected tags...
-                if (selectedTags.length) {
-                    //loop through and check for duplicates
-                    let duplicateExist = false;
-                    for (var selectedTag of selectedTags) {
-                        if (selectedTag.toLowerCase() == spanText.toLowerCase()) {
-                            //duplicate
-                            //exit loop and stop further code processing.
-                            duplicateExist = true;
-                            break;
-                        }
-                    }
+    //        if (spanText.length >= 1) {
+    //            //make sure there's no duplicate tag
+    //            //get all already selected tags
+    //            let selectedTags = getSelectedTags();
+    //            //make sure there are selected tags...
+    //            if (selectedTags.length) {
+    //                //loop through and check for duplicates
+    //                let duplicateExist = false;
+    //                for (var selectedTag of selectedTags) {
+    //                    if (selectedTag.toLowerCase() == spanText.toLowerCase()) {
+    //                        //duplicate
+    //                        //exit loop and stop further code processing.
+    //                        duplicateExist = true;
+    //                        break;
+    //                    }
+    //                }
 
-                    if (duplicateExist) {
-                        //reset the input
-                        tagInput.value = "";
-                        //close/hide the suggestion box
-                        spanEle.parentElement.classList.add("d-none");
-                        //exit out of current function
-                        return;
-                    }
-                } 
+    //                if (duplicateExist) {
+    //                    //reset the input
+    //                    tagInput.value = "";
+    //                    //close/hide the suggestion box
+    //                    spanEle.parentElement.classList.add("d-none");
+    //                    //exit out of current function
+    //                    return;
+    //                }
+    //            } 
 
-                //create a tag container and append before the input.
-                let div = document.createElement("DIV");
-                div.classList.add("tag");
-                //create and prepare the span that'll hold the tag name
-                let tagNameContainer = document.createElement("SPAN");
-                tagNameContainer.classList.add("tag__name", "mr-2");
-                tagNameContainer.textContent = spanText;
-                //create and prepare the span that'll hold the tag "close button"
-                let buttonContainer = document.createElement("SPAN");
-                buttonContainer.classList.add("fa", "fa-close", "tag__close-button");
-                buttonContainer.style.fontSize = "15px";
+    //            //create a tag container and append before the input.
+    //            let div = document.createElement("DIV");
+    //            div.classList.add("tag");
+    //            //create and prepare the span that'll hold the tag name
+    //            let tagNameContainer = document.createElement("SPAN");
+    //            tagNameContainer.classList.add("tag__name", "mr-2");
+    //            tagNameContainer.textContent = spanText;
+    //            //create and prepare the span that'll hold the tag "close button"
+    //            let buttonContainer = document.createElement("SPAN");
+    //            buttonContainer.classList.add("fa", "fa-close", "tag__close-button");
+    //            buttonContainer.style.fontSize = "15px";
 
-                buttonContainer.addEventListener("click", function () {
-                    div.remove();
-                });
+    //            buttonContainer.addEventListener("click", function () {
+    //                div.remove();
+    //            });
 
-                //append to tag container.
-                div.insertAdjacentElement("afterbegin", tagNameContainer);
-                div.insertAdjacentElement("beforeend", buttonContainer);
+    //            //append to tag container.
+    //            div.insertAdjacentElement("afterbegin", tagNameContainer);
+    //            div.insertAdjacentElement("beforeend", buttonContainer);
 
-                //append to DOM...
-                tagInput.insertAdjacentElement("beforebegin", div);
-                //reset the input
-                tagInput.value = "";
-            }
+    //            //append to DOM...
+    //            tagInput.insertAdjacentElement("beforebegin", div);
+    //            //reset the input
+    //            tagInput.value = "";
+    //        }
 
-            //close/hide the suggestion box
-            spanEle.parentElement.classList.add("d-none");
-        }
-    });
+    //        //close/hide the suggestion box
+    //        spanEle.parentElement.classList.add("d-none");
+    //    }
+    //});
 
     //==========================SUBMIT THE FORUM FORM===============================//
     form.querySelector("button.save").addEventListener("click", (async function () {
@@ -730,16 +819,14 @@ if (location.pathname.toLowerCase().includes("forum") && !location.pathname.toLo
         let formData = new FormData(form);
 
         //get the tags.
-        let selectedTags = getSelectedTags();
+        //let selectedTags = getSelectedTags();
 
-        if (selectedTags.length) {
-            //append tags to form data
-            selectedTags.forEach(tag => {
-                formData.append("QuestionDetails.Tags", tag);
-            });
-        }
-       
-        
+        //if (selectedTags.length) {
+        //    //append tags to form data
+        //    selectedTags.forEach(tag => {
+        //        formData.append("QuestionDetails.Tags", tag);
+        //    });
+        //}
 
         let response = await sendPostRequest(location.href, new URLSearchParams(formData).toString()).catch(function (error) {
             handleHttpRequestError(error.message, "Couldn't connect to the server, please check your network and try again.");
@@ -749,11 +836,11 @@ if (location.pathname.toLowerCase().includes("forum") && !location.pathname.toLo
             if (response.success) {
                 //success.
                 let question = response.data;
-                let tagList = "";
-                //create list element to hold tags...
-                selectedTags.forEach(tag => {
-                    tagList += `<li><a href="#" title="">${tag}</a></li>`;
-                });
+                //let tagList = "";
+                ////create list element to hold tags...
+                //selectedTags.forEach(tag => {
+                //    tagList += `<li><a href="#" title="">${tag}</a></li>`;
+                //});
 
                 //construct html
                 let forumQuestionHtml = `<div class="usr-question" id="question_${question.id}">
@@ -771,9 +858,6 @@ if (location.pathname.toLowerCase().includes("forum") && !location.pathname.toLo
                                                         </a>
                                                     </li>
                                                     <li><a href="#" title=""><i class="fas fa-eye"></i>Views 0</a></li>
-                                                </ul>
-                                                <ul class="quest-tags">
-                                                    ${tagList}
                                                 </ul>
                                             </div>
                                             <span class="quest-posted-time" data-date-string="${question.createdOn}">
@@ -886,9 +970,9 @@ if (location.pathname.toLowerCase().includes("posts")) {
                     document.querySelector(".comment-sec ul").prepend(newComment);
 
                     //increment the total number of comment being displayed.
-                    let commentCountH3 = document.querySelector("post-comment-box").firstChild;
+                    let commentCountH3 = document.querySelector(".post-comment-box").firstElementChild;
                     //get number of comment(s)
-                    let commentCount = commentCountH3.textContent.trim().split(" ")[1];
+                    let commentCount = Number(commentCountH3.textContent.trim().split(" ")[1]);
                     //increase by 1
                     commentCountH3.textContent = `Comments ${++commentCount}`;
                     //reset the form
@@ -1587,22 +1671,24 @@ if (location.pathname.toLowerCase().includes("settings")) {
  * Shows or hides the text in a password field.
  */
 (function togglePasswordField() {
-    const passwordFieldContainer = document.querySelector('.passwordFieldContainer');
-    if (passwordFieldContainer) {
-        const password = passwordFieldContainer.querySelector('input');
-        const togglePassword = passwordFieldContainer.querySelector('.togglePassword');
+    const passwordFieldContainers = document.querySelectorAll('.passwordFieldContainer');
+    
+    if (passwordFieldContainers.length >= 1) {
 
-        togglePassword.addEventListener('click', function (e) {
-            // toggle the type attribute
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            // toggle the eye / eye slash icon
-            if (type == "password") {
-                this.classList.replace("fa-eye","fa-eye-slash");
-            } else {
-                this.classList.replace("fa-eye-slash", 'fa-eye');
-            }
-            
+        passwordFieldContainers.forEach(function (passwordFieldContainer) {
+            const password = passwordFieldContainer.querySelector('input');
+
+            passwordFieldContainer.querySelector('.togglePassword').addEventListener('click', function (e) {
+                // toggle the type attribute
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                // toggle the eye / eye slash icon
+                if (type == "password") {
+                    this.classList.replace("fa-eye", "fa-eye-slash");
+                } else {
+                    this.classList.replace("fa-eye-slash", 'fa-eye');
+                }
+            });
         });
     }
 })();
@@ -1894,19 +1980,55 @@ function clearFormFieldsValidationErrors(form) {
         span.textContent = "";
         span.classList.replace("field-validation-error", "field-validation-valid");
     });
+
+    //get validation summary
+    let validationSummaryDiv = form.querySelector("#validationSummary");
+    //check for validation summarry too..
+    if (validationSummaryDiv) {
+        //clear it.
+        validationSummaryDiv.innerHTML = "";
+    }
 }
 
 
 /**
- * Updates the time difference from now, of all questions and comments on the page.
+ * Updates the time stamp of all questions and comments on the page.
  */
-function refreshQuestionsAndCommentsTimestamp() {
-    //data-date-string
-    document.querySelectorAll("[data-date-string]").forEach(dateElement => {
-        let UpdatedTime = moment(dateElement.dataset.dateString).calendar();
-        //set the element content
-        dateElement.textContent = UpdatedTime;
-    });
+function updateTimestamps() {
+    try {
+        moment.updateLocale('en', {
+            relativeTime: {
+                future: "in %s",
+                past: "%s ago",
+                s: 'a few seconds',
+                ss: '%d seconds',
+                m: "a min",
+                mm: "%d mins",
+                h: "an hour",
+                hh: "%d hours",
+                d: "a day",
+                dd: "%d days",
+                w: "a week",
+                ww: "%d weeks",
+                M: "a month",
+                MM: "%d months",
+                y: "a year",
+                yy: "%d years"
+            }
+        });
+
+        moment.relativeTimeThreshold('d', 7);
+        moment.relativeTimeThreshold('w', 4);  // enables weeks
+
+        //data-date-string
+        document.querySelectorAll("[data-date-string]").forEach(dateElement => {
+            let UpdatedTime = moment(dateElement.dataset.dateString).fromNow();
+            //set the element content
+            dateElement.textContent = UpdatedTime;
+        });
+    } catch (e) {
+
+    }
 }
 
 
@@ -1996,7 +2118,7 @@ async function GetTopProfessionals(){
     let response = await sendGetRequest("/Professionals/TopProfessionals").catch((error) => {
         if (error.message.includes("An error occurred")) {
             //custom error thrown inside the function.
-            //response would only return 404 because the current user is a professional and
+            //response would return 404 if the current user is a professional and
             //professionals are not allowed to access the resource.
             //should be "403", but the forbidden page does not exist, so the response returns 404.
             if (!error.message.includes("404")){
@@ -2056,12 +2178,13 @@ function closeModal() {
     if (mindPlaceModal) {
         //hide mind place custom modal
         $(mindPlaceModal).modal("hide");
-    } else {
-        $("#myModal").modal("hide");
-        //hide the other modal
-        $(".post-popup.job_post").removeClass("active");
-        $(".wrapper").removeClass("overlay");
-    }   
+    }
+
+    $("#myModal").modal("hide");
+    //hide the other modal
+    $(".post-popup.job_post").removeClass("active");
+    $(".wrapper").removeClass("overlay");
+       
 }
 
 
@@ -2118,12 +2241,17 @@ async function getUserNotifications() {
         return;
     }
 
-    let response = await sendGetRequest("/Settings/Notifications").catch((error) => {
+    //update state.
+    notificationBox.dataset.status = "loading";
+    //hide the "view all" button;
+    notificationBox.querySelector(".view-all-nots").classList.add("d-none");
+
+    let response = await sendGetRequest("/Settings/UserNotificationsJson").catch((error) => {
         if (error.message.includes("An error occurred:")) {
             //custom error thrown inside the function.
-            showAlert(error.message.replace("Error: ", ""));
+            alert(error.message.replace("Error: ", ""));
         } else {
-            showAlert("A connection error occurred. please check your network and try again.");
+            alert("A connection error occurred. please check your network and make sure you're connected.");
         }
     });
 
@@ -2131,23 +2259,14 @@ async function getUserNotifications() {
     if (response) {
         //success
         if (response.success) {
-            //dateCreated: "2020-09-07T13:44:09.7436904"
-            //creator: { fullName: "Simeon Simeon", username: "simeon@idevworks.com" }
-            //id: 52
-            //isSeen: false
-            //message: "Simeon Omomowo Requested for <b>Mentorship.</b>"
-            //type: "MENTORSHIPREQUEST"
+
             let userNotifications = response.data;
-            let userNotificationContent = `<header class="card-header bg-transparent border-0">
-                                        <h4 class="m-0 text-secondary">Notifications</h4>
-                                    </header>`;
+            let userNotificationContent = "";
 
             //check that array returned is not empty
             if (Array.isArray(userNotifications) && userNotifications.length) {
                 userNotifications.forEach((notification, index) => {
                     let notificationurl;
-                    let splittedFullname = notification.creator.fullName.split(" ");
-                    let nameInitials = `${splittedFullname[0].substr(0, 1)}${splittedFullname[1].substr(0, 1)}`;
 
                     switch (notification.type) {
                         case "MENTORSHIPREQUEST":
@@ -2156,38 +2275,35 @@ async function getUserNotifications() {
                         //break;
                     }
 
-                    userNotificationContent += `<div class="card-body">
-                        <a href="${notificationurl}" class="row no-gutters text-decoration-none text-dark">
-                            <div class="col-3 p-1">
-                                <span style="width:55px; height:55px; font-size: 1.3rem;"
-                                    class="d-inline-flex align-items-center justify-content-center font-weight-light text-primary-blue bg-light rounded-circle profile-text mb-1 user-thumb">
-                                    ${nameInitials}
-                                    </span>
-                            </div>
-                            <div class="col-9 d-flex align-items-center">
-                                <div class="card-body p-1">
-                                    <h6 class="card-title mb-1">${notification.creator.fullName}</h6>
-                                    <p class="card-text mb-0" style="font-size: .9rem;">${notification.message}</p>
-                                    <p class="card-text"><small class="text-primary">${notification.dateCreated}</small></p>
+                    userNotificationContent += `<div class="notfication-details d-flex">
+                                <div class="noty-user-img" style="width:37;">
+                                    <img src="/images/resources/ny-img2.png" alt="" />
                                 </div>
-                            </div>
-                        </a>
-                    </div>`;
-
-                    //only apply horizontal rule if it's not the last element/item
-                    if ((userNotifications.length - index) > 1) {
-                        userNotificationContent += `<div class="dropdown-divider my-0"></div>`;
-                    }
+                                <div class="notification-info">
+                                    <h3 class="card-title mb-1"><a href="#" title="">
+                                        ${notification.message.replace(notification.creator.fullName, `${notification.creator.fullName}</a>`)}
+                                    </h3>
+                                    <span class="d-block position-static" data-date-string="${notification.createdOn}">${moment(`${notification.createdOn}`).fromNow()}</span>
+                                </div>
+                        </div>`;
                 });
+                //update state.
+                notificationBox.dataset.status = "loaded";
+                //display the "view all" button;
+                notificationBox.querySelector(".view-all-nots").classList.remove("d-none");
             } else {
                 //user has no notification
-                userNotificationContent += `<p class="h5 card-body text-muted my-auto">You have no notification.<p>`;
+                userNotificationContent += `<h5 class="h5 text-black-50">You have no notification.<h5>`;
             }
 
-            //remove old content from div
-            notificationBox.textContent = "";
-            //append to div
-            notificationBox.insertAdjacentHTML("beforeend", userNotificationContent);
+            //Hide the laoder element
+            hideLoader(notificationBox)
+            //remove prev notifications...
+            notificationBox.querySelectorAll(".notfication-details").forEach(ele => {
+                ele.remove();
+            });
+            //append new notifications or empty state message...
+            notificationBox.insertAdjacentHTML("afterbegin", userNotificationContent);
 
         } else {
             //response contains error(s).
@@ -2256,10 +2372,10 @@ async function sendPostRequest(url, formdata, returnType = "json") {
         mode: 'cors', // no-cors, *cors, same-origin
         cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
         credentials: 'same-origin', // include, *same-origin, omit
-        headers: {
-            //'Content-Type': 'application/json'
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
+        //headers: {
+        //    //'Content-Type': 'application/json'
+        //    'Content-Type': 'application/x-www-form-urlencoded'
+        //},
         redirect: 'follow', // manual, *follow, error
         body: formdata // body data type must match "Content-Type" header
     });

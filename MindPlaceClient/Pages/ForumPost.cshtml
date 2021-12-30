@@ -17,12 +17,14 @@
                             </div>
                             <div class="usr_quest">
                                 <h3>@Model.Post.Title</h3>
-                                <span><i class="fa fa-clock-o"></i>3 min ago</span>
+                                <span>
+                                    <i class="fa fa-clock-o"></i><span class="mb-0" data-date-string='@Model.Post.CreatedOn.ToString("yyyy-MM-ddTHH:mm:ssZ")'></span>
+                                </span>
                                 <ul class="react-links d-none">
                                     <li><a href="#" title=""><i class="fa fa-heart"></i> Vote 150</a></li>
                                     <li><a href="#" title=""><i class="fa fa-share-alt"></i> Share</a></li>
                                 </ul>
-                                <ul class="quest-tags mt-0">
+                                @*<ul class="quest-tags mt-0">
                                     @if (Model.Post.Tags.Any())
                                     {
                                         foreach (var tag in Model.Post.Tags)
@@ -30,7 +32,7 @@
                                             <li><a href="#" title="Tag Name">@tag</a></li>
                                         }
                                     }
-                                </ul>
+                                </ul>*@
                                 <p>
                                     @Model.Post.Content
                                 </p>
@@ -63,8 +65,9 @@
                                                     </div>
                                                     <div class="comment">
                                                         <h3>@comment.User.FullName</h3>
-                                                        <span data-date-string='@comment.CreatedOn.ToString("YYYY-MM-DDTHH:mm:ss")'>
-                                                            <img src="/images/clock.png" alt=""> 3 min ago
+                                                        <span>
+                                                            <img src="/images/clock.png" alt=""> 
+                                                            <span data-date-string='@comment.CreatedOn.ToString("yyyy-MM-ddTHH:mm:ssZ")'></span>
                                                         </span>
                                                         <p>@comment.Content</p>
                                                     </div>

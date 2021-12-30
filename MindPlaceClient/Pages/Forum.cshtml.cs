@@ -68,10 +68,10 @@ namespace MindPlaceClient.Pages
 
         public async Task<ActionResult> OnPostAsync(ForumQuestionDto questionDetails)
         {
-            if (questionDetails.Tags.Count < 1 || questionDetails.Tags.Contains(null))
-            {
-                ModelState.TryAddModelError("questionDetails.Tags", "Please enter a valid question tag.");
-            }
+            //if (questionDetails.Tags.Count < 1 || questionDetails.Tags.Contains(null))
+            //{
+            //    ModelState.TryAddModelError("questionDetails.Tags", "Please enter a valid question tag.");
+            //}
 
             if (ModelState.IsValid)
             {

@@ -20,5 +20,17 @@ namespace MindPlaceClient.Code
 
             return yearsToDisplay.OrderByDescending(u => u);
         }
+
+        public static string GetProfileImageUri(string supposedImageUrl)
+        {
+            if(!string.IsNullOrWhiteSpace(supposedImageUrl))
+            {
+                return supposedImageUrl;
+            }
+            else
+            {
+                return "images/no-profile-picture-m.png";
+            }
+        }
     }
 }

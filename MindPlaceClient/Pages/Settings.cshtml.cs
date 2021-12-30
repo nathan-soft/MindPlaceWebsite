@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -40,13 +41,11 @@ namespace MindPlaceClient.Pages
         {
         }
 
-        public async Task<PageResult> OnGetNotificationsAsync()
+        public async Task<PageResult> OnGetAsync()
         {
             try
             {
-                TryAddBearerTokenToHeader();
-                var userNotifications = await _mindPlaceClient.GetUserNotificationsAsync(User.GetLoggedOnUsername());
-                UserNotifications = userNotifications.ToList();
+                UserNotifications = await GetUserNotificationsAsync();
             }
             catch (Exception ex)
             {
@@ -55,6 +54,20 @@ namespace MindPlaceClient.Pages
             }
 
             return Page();
+        }
+
+        public async Task<ActionResult> OnGetUserNotificationsJsonAsync()
+        {
+            try
+            {
+                var response = await GetUserNotificationsAsync();
+                return new JsonResult(new { Success = true, Data = response.Take(5) });
+            }
+            catch (Exception ex)
+            {
+                var exceptionMessage = HandleException(ex);
+                return new JsonResult(new { Success = false, Message = exceptionMessage });
+            }
         }
 
         public async Task<ActionResult> OnPostChangePasswordAsync(ChangePassword passwordDetails)
@@ -89,7 +102,32 @@ namespace MindPlaceClient.Pages
             });
         }
 
-        public async Task<IActionResult> OnGetUserSubscriptionRequests()
+        public async Task<ActionResult> OnPostChangeProfilePictureAsync(IFormFile profilePicture)
+        {
+            if(profilePicture == null)
+            {
+                return new JsonResult(new { Success = false, Message = "Please select a file." });
+            }
+
+            try
+            {
+                TryAddBearerTokenToHeader();
+                //send submitted data.
+                var file = new FileParameter(profilePicture.OpenReadStream(), profilePicture.FileName, profilePicture.ContentType);
+                var response = await _mindPlaceClient.ChangeProfilePhotoAsync(User.GetLoggedOnUsername(), file);
+                return new JsonResult(new { Success = true });
+
+            }
+            catch (Exception ex)
+            {
+                //error
+                var exceptionMessage = HandleException(ex);
+                return new JsonResult(new { Success = false, Message = exceptionMessage });
+            }
+        }
+
+
+        public async Task<ActionResult> OnGetUserSubscriptionRequests()
         {
             try
             {
@@ -158,7 +196,7 @@ namespace MindPlaceClient.Pages
             {
                 TryAddBearerTokenToHeader();
                 //send submitted data.
-                var response = await _mindPlaceClient.FetchUserWorkExperiencesAsync();
+                var response = await _mindPlaceClient.FetchUserWorkExperiencesAsync(User.GetLoggedOnUsername());
                 return new JsonResult(new { Success = true, Data = response });
             }
             catch (Exception ex)
@@ -263,7 +301,7 @@ namespace MindPlaceClient.Pages
             {
                 TryAddBearerTokenToHeader();
                 //send submitted data.
-                var response = await _mindPlaceClient.FetchUserQualificationsAsync();
+                var response = await _mindPlaceClient.FetchUserQualificationsAsync(User.GetLoggedOnUsername());
                 return new JsonResult(new { Success = true, Data = response });
             }
             catch (Exception ex)
@@ -362,6 +400,15 @@ namespace MindPlaceClient.Pages
         }
 
 
+        private async Task<List<NotificationResponseDto>> GetUserNotificationsAsync()
+        {
+            TryAddBearerTokenToHeader();
+            var userNotifications = await _mindPlaceClient.GetUserNotificationsAsync(User.GetLoggedOnUsername());
+
+            return userNotifications.ToList();
+        }
+
+
 
 
         //private string HandleException(Exception ex)
@@ -393,7 +440,7 @@ namespace MindPlaceClient.Pages
         //    {
         //        return ex.Message;
         //    }
-            
+
         //}
 
     }

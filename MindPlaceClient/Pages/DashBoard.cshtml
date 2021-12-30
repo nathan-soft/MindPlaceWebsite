@@ -10,242 +10,243 @@
         <div class="container">
             <div class="main-section-data">
                 <div class="row">
-                    <div class="col-lg-3 col-md-4 pd-left-none no-pd">
-                        <div class="main-left-sidebar no-margin">
-                            <div class="user-data full-width">
-                                <div class="user-profile">
-                                    <div class="username-dt">
-                                        <div class="usr-pic">
-                                            <img src="~/images/resources/user-pic.png" alt="">
+                    @if (Model.UserDetails != null)
+                    {
+                        <div class="col-lg-3 col-md-4 pd-left-none no-pd">
+                            <div class="main-left-sidebar no-margin">
+                                <div class="user-data full-width">
+                                    <div class="user-profile">
+                                        <div class="username-dt">
+                                            <div class="usr-pic position-relative">
+                                                <img src="@AppHelper.GetProfileImageUri(Model.UserDetails.ImageUrl)" alt="Profile Image" width="110">
+                                                <div class="add-dp" id="OpenImgUpload">
+                                                    <label for="file" data-toggle="modal" data-target="#mindPlaceModal" data-backdrop="static" title="Change Picture">
+                                                        <i class="fas fa-camera"></i>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="user-specs">
+                                            <h3>@($"{Model.UserDetails.FirstName} {Model.UserDetails.LastName}")</h3>
+                                            <span>@Model.UserDetails.UserName</span>
                                         </div>
                                     </div>
-                                    <div class="user-specs">
-                                        <h3>@($"{Model.UserDetails.FirstName} {Model.UserDetails.LastName}")</h3>
-                                        <span>@Model.UserDetails.UserName</span>
-                                    </div>
-                                </div>
-                                <ul class="user-fw-status">
-                                    <li>
+                                    <ul class="user-fw-status">
+                                        <li>
+                                            @if (Model.UserDetails.Roles.Contains("Patient"))
+                                            {
+                                                <h4>Questions Asked</h4>
+                                            }
+                                            else if (Model.UserDetails.Roles.Contains("Professional"))
+                                            {
+                                                <h4>Questions Answered </h4>
+                                            }
+
+                                            <span>@Model.Questions.Count</span>
+                                        </li>
                                         @if (Model.UserDetails.Roles.Contains("Patient"))
                                         {
-                                            <h4>Number Of Questions Asked</h4>
+                                            <li>
+                                                <h4>Referal ID </h4>
+                                                <span><a>@Model.UserDetails.ReferralCode</a></span>
+                                            </li>
+                                            <li>
+                                                <h4>Number Of Referals </h4>
+                                                <span>@Model.UserDetails.NoOfReferrals.</span>
+                                            </li>
                                         }
-                                        else if (Model.UserDetails.Roles.Contains("Professional"))
-                                        {
-                                            <h4>Number Of Questions Answered </h4>
-                                        }
 
-                                        <span>@Model.UserDetails.Questions.Count</span>
-                                    </li>
-                                    @if (Model.UserDetails.Roles.Contains("Patient"))
-                                    {
                                         <li>
-                                            <h4>Referal ID </h4>
-                                            <span><a>@Model.UserDetails.ReferralCode</a></span>
+                                            <a href="#" title="">View Profile</a>
                                         </li>
-                                        <li>
-                                            <h4>Number Of Referals </h4>
-                                            <span>@Model.UserDetails.NoOfReferrals.</span>
-                                        </li>
-                                    }
+                                    </ul>
+                                </div>
 
-                                    <li>
-                                        <a href="#" title="">View Profile</a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="tags-sec full-width">
-                                <ul>
-                                    <li><a href="#" title="">Help Center</a></li>
-                                    <li><a href="#" title="">About</a></li>
-                                    <li><a href="#" title="">Privacy Policy</a></li>
-                                    <li><a href="#" title="">Community Guidelines</a></li>
-                                    <li><a href="#" title="">Cookies Policy</a></li>
-                                    <li><a href="#" title="">Career</a></li>
-                                    <li><a href="#" title="">Language</a></li>
-                                    <li><a href="#" title="">Copyright Policy</a></li>
-                                </ul>
-                                <div class="cp-sec">
-                                    <img src="~/images/logo2.png" alt="">
-                                    <p>
-                                        <img src="~/images/cp.png" alt="">Copyright 2019
-                                    </p>
+                                <div class="tags-sec full-width">
+                                    <ul>
+                                        <li><a href="#" title="">Help Center</a></li>
+                                        <li><a href="#" title="">About</a></li>
+                                        <li><a href="#" title="">Privacy Policy</a></li>
+                                        <li><a href="#" title="">Community Guidelines</a></li>
+                                        <li><a href="#" title="">Cookies Policy</a></li>
+                                        <li><a href="#" title="">Career</a></li>
+                                        <li><a href="#" title="">Language</a></li>
+                                        <li><a href="#" title="">Copyright Policy</a></li>
+                                    </ul>
+                                    <div class="cp-sec">
+                                        <img src="~/images/logo2.png" alt="MindPlace Logo">
+                                        <p>
+                                            <img src="~/images/cp.png" alt="Copyright image">Copyright 2019
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6 col-md-8 no-pd">
-                        <div class="main-ws-sec">
-                            <!--ASK A QUESTION BOX-->
-                            <div class="post-topbar">
-                                <div class="user-picy">
-                                    <img src="~/images/resources/user-pic.png" alt="">
-                                </div>
-                                <div class="post-st">
-                                    <ul>
 
-                                        <li><a class="post-jb active" href="#" title="">Ask a Question</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!--  ASK A QUESTION END -->
-
-                            <div class="posts-section">
-                                @if (Model.UserDetails != null && Model.UserDetails.Questions.Any())
+                        <div class="col-lg-6 col-md-8 no-pd">
+                            <div class="main-ws-sec">
+                                @if (User.IsInRole("Patient"))
                                 {
+                                    <!--ASK A QUESTION BOX-->
+                                    <div class="post-topbar">
+                                        <div class="user-picy">
+                                            <img src="@AppHelper.GetProfileImageUri(Model.UserDetails.ImageUrl)" alt="Profile Image" width="50">
+                                        </div>
+                                        <div class="post-st">
+                                            <ul>
 
-                                    var i = 1;
+                                                <li><a class="post-jb active" href="#" title="">Ask a Question</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!--  ASK A QUESTION END -->
+                                }
 
-                                    foreach (var question in Model.UserDetails.Questions)
+
+                                <div class="posts-section">
+                                    @if (Model.Questions.Any())
                                     {
-                                        <div class="post-bar" id="question_@question.Id">
-                                            <div class="post_topbar">
-                                                <div class="usy-dt">
-                                                    <img src="~/images/resources/us-pic.png" alt="">
-                                                    <div class="usy-name">
-                                                        <h3>@question.User.FullName</h3>
-                                                        <span>
-                                                            <img src="~/images/clock.png" alt="">3 min ago
-                                                        </span>
+
+                                        var i = 1;
+
+                                        foreach (var question in Model.Questions)
+                                        {
+                                            <div class="post-bar" id="question_@question.Id">
+                                                <div class="post_topbar">
+                                                    <div class="usy-dt">
+                                                        <img src="@AppHelper.GetProfileImageUri(question.User.ImageUrl)" alt="Profile Image" width="50">
+                                                        <div class="usy-name">
+                                                            <h3>@question.User.FullName</h3>
+                                                            <span>
+                                                                <img src="~/images/clock.png" alt="">
+                                                                <span data-date-string='@question.CreatedOn.ToString("yyyy-MM-ddTHH:mm:ssZ")'></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ed-opts">
+                                                        <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
+                                                        <ul class="ed-options">
+                                                            @if (question.User.Username == User.GetLoggedOnUsername())
+                                                            {
+                                                                <li><a href="#" title="">Edit</a></li>
+                                                                <li><a href="#" title="">Delete</a></li>
+                                                            }
+                                                            <li><a href="#" title="">Hide</a></li>
+                                                        </ul>
                                                     </div>
                                                 </div>
-                                                <div class="ed-opts">
-                                                    <a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-                                                    <ul class="ed-options">
-                                                        @if (question.User.Username == User.GetLoggedOnUsername())
-                                                        {
-                                                            <li><a href="#" title="">Edit</a></li>
-                                                            <li><a href="#" title="">Delete</a></li>
-                                                        }
-                                                        <li><a href="#" title="">Hide</a></li>
+                                                <div class="epi-sec">
+                                                </div>
+                                                <div class="job_descp mt-3">
+                                                    <h3 class="mb-1">@question.Title</h3>
+                                                    <p>
+                                                        @question.Content
+                                                    </p>
+                                                </div>
+                                                <div class="job-status-bar border-bottom mb-2">
+                                                    <ul class="like-com mt-3">
+                                                        <li class="mb-0">
+                                                            <a data-toggle="collapse" href="@($"#question_{question.Id}--comments")" role="button" aria-expanded="false"
+                                                               aria-controls="collapseExample" class="com">
+                                                                <i class="fas fa-comment-alt"></i>
+                                                                @if (question.CommentCount == 0)
+                                                                {
+                                                                    @:Comment @question.CommentCount
+                                                                }
+                                                                else
+                                                                {
+                                                                    @:Comments @question.CommentCount
+                                                                }
+
+                                                            </a>
+                                                        </li>
                                                     </ul>
                                                 </div>
-                                            </div>
-                                            <div class="epi-sec">
-                                            </div>
-                                            <div class="job_descp mt-3">
-                                                <h3 class="mb-1">@question.Title</h3>
-                                                <p>
-                                                    @question.Content
-                                                </p>
-                                            </div>
-                                            <div class="job-status-bar border-bottom mb-2">
-                                                <ul class="like-com mt-3">
-                                                    <li class="mb-0">
-                                                        <a data-toggle="collapse" href="@($"#question_{question.Id}--comments")" role="button" aria-expanded="false"
-                                                           aria-controls="collapseExample" class="com">
-                                                            <i class="fas fa-comment-alt"></i>
-                                                            @if (question.CommentCount == 0)
-                                                            {
-                                                                @:Comment @question.CommentCount
-                                                            }
-                                                            else
-                                                            {
-                                                                @:Comments @question.CommentCount
-                                                            }
-
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="collapse" id="@($"question_{question.Id}--comments")">
-                                                <div class="card card-body border-0 commentsContainer d-none">
-                                                    <!-- Main Body -->
-                                                    <section>
-                                                        <div class="col-sm-12 col-md-12" style="padding: 0px">
-                                                            <div class="row">
-                                                                <div class="col-sm-12 col-md-12 col-12 comments-wrapper" style="padding: 0px">
-                                                                    <div class="loader">Loading...</div>
-                                                                    @*<div class="comments mt-3 text-justify border-0">
-                                                                        <img src="https://i.imgur.com/yTFUilP.jpg" alt=""
-                                                                             class="rounded-circle" width="40" height="40" />
-                                                                        <h3>Jhon Doe</h3>
-                                                                        <span class="small">
-                                                                            44 mins ago
-                                                                        </span>
-                                                                        <p>
-                                                                            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                                                            Accusamus numquam assumenda hic aliquam vero sequi velit molestias
-                                                                            doloremque molestiae dicta?
-                                                                        </p>
+                                                <div class="collapse" id="@($"question_{question.Id}--comments")">
+                                                    <div class="card card-body border-0 commentsContainer d-none">
+                                                        <!-- Main Body -->
+                                                        <section>
+                                                            <div class="col-sm-12 col-md-12" style="padding: 0px">
+                                                                <div class="row">
+                                                                    <div class="col-sm-12 col-md-12 col-12 comments-wrapper" style="padding: 0px">
+                                                                        <div class="loader">Loading...</div>
                                                                     </div>
-                                                                    *@
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </section>
-                                                </div>
-                                                <div class="post-comment d-flex justify-content-between mt-2">
-                                                    <div class="cm_img">
-                                                        <img src="~/images/resources/us-pic.png" alt="">
+                                                        </section>
                                                     </div>
-                                                    <div class="comment_box">
-                                                        <form id="addComment_@question.Id" class="d-flex justify-content-between" method="post" 
-                                                              asp-page-handler="MakeComment"
-                                                        >
-                                                            <textarea class="commentInput" type="text" placeholder="Post a comment" name="content"
-                                                            ></textarea>
-                                                            <button class="btnPostComment" type="submit">Send</button>
-                                                        </form>
+                                                    <div class="post-comment d-flex justify-content-between mt-2">
+                                                        <div class="cm_img">
+                                                            <img src="@AppHelper.GetProfileImageUri(Model.UserDetails.ImageUrl)" alt="Profile Image">
+                                                        </div>
+                                                        <div class="comment_box">
+                                                            <form id="addComment_@question.Id" class="d-flex justify-content-between" method="post"
+                                                                  asp-page-handler="MakeComment">
+                                                                <textarea class="commentInput" type="text" placeholder="Post a comment" name="content"></textarea>
+                                                                <button class="btnPostComment" type="submit">Send</button>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        if (i == 1)
+                                            if (User.IsInRole("Patient") && i == 1)
+                                            {
+                                                <div class="top-profiles">
+                                                    <div class="pf-hd">
+                                                        <h3>PROFESSIONALS</h3>
+                                                        <i class="la la-ellipsis-v"></i>
+                                                    </div>
+                                                    <div class="w-100 p-3 float-left">
+                                                        <div class="loader" style="font-size:30px"> loading...</div>
+                                                    </div>
+                                                    <div class="profiles-slider d-none">
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            i++;
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        if (User.IsInRole("Patient"))
                                         {
                                             <div class="top-profiles">
                                                 <div class="pf-hd">
-                                                    <h3>PROFESSIONALS</h3>
+                                                    <h3>PRPFESSIONALS</h3>
                                                     <i class="la la-ellipsis-v"></i>
                                                 </div>
                                                 <div class="w-100 p-3 float-left">
                                                     <div class="loader" style="font-size:30px"> loading...</div>
                                                 </div>
                                                 <div class="profiles-slider d-none">
-                                                    @*<div class="user-profy">
-                                                        <img src="~/images/resources/user1.png" alt="">
-                                                        <h3>John Doe</h3>
-                                                        <span>Graphic Designer</span>
-                                                        <ul>
-                                                            <li><a href="#" title="" class="followw">Subscribe</a></li>
 
-                                                        </ul>
-                                                        <a href="#" title="">View Profile</a>
-                                                    </div>*@
-                                                    
                                                 </div>
                                             </div>
                                         }
-
-                                        i++;
+                                        else
+                                        {
+                                            <h4 class="col-12 text-black-50 text-center">
+                                                Questions you comment on will show here..
+                                            </h4>
+                                        }
                                     }
 
-                                }
-                                else
-                                {
-                                    if (User.IsInRole("Patient"))
-                                    {
-                                        <div class="top-profiles">
-                                            <div class="pf-hd">
-                                                <h3>PRPFESSIONALS</h3>
-                                                <i class="la la-ellipsis-v"></i>
-                                            </div>
-                                            <div class="w-100 p-3 float-left">
-                                                <div class="loader" style="font-size:30px"> loading...</div>
-                                            </div>
-                                            <div class="profiles-slider d-none">
 
-                                            </div>
-                                        </div>
-                                    }else{
-                                       <h3 class="col-12 text-black-50 text-center">Questions you comment on will show here..</h3>
-                                    }
-                                }
+
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <section class='col-lg-9 col-md-12 d-flex justify-content-center align-items-center'>
+                            <h3>Oops! An error occurred.</h3>
+                        </section>
+                    }
+
 
                     <div class="col-lg-3 pd-right-none no-pd">
                         <div class="right-sidebar">
@@ -341,4 +342,46 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="mindPlaceModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content border-0">
+            <div class="modal-header justify-content-center bg-white">
+                <h5 class="modal-title font-weight-bold text-dark">Update profile picture</h5>
+            </div>
+            <div class="modal-body py-4">
+                <form id="updateProfilePictureForm" method="post" enctype="multipart/form-data" 
+                      class="d-flex align-items-center flex-column" asp-page="/Settings" asp-page-handler="ChangeProfilePicture"
+                >
+                    <div id="validationSummary" class="text-danger mb-3"></div>
+                    <section class="imagePreview">
+                        <p class="text-black-50">Image Preview</p>
+                        <img class="thumbnail d-none" src="" alt="Profile Picture Thumbnail" width="200" height="200" />
+                    </section>
+
+                    <input type="file" id="profileImageFileUpload" name="profilePicture" class="d-none mt-3" />
+
+                    <section class="d-flex justify-content-center mb-3">
+                        <button type="button" class="btn btn-primary px-3 mr-2 active uploadImage">
+                            <span class="spinner-grow spinner-grow-sm d-none"></span>
+                            Upload
+                        </button>
+                        <button type="button" class="btn btn-secondary px-3 cancel" data-dismiss="modal">Cancel</button>
+                    </section>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <script>
+            window.addEventListener("load", () => alert("@Model.ErrorMessage"));
+        </script>
+    }
+}
 

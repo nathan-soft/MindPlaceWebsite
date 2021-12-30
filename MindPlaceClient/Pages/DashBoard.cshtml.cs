@@ -19,6 +19,7 @@ namespace MindPlaceClient.Pages
     public class DashBoardModel : BasePageModel
     {
         public UserResponseDto UserDetails { get; set; }
+        public ICollection<QuestionResponseDto> Questions { get; set; } = new List<QuestionResponseDto>();
 
         //[BindProperty]
         public QuestionDto QuestionDetails { get; set; }
@@ -34,23 +35,29 @@ namespace MindPlaceClient.Pages
             try
             {
                 TryAddBearerTokenToHeader();
-                UserDetails = await _mindPlaceClient.GetUserAsync(User.GetLoggedOnUsername());
+                //start tasks
+                var userTask = _mindPlaceClient.GetUserAsync(User.GetLoggedOnUsername());
+                var userQuestionsTask = _mindPlaceClient.GetUserQuestionsAsync(User.GetLoggedOnUsername());
+                //wait for all task to complete
+                await Task.WhenAll(userTask, userQuestionsTask);
+
+                UserDetails = userTask.Result;
+                Questions = await _mindPlaceClient.GetUserQuestionsAsync(User.GetLoggedOnUsername());
                 if (UserDetails == null)
                 {
                     return NotFound();
                 }
             }
-            catch (ApiException ex) when (!string.IsNullOrWhiteSpace(ex.Response) && ex.Response.Contains("detail"))
+            catch (AggregateException ae)
             {
-                //error from unchase libary.
-                //make sure a "problemDetails" was returned before deserialization
-                var response = JsonConvert.DeserializeObject<MindPlaceApiService.ProblemDetails>(ex.Response);
-                //ModelState.AddModelError(string.Empty, response.Detail);
-                return RedirectToPage("Error", new { Message = response.Detail });
+                foreach (var ex in ae.InnerExceptions)
+                {
+                    ErrorMessage += HandleException(ex);
+                }
             }
             catch (Exception ex)
             {
-                return RedirectToPage("Error", new { Message = ex.Message });
+                ErrorMessage += HandleException(ex);
             }
 
             return Page();

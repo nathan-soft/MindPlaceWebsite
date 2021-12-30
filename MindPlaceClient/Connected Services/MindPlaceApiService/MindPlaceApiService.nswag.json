@@ -49,7 +49,7 @@
         }
       }
     },
-    "/api/Auth/register-user": {
+    "/api/Auth/register": {
       "post": {
         "tags": [
           "Auth"
@@ -103,32 +103,32 @@
         }
       }
     },
-    "/api/Auth/send-email-token": {
+    "/api/Auth/forgot-password": {
       "post": {
         "tags": [
           "Auth"
         ],
-        "operationId": "SendEmailToken",
+        "operationId": "ForgotPassword",
         "requestBody": {
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/EmailTokenDto"
+                "$ref": "#/components/schemas/ForgotPasswordDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EmailTokenDto"
+                "$ref": "#/components/schemas/ForgotPasswordDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/EmailTokenDto"
+                "$ref": "#/components/schemas/ForgotPasswordDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/EmailTokenDto"
+                "$ref": "#/components/schemas/ForgotPasswordDto"
               }
             }
           }
@@ -139,7 +139,91 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ResponseMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Auth/reset-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "ResetPassword",
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseMessageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -276,37 +360,6 @@
       }
     },
     "/api/Qualifications": {
-      "get": {
-        "tags": [
-          "Qualifications"
-        ],
-        "operationId": "FetchUserQualifications",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/QualificationResponseDto"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      },
       "post": {
         "tags": [
           "Qualifications"
@@ -1398,6 +1451,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -1421,6 +1484,16 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -1441,6 +1514,16 @@
                   "items": {
                     "$ref": "#/components/schemas/AbbrvUser"
                   }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1488,69 +1571,13 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/api/Users/{username}/notifications": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "GetUserNotifications",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
+          },
+          "default": {
+            "description": "Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NotificationResponseDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Users/{username}/subscription-requests": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "operationId": "GetUserSubscriptionRequests",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SubscriptionResponseDto"
-                  }
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1608,16 +1635,271 @@
                 }
               }
             }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/api/WorkExperience": {
+    "/api/Users/{username}/change-profile-photo": {
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "ChangeProfilePhoto",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "profilePhoto": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "profilePhoto": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseMessageDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/api/Users/{username}/notifications": {
       "get": {
         "tags": [
-          "WorkExperience"
+          "Users"
+        ],
+        "operationId": "GetUserNotifications",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificationResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/{username}/subscription-requests": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "GetUserSubscriptionRequests",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SubscriptionResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/{username}/questions": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "GetUserQuestions",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuestionResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/{username}/qualifications": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "FetchUserQualifications",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QualificationResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Users/{username}/work-experiences": {
+      "get": {
+        "tags": [
+          "Users"
         ],
         "operationId": "FetchUserWorkExperiences",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
@@ -1643,7 +1925,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/WorkExperience": {
       "post": {
         "tags": [
           "WorkExperience"
@@ -1906,6 +2190,10 @@
           "username": {
             "type": "string",
             "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -1984,15 +2272,16 @@
           }
         }
       },
-      "EmailTokenDto": {
+      "ForgotPasswordDto": {
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "username"
+          "email"
         ],
         "properties": {
-          "username": {
-            "type": "string"
+          "email": {
+            "type": "string",
+            "format": "email"
           }
         }
       },
@@ -2060,15 +2349,6 @@
             "type": "string",
             "maxLength": 5000,
             "minLength": 10
-          },
-          "tags": {
-            "type": "array",
-            "maxItems": 3,
-            "minItems": 1,
-            "nullable": true,
-            "items": {
-              "type": "string"
-            }
           }
         }
       },
@@ -2408,6 +2688,29 @@
           }
         }
       },
+      "ResetPasswordDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "password",
+          "token",
+          "username"
+        ],
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "format": "password",
+            "maxLength": 100,
+            "minLength": 6
+          },
+          "token": {
+            "type": "string"
+          }
+        }
+      },
       "ResponseMessageDto": {
         "type": "object",
         "additionalProperties": false,
@@ -2538,14 +2841,6 @@
             "type": "string",
             "format": "date-time"
           },
-          "qualification": {
-            "type": "string",
-            "nullable": true
-          },
-          "employment": {
-            "type": "string",
-            "nullable": true
-          },
           "referralCode": {
             "type": "string",
             "nullable": true
@@ -2586,13 +2881,6 @@
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/AbbrvUser"
-            }
-          },
-          "questions": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/QuestionResponseDto"
             }
           }
         }
